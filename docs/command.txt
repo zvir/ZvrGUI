@@ -1,0 +1,1 @@
+-source-path D:\!work\zvrGUI\src D:\!work\!com -doc-classes tr trc wch dot zvr.zvrGUI.test.Main  -exclude-dependencies=false -exclude-classes zvr.zvrGUI.test.Main fl.motion.Color fl.motion.MatrixTransformer utils.* -warnings=false -library-path d:\!work\!libs\

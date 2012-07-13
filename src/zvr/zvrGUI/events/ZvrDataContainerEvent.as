@@ -11,24 +11,25 @@ package zvr.zvrGUI.events
 	public class ZvrDataContainerEvent extends Event 
 	{
 		
-		public static const ITEM_RENDERER_CREATED:String = "itemRendererCreated";
+		public static const ITEM_RENDERER_CREATED	:String = "itemRendererCreated";
+		public static const SELECTED_CHANGE			:String = "selectionChange";
 		
-		public static const ITEM_MOUSE_DOWN		:String = "item_mouseDown";
-		public static const ITEM_MOUSE_UP		:String = "item_mouseUp";	
-		public static const ITEM_MOUSE_CLICK	:String = "item_click";	
-		public static const ITEM_MOUSE_MOVE		:String = "item_mouseMove";
-		public static const ITEM_DOUBLE_CLICK 	:String = "item_doubleClick";
-		public static const ITEM_MOUSE_OUT 		:String = "item_mouseOut";
-		public static const ITEM_MOUSE_OVER 	:String = "item_mouseOver";
-		public static const ITEM_MOUSE_WHEEL 	:String = "item_mouseWheel";
-		public static const ITEM_ROLL_OUT 		:String = "item_rollOut";
-		public static const ITEM_ROLL_OVER 		:String = "item_rollOver";
+		public static const ITEM_MOUSE_DOWN			:String = "item_mouseDown";
+		public static const ITEM_MOUSE_UP			:String = "item_mouseUp";	
+		public static const ITEM_MOUSE_CLICK		:String = "item_click";	
+		public static const ITEM_MOUSE_MOVE			:String = "item_mouseMove";
+		public static const ITEM_DOUBLE_CLICK 		:String = "item_doubleClick";
+		public static const ITEM_MOUSE_OUT 			:String = "item_mouseOut";
+		public static const ITEM_MOUSE_OVER 		:String = "item_mouseOver";
+		public static const ITEM_MOUSE_WHEEL 		:String = "item_mouseWheel";
+		public static const ITEM_ROLL_OUT 			:String = "item_rollOut";
+		public static const ITEM_ROLL_OVER 			:String = "item_rollOver";
 		
 		
 		private var _items:Array;
-		private var _selectedIdexes:Array;
+		private var _selectedIdexes:Vector.<int>;
 		
-		public function ZvrDataContainerEvent(type:String, items:Array, selectedIdexes:Array, bubbles:Boolean=false, cancelable:Boolean=false) 
+		public function ZvrDataContainerEvent(type:String, items:Array, selectedIdexes:Vector.<int>, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 
 			super(type, bubbles, cancelable);
 			_selectedIdexes = selectedIdexes;
@@ -51,7 +52,7 @@ package zvr.zvrGUI.events
 			return _items;
 		}
 		
-		public function get selectedIdexes():Array 
+		public function get selectedIdexes():Vector.<int>
 		{
 			return _selectedIdexes;
 		}

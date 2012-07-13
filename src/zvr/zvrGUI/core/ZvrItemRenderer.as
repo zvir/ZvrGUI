@@ -3,6 +3,7 @@ package zvr.zvrGUI.core
 	import flash.events.MouseEvent;
 	import zvr.zvrGUI.behaviors.ZvrSelectable;
 	import zvr.zvrGUI.events.ZvrItemRendererEvent;
+	import zvr.zvrGUI.events.ZvrSelectedEvent;
 	
 	/**
 	 * @author	Michał Zwieruho "Zvir"
@@ -11,6 +12,7 @@ package zvr.zvrGUI.core
 	 */
 	
 	 [Event(name="dataChange",    type="zvr.zvrGUI.events.ZvrItemRendererEvent")]
+	 [Event(name="selectedChange",    type="zvr.zvrGUI.events.ZvrSelectedEvent")]
 	 
 	public class ZvrItemRenderer extends ZvrContainer
 	{
@@ -35,6 +37,7 @@ package zvr.zvrGUI.core
 		
 		public function set data(value:Object):void
 		{
+			if (_data == value) return;
 			_data = value;
 			_dispatchEvent(ZvrItemRendererEvent.DATA_CHANGE);
 		}		
@@ -54,8 +57,33 @@ package zvr.zvrGUI.core
 			_dataContainer = value;
 		}
 		
+		override public function addState(state:String):void 
+		{
+			var s:Boolean = checkState(ZvrStates.SELECTED);
+			
+			super.addState(state);
+			
+			if (state == ZvrStates.SELECTED && s != checkState(ZvrStates.SELECTED))
+			{
+				dispatchEvent(new ZvrSelectedEvent(ZvrSelectedEvent.SELECTED_CHANGE, this, !s));
+			}
+		}
+		
+		override public function removeState(state:String):void 
+		{
+			var s:Boolean = checkState(ZvrStates.SELECTED);
+			
+			super.removeState(state);
+			
+			if (state == ZvrStates.SELECTED && s != checkState(ZvrStates.SELECTED))
+			{
+				dispatchEvent(new ZvrSelectedEvent(ZvrSelectedEvent.SELECTED_CHANGE, this, !s));
+			}
+		}
+		
 		public function set selected(v:Boolean):void
 		{
+			tr("set selected", v);
 			if (v)
 				addState(ZvrStates.SELECTED);
 			else
@@ -80,6 +108,17 @@ package zvr.zvrGUI.core
 		private function _dispatchEvent(type:String):void
 		{
 			dispatchEvent(new ZvrItemRendererEvent(type, this));
+		}
+		
+		public function setup(virtual:ZvrVirtualItemRenderer):void
+		{
+			if (virtual.selected)
+				super.addState(ZvrStates.SELECTED);
+			else
+				super.removeState(ZvrStates.SELECTED);
+				
+			data = virtual.data;
+			index = virtual.index;
 		}
 		
 	}

@@ -10,10 +10,12 @@ package zvr.zvrGUI.core
 	public class ZvrVirtualItemRenderer 
 	{
 		
+		
 		public var bounds:Rectangle;
 		public var selected:Boolean;
 		public var index:int;
 		public var data:Object;
+		
 		public var itemRenderer:ZvrItemRenderer;
 		
 		public function ZvrVirtualItemRenderer(index:int, data:Object = null, bounds:Rectangle = null, selected:Boolean = false)
@@ -22,6 +24,13 @@ package zvr.zvrGUI.core
 			this.data = data;
 			this.bounds = bounds;
 			this.selected = selected;
+		}
+		
+		public function setSelected(v:Boolean):void
+		{
+			if (!itemRenderer) return;
+			selected = v;
+			itemRenderer.setup(this);
 		}
 		
 	}

@@ -2,8 +2,10 @@ package zvr.zvrGUI.managers
 {
 	import flash.events.MouseEvent;
 	import zvr.zvrGUI.core.ZvrDataContainer;
+	import zvr.zvrGUI.core.ZvrDataVirtualContent;
 	import zvr.zvrGUI.core.ZvrItemRenderer;
 	import zvr.zvrGUI.events.ZvrDataContainerEvent;
+	import zvr.zvrGUI.events.ZvrSelectedEvent;
 		/**
 	 * @author	Michał Zwieruho "Zvir"
 	 * @www	www.zvir.pl, www.celavra.pl
@@ -23,8 +25,15 @@ package zvr.zvrGUI.managers
 		private var _itemTester:ZvrItemRenderer;
 		private var _itemEvents:Array = new Array();
 		
-		public function ZvrDataItemsManager(dataContainer:ZvrDataContainer) 
+		private var _selectedItemsIndexes:Vector.<int> = new Vector.<int>();
+		
+		private var _virtualContent:ZvrDataVirtualContent;
+		
+		private var _multiSelect:Boolean = true;
+		
+		public function ZvrDataItemsManager(dataContainer:ZvrDataContainer, virtualContent:ZvrDataVirtualContent) 
 		{
+			_virtualContent = virtualContent;
 			_dataContainer = dataContainer;
 		}
 		
@@ -45,7 +54,52 @@ package zvr.zvrGUI.managers
 			item.addEventListener(MouseEvent.ROLL_OUT, itemMouseEvent);
 			item.addEventListener(MouseEvent.ROLL_OVER, itemMouseEvent);
 			
+			item.addEventListener(ZvrSelectedEvent.SELECTED_CHANGE, selectedChange);
+			
 			return item;
+		}
+		
+		private function selectedChange(e:ZvrSelectedEvent):void 
+		{
+			var item:ZvrItemRenderer = e.component as ZvrItemRenderer;
+			var i:int = _selectedItemsIndexes.indexOf(item.index);
+			
+			if (_multiSelect)
+			{
+				if (e.selected)
+				{
+					if (i == -1)
+					{
+						_selectedItemsIndexes.push(item.index);
+					}
+				}
+				else
+				{
+					if (i != -1)
+					{
+						_selectedItemsIndexes.splice(i, 1);
+					}
+				}
+			}
+			else
+			{	
+				for (var j:int = 0; j < _selectedItemsIndexes.length; j++) 
+				{
+					_virtualContent.getItem(_selectedItemsIndexes[j]).setSelected(false);
+				}
+				
+				_selectedItemsIndexes.length = 0;
+				
+				if (e.selected)
+				{
+					_selectedItemsIndexes.push(item.index);
+				}
+				
+			}
+			
+			_virtualContent.getItem(item.index).selected = e.selected;
+			
+			_dataContainer.dispatchEvent(new ZvrDataContainerEvent(ZvrDataContainerEvent.SELECTED_CHANGE, [e.currentTarget], _selectedItemsIndexes));
 		}
 		
 		private function itemMouseEvent(e:MouseEvent):void 
@@ -54,7 +108,7 @@ package zvr.zvrGUI.managers
 			
 			if (hasItemEvent(type))
 			{
-				_dataContainer.dispatchEvent(new ZvrDataContainerEvent(type, [e.currentTarget], []));
+				_dataContainer.dispatchEvent(new ZvrDataContainerEvent(type, [e.currentTarget], _selectedItemsIndexes));
 			}
 			
 		}
@@ -145,7 +199,7 @@ package zvr.zvrGUI.managers
 					item.removeEventListener(MouseEvent.ROLL_OUT, itemMouseEvent);
 					item.removeEventListener(MouseEvent.ROLL_OVER, itemMouseEvent);
 					
-					
+					item.removeEventListener(ZvrSelectedEvent.SELECTED_CHANGE, selectedChange);
 				}
 				
 			}
@@ -193,6 +247,16 @@ package zvr.zvrGUI.managers
 		public function get itemEvents():Array 
 		{
 			return _itemEvents;
+		}
+		
+		public function get multiSelect():Boolean 
+		{
+			return _multiSelect;
+		}
+		
+		public function set multiSelect(value:Boolean):void 
+		{
+			_multiSelect = value;
 		}
 		
 		

@@ -22,7 +22,7 @@ package zvr.zvrGUI.events
 		
 		public override function clone():Event 
 		{ 
-			return new ZvrEvent(type, component, bubbles, cancelable);
+			return new ZvrEvent(type, _component, bubbles, cancelable);
 		} 
 		
 		public override function toString():String 

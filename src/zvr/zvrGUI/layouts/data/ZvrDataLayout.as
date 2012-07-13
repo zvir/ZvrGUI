@@ -112,9 +112,7 @@ package zvr.zvrGUI.layouts.data
 		
 		protected function updateItem(virtual:ZvrVirtualItemRenderer, bounds:Rectangle):void
 		{
-			if (virtual.data != virtual.itemRenderer.data) virtual.itemRenderer.data = virtual.data;
-			if (virtual.selected != virtual.itemRenderer.selected) virtual.itemRenderer.selected = virtual.selected;
-			if (virtual.index != virtual.itemRenderer.index) virtual.itemRenderer.index = virtual.index;
+			virtual.itemRenderer.setup(virtual);
 		}
 		
 		public function updateItemsBounds(fromIndex:int = 0):void 

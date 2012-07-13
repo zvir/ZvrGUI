@@ -21,18 +21,19 @@ package zvr.zvrGUI.core
 	 */
 
 	
-	[Event (name = "itemRendererCreated",	type = "zvr.zvrGUI.events.ZvrDataContainerEvent")];
+	[Event (name = "itemRendererCreated",	type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
+	[Event (name = "selectionChange",		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
 	
-	[Event (name = "item_mouseDown",		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")];
-	[Event (name = "item_mouseUp",    		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")];
-	[Event (name = "item_mouseClick",   	type = "zvr.zvrGUI.events.ZvrDataContainerEvent")];
-	[Event (name = "item_mouseMove",    	type = "zvr.zvrGUI.events.ZvrDataContainerEvent")];
-	[Event (name = "item_doubleClick",		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")];
-	[Event (name = "item_mouseOut",    		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")];
-	[Event (name = "item_mouseOver",		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")];
-	[Event (name = "item_mouseWheel",		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")];
-	[Event (name = "ritem_rollOut",    		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")];
-	[Event (name = "item_rollOver",    		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")];
+	[Event (name = "item_mouseDown",		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
+	[Event (name = "item_mouseUp",    		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
+	[Event (name = "item_mouseClick",   	type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
+	[Event (name = "item_mouseMove",    	type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
+	[Event (name = "item_doubleClick",		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
+	[Event (name = "item_mouseOut",    		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
+	[Event (name = "item_mouseOver",		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
+	[Event (name = "item_mouseWheel",		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
+	[Event (name = "ritem_rollOut",    		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
+	[Event (name = "item_rollOver",    		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
 	
 	
 	
@@ -61,7 +62,8 @@ package zvr.zvrGUI.core
 		public function ZvrDataContainer(skinClass:Class) 
 		{
 			super(skinClass);
-			_itemsManager = new ZvrDataItemsManager(this);
+			
+			_itemsManager = new ZvrDataItemsManager(this, _virtualContent);
 			_layout = new ZvrDataLayout(this, _virtualContent, _itemsManager);
 			
 			addEventListener(ZvrComponentEvent.RESIZE, resized);
@@ -201,6 +203,16 @@ package zvr.zvrGUI.core
 		{
 			_layout.scroll = scroll;
 			_layout.update(virtualBounds);
+		}
+		
+		public function get multiSelect():Boolean 
+		{
+			return _itemsManager.multiSelect;
+		}
+		
+		public function set multiSelect(value:Boolean):void 
+		{
+			_itemsManager.multiSelect = value;
 		}
 		
 		override public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void 

@@ -48,7 +48,12 @@ package zvr.zvrGUI.layouts.data
 		override protected function updateItem(virtual:ZvrVirtualItemRenderer, bounds:Rectangle):void
 		{
 			super.updateItem(virtual, bounds);
-			virtual.itemRenderer.setLayoutPosition(virtual.itemRenderer.getLayoutPositionX(), virtual.bounds.y - bounds.y);
+			
+			
+			if (virtual.bounds)
+			{
+				virtual.itemRenderer.setLayoutPosition(virtual.itemRenderer.getLayoutPositionX(), virtual.bounds.y - bounds.y);
+			}
 		}
 		
 		private function updateScroll(bounds:Rectangle):void

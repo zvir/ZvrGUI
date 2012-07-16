@@ -23,7 +23,7 @@ package zvr.zvrGUI.components.minimalDark
 		public function SliderUIMD() 
 		{
 			
-			minWidth = 200;
+			minWidth = 100;
 			minHeight = 20;
 			
 			slider = new SliderMD();

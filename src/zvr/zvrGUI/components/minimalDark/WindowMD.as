@@ -59,6 +59,8 @@ package zvr.zvrGUI.components.minimalDark
 			panel.behaviors.getBehavior(ZvrResizable.NAME).enabled = false;
 			
 			panel.delegateStates = this;
+			panel.height = NaN;
+			panel.width = NaN;
 			panel.top = 15;
 			panel.bottom = 0;
 			panel.right = 0;

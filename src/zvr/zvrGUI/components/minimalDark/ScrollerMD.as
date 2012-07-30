@@ -39,6 +39,8 @@ package zvr.zvrGUI.components.minimalDark
 			
 			super(verticalScroll, horozontalScroll, null, ScrollerPanelMDSkin);
 			
+			_contents.top = 0;
+			_contents.left = 0;
 			_contents.bottom = 1;
 			_contents.right = 1;
 			
@@ -66,8 +68,10 @@ package zvr.zvrGUI.components.minimalDark
 		{
 			if (_contents.autoSize != ZvrAutoSize.CONTENT) 
 			{
+				_contents.right = NaN;
 				_contents.width = _bounds.width - _verticalScroll.independentBounds.width - 2;
 				// _contents.height =  _bounds.height - _horizontalScroll.independentBounds.height - (_horizontalScroll.present ? 2 : 0);
+				_contents.bottom = NaN;
 				_contents.height =  _bounds.height - 13;
 			}	
 			_verticalScroll.height = _bounds.height - 10;

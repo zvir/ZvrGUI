@@ -71,10 +71,10 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 		protected function drawBackground():void 
 		{	
 			
-			sprite.graphics.clear();
-			
 			var b1:* = getStyle(ZvrStyles.BG_COLOR)
 			var b2:* = getStyle(ZvrStyles.FT_COLOR)
+			
+			sprite.graphics.clear();
 			
 			if (b1 && b2) 
 			{
@@ -83,6 +83,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 				p = _body.localToGlobal(p);
 				_matrix.tx = -p.x;
 				_matrix.ty = -p.y;*/
+				
 				
 				sprite.graphics.beginBitmapFill(b1, _matrix);
 				sprite.graphics.moveTo(0, 0);

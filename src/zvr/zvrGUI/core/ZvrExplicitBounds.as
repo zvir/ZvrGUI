@@ -26,8 +26,10 @@ package zvr.zvrGUI.core
 		
 		private var _x:String = NONE;
 		private var _y:String = NONE;
-		private var _width:String = WIDTH;
-		private var _height:String = HEIGHT;
+		private var _width:String = NONE;
+		private var _height:String = NONE;
+		private var _right:String = NONE;
+		private var _bottom:String = NONE;
 		
 		private var _expricitReport:ZvrExplicitReport = new ZvrExplicitReport();
 		
@@ -69,6 +71,17 @@ package zvr.zvrGUI.core
 			_expricitReport.width = value;
 		}
 		
+		public function get right():String 
+		{
+			return _right;
+		}
+		
+		public function set right(value:String):void 
+		{
+			_right = value;
+			_expricitReport.right = value;
+		}
+		
 		public function get height():String 
 		{
 			return _height;
@@ -78,6 +91,17 @@ package zvr.zvrGUI.core
 		{
 			_height = value;
 			_expricitReport.height = value;
+		}
+		
+		public function get bottom():String 
+		{
+			return _bottom;
+		}
+		
+		public function set bottom(value:String):void 
+		{
+			_bottom = value;
+			_expricitReport.bottom = value;
 		}
 		
 		public function get explicitRaport():ZvrExplicitReport

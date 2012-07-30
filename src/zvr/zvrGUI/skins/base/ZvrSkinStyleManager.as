@@ -47,21 +47,19 @@ package zvr.zvrGUI.skins.base
 				return false;
 			}
 			
-			
-			
 			if (state != null)
 			{
 				if (state is String) {
-					getSkinStyle(styleName).setStateValue(state, value);
+					getSkinStyle(styleName).setStateValue([state], value);
 					if (_initialized) if (_component.checkState(state)) getSkinStyle(styleName).updateSkin(state);
 					return true;
 				} 
 				if (state is Array)
 				{
 					var a:Array = state;
+					getSkinStyle(styleName).setStateValue(a, value);
 					a.sort();
 					var s:String = a.join("|");
-					getSkinStyle(styleName).setStateValue(s, value);
 					if (_initialized) getSkinStyle(styleName).updateSkin(state);
 					return true;
 				}
@@ -82,12 +80,13 @@ package zvr.zvrGUI.skins.base
 		private function componentStateChange(e:ZvrStateChangeEvent):void 
 		{
 			var s:String = componentState;
-			
 			var setters:Dictionary = new Dictionary();
 			
 			for (var name:String in _styles) 
 			{
-				var f:Function = getSkinStyle(name).updateSkin(s, true);
+				var skinStyle:ZvrSkinStyle = getSkinStyle(name);
+				if (!skinStyle.machesStates(e.newStates) && !skinStyle.machesStates(e.removedStates)) continue;
+				var f:Function = skinStyle.updateSkin(s, true);
 				if (f != null) setters[f] = f;
 			}
 			

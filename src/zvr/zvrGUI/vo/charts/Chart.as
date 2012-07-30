@@ -3,7 +3,7 @@ package zvr.zvrGUI.vo.charts
 	import flash.events.EventDispatcher
 	import zvr.zvrGUI.skins.zvrMinimalDark.ColorsMD;
 	import zvr.zvrGUI.vo.events.ChartEvent;
-	import zvr.ZvrTools.ZvrColor;
+	import zvr.zvrTools.ZvrColor;
 		/**
 	 * @author	Michał Zwieruho "Zvir"
 	 * @www	www.zvir.pl, www.celavra.pl

@@ -123,7 +123,7 @@ package zvr.zvrGUI.managers
 			return __currentStates;
 		}
 		
-		private function delegateStateChane(e:ZvrStateChangeEvent):void 
+		private function delegateStateChange(e:ZvrStateChangeEvent):void 
 		{
 			_component.dispatchEvent(new ZvrStateChangeEvent(e.type, _component, e.newStates, e.removedStates, __currentStates));
 		}
@@ -173,9 +173,13 @@ package zvr.zvrGUI.managers
 		
 		public function set delegateState(value:ZvrComponent):void 
 		{
-			if (_delegateState)	_delegateState.removeEventListener(ZvrStateChangeEvent.CHANGE, delegateStateChane);
+			if (_delegateState)	_delegateState.removeEventListener(ZvrStateChangeEvent.CHANGE, delegateStateChange);
 			_delegateState = value;
-			if (_delegateState)	_delegateState.addEventListener(ZvrStateChangeEvent.CHANGE, delegateStateChane);
+			if (_delegateState)	
+			{
+				_delegateState.addEventListener(ZvrStateChangeEvent.CHANGE, delegateStateChange);
+				_component.dispatchEvent(new ZvrStateChangeEvent(ZvrStateChangeEvent.CHANGE, _component, _delegateState.states, null, __currentStates));
+			}
 		}
 		
 		public function get delegateState():ZvrComponent 

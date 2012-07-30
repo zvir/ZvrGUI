@@ -11,7 +11,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
-	import flash.text.TextInteractionMode;
+	//import flash.text.TextInteractionMode;
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.core.ZvrLabel;
 	import zvr.zvrGUI.core.ZvrLabelChangeKind;
@@ -52,7 +52,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			_textField.embedFonts = true; 
 			_textField.autoSize = TextFieldAutoSize.LEFT;
 			_textField.multiline = false;
-			_textField.textInteractionMode
+			//_textField.textInteractionMode
 			//_textField.border = true;
 			
 			setFont();

@@ -8,7 +8,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 	import flash.geom.Rectangle;
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.skins.base.ZvrSkin;
-	import zvr.ZvrTools.ZvrColor;
+	import zvr.zvrTools.ZvrColor;
 	
 	/**
 	 * ...

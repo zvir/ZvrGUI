@@ -69,6 +69,7 @@ package zvr.zvrComps.zvrTool.zvrWatcher
 		{
 			var i:int = _dataProvider.getItemIndex(w);
 			if (i != -1) _dataProvider.removeItemAt(i);
+			w.dispose();
 			updateStatics();
 		}
 		

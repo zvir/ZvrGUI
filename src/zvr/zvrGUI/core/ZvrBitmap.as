@@ -37,14 +37,14 @@ package zvr.zvrGUI.core
 			setStyle(ZvrStyles.BITMAP, value);
 		}
 		
-		public function get scaleMode():Boolean 
+		public function get scaleMode():String 
 		{
-			return _scaleMode;
+			return getStyle(ZvrStyles.AUTO_SIZE);
 		}
 		
-		public function set scaleMode(value:Boolean):void 
+		public function set scaleMode(value:String):void 
 		{
-			_scaleMode = value;
+			setStyle(ZvrStyles.AUTO_SIZE, value);
 		}
 		
 	}

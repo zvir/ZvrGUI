@@ -6,7 +6,7 @@ package
 	import zvr.zvrComps.zvrTool.zvrTracer.Tracer;
 	import zvr.zvrComps.zvrTool.zvrTracer.ZvrTraceMessage;
 	import zvr.zvrGUI.core.ZvrItemRenderer;
-	import zvr.ZvrTools.ZvrTime;
+	import zvr.zvrTools.ZvrTime;
 		
 
 	/**

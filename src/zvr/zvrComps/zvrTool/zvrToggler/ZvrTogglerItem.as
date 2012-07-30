@@ -4,6 +4,9 @@ package zvr.zvrComps.zvrTool.zvrToggler
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.ui.Multitouch;
+	import utils.string.remove;
+	import utils.string.remove;
+	import utils.string.remove;
 	import zvr.zvrGUI.behaviors.ZvrSelectable;
 	import zvr.zvrGUI.components.minimalDark.ToggleButtonMD;
 	/**
@@ -12,6 +15,7 @@ package zvr.zvrComps.zvrTool.zvrToggler
 	 */
 	public class ZvrTogglerItem 
 	{
+		public var toggler:ZvrToggler;
 		
 		private var _name:String;
 		private var _toggle:Boolean = false;
@@ -32,6 +36,15 @@ package zvr.zvrComps.zvrTool.zvrToggler
 		
 		public function remove():void
 		{
+			toggler.remove(_name);
+			
+			_button.owner.removeChild(_button);
+			
+			_function = null;
+			_object = null;
+			_params = null;
+			
+			toggler = null;
 			
 		}
 		

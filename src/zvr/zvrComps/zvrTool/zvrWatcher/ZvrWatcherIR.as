@@ -12,7 +12,7 @@ package zvr.zvrComps.zvrTool.zvrWatcher
 	import zvr.zvrGUI.skins.zvrMinimalDark.ItemRendererMDSkin;
 	import zvr.zvrGUI.skins.zvrMinimalDarkFonts.MDFonts;
 	import zvr.zvrGUI.skins.ZvrStyles;
-	import zvr.ZvrTools.ZvrTime;
+	import zvr.zvrTools.ZvrTime;
 		/**
 	 * @author	Michał Zwieruho "Zvir"
 	 * @www	www.zvir.pl, www.celavra.pl

@@ -2,13 +2,10 @@ package zvr.zvrGUI.components.minimalDark
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import zvr.zvrGUI.behaviors.ZvrButtonBehavior;
-	import zvr.zvrGUI.behaviors.ZvrDisable;
 	import zvr.zvrGUI.behaviors.ZvrDragable;
 	import zvr.zvrGUI.behaviors.ZvrRollOverHilight;
 	import zvr.zvrGUI.core.ZvrAutoSize;
 	import zvr.zvrGUI.core.ZvrGroup;
-	import zvr.zvrGUI.core.ZvrScroll;
 	import zvr.zvrGUI.core.ZvrSlider;
 	import zvr.zvrGUI.core.ZvrStates;
 	import zvr.zvrGUI.events.ZvrComponentEvent;
@@ -52,7 +49,8 @@ package zvr.zvrGUI.components.minimalDark
 			_areaBar = new ZvrGroup();
 			_areaBar.autoSize = ZvrAutoSize.MANUAL;
 			
-			_areaBar.height = 5;
+			_areaBar.top = 1;
+			_areaBar.bottom = 1;
 			
 			_areaBar.minWidth = 10;
 			
@@ -64,8 +62,12 @@ package zvr.zvrGUI.components.minimalDark
 			_areaBar.addChild(_areaScaleLeft);
 			_areaBar.addChild(_areaScaleRight);
 			
+			_areaButton.width = NaN;
+			//_areaButton.height = NaN;
 			_areaButton.right = 4;
 			_areaButton.left = 4;
+			//_areaButton.top = 0;
+			//_areaButton.bottom = 0;
 			
 			_areaDragBehavior = new ZvrDragable();
 			_areaBar.behaviors.addBehavior(_areaDragBehavior);
@@ -113,12 +115,14 @@ package zvr.zvrGUI.components.minimalDark
 			
 			if (dynamicRange)
 			{
+				_areaButton.width = NaN;
 				_areaButton.right = 4;
 				_areaButton.left = 4;
 				_areaBar.minWidth = 18;
 			}
 			else
 			{
+				_areaButton.width = NaN;
 				_areaButton.right = 0;
 				_areaButton.left = 0;
 				_areaBar.minWidth = 10;

@@ -23,7 +23,7 @@ package zvr.zvrComps.zvrTool.zvtStatsChart
 	import zvr.zvrGUI.skins.ZvrStyles;
 	import zvr.zvrGUI.vo.charts.Chart;
 	import zvr.zvrGUI.vo.charts.ChartPointGetter;
-	import zvr.ZvrTools.ZvrTime;
+	import zvr.zvrTools.ZvrTime;
 	
 		/**
 	 * @author	Michał Zwieruho "Zvir"

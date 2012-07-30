@@ -47,6 +47,7 @@ package zvr.zvrGUI.behaviors
 		override protected function enable():void 
 		{
 			if (component && _limit) limit = limit;
+			
 			if (body)
 			{
 				

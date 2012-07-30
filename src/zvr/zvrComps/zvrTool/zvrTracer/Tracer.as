@@ -20,6 +20,8 @@ package zvr.zvrComps.zvrTool.zvrTracer
 		
 		public static function trc(id:int, key:String, senderType:String, senderName:String, time:int, timeDelta:int, message:String, values:Array = null):ZvrTraceMessage
 		{
+			if (!_tracer) return null;
+			
 			var m:ZvrTraceMessage;
 			var newMessage:Boolean = true;
 			

@@ -8,9 +8,12 @@ package zvr.zvrComps.zvrTool
 	import flash.events.UncaughtErrorEvent;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
+	
 	import utils.garbageCollection.gc;
 	import utils.type.getClass;
 	import utils.type.getName;
+	
+	import zvr.zvrTools.ZvrCompilationDate;
 	import zvr.zvrComps.zvrTool.elements.ZvrToolMenu;
 	import zvr.zvrComps.zvrTool.zvrSounder.ZvrSounder;
 	import zvr.zvrComps.zvrTool.zvrToggler.Toggler;
@@ -23,6 +26,7 @@ package zvr.zvrComps.zvrTool
 	import zvr.zvrComps.zvrTool.zvrWatcher.ZvrWatcher;
 	import zvr.zvrComps.zvrTool.zvtStatsChart.ZvrStatsChart;
 	import zvr.zvrGUI.components.minimalDark.ButtonMD;
+	import zvr.zvrGUI.components.minimalDark.TouchMouseMD;
 	import zvr.zvrGUI.core.ZvrApplication;
 	import zvr.zvrGUI.core.ZvrAutoSize;
 	import zvr.zvrGUI.core.ZvrContainer;
@@ -33,7 +37,6 @@ package zvr.zvrComps.zvrTool
 	import zvr.zvrGUI.events.ZvrWindowEvent;
 	import zvr.zvrGUI.skins.base.ZvrSkin;
 	import zvr.zvrKeyboard.ZvrKeyboard;
-	import zvr.ZvrTools.ZvrCompilationDate;
 
 
 	/**
@@ -69,36 +72,42 @@ package zvr.zvrComps.zvrTool
 			tool = this;
 			
 			statsChart = new ZvrStatsChart();
+			statsChart.resetComponent();
 			statsChart.width = 120;
 			statsChart.height = 150;
 			statsChart.bottom = 10;
 			statsChart.left = 10;
 			
 			tracy = new ZvrTracy();
+			tracy.resetComponent();
 			tracy.width = 450;
 			tracy.height = 150;
 			tracy.left = 140;
 			tracy.bottom = 10;
 			
 			tracer = new ZvrTracer();
+			tracer.resetComponent();
 			tracer.height = 150;
 			tracer.right = 10;
 			tracer.left = 600;
 			tracer.bottom = 10;
 			
 			watcher = new ZvrWatcher();
+			watcher.resetComponent();
 			watcher.width = 450;
 			watcher.right = 10;
 			watcher.top = 45;
 			watcher.height = 260;
 			
 			sounder = new ZvrSounder();
+			sounder.resetComponent();
 			sounder.width = 450;
 			sounder.right = 10;
 			sounder.top = 315;
 			sounder.height = 120;
 			
 			toggler = new ZvrToggler();
+			toggler.resetComponent();
 			toggler.width = 450;
 			toggler.right = 10;
 			toggler.top = 445;
@@ -130,8 +139,8 @@ package zvr.zvrComps.zvrTool
 			menu.top = 15;
 			
 			addChild(statsChart.miniStats);
-			statsChart.miniStats.top = 15;
-			statsChart.miniStats.left = 15;
+			statsChart.miniStats.top = 3;
+			statsChart.miniStats.left = 3;
 			
 			ZvrKeyboard.addKeyShortcuts(toggleVisible, ZvrKeyboard.CTRL, ZvrKeyboard.ALT, ZvrKeyboard.M);
 			ZvrKeyboard.addKeySequenceCallback(toggleVisible, ZvrKeyboard.Z, ZvrKeyboard.X, ZvrKeyboard.C);
@@ -146,6 +155,10 @@ package zvr.zvrComps.zvrTool
 			tr("----------------------------------------------------------------------------");
 			
 			tgr("Garbage Collector").setFunction(gc);
+			
+			
+			//addChild(new TouchMouseMD());
+			
 			
 		}
 		
@@ -263,6 +276,45 @@ package zvr.zvrComps.zvrTool
 				parent.setChildIndex(this, parent.numChildren -1);
 			}
 		}
+		
+		public function layoutForPlayBook():void
+		{
+			
+			tracer.resetComponent();
+			tracer.left = 10;
+			tracer.width = 550;
+			tracer.height = 150;
+			tracer.bottom = 15;
+			
+			toggler.resetComponent();
+			toggler.width = 195;
+			toggler.right = 215;
+			toggler.top = 255;
+			toggler.height = 200;
+			
+			watcher.resetComponent();
+			watcher.top = 45;
+			watcher.width = 400;
+			watcher.right = 10;
+			watcher.height = 200;
+			
+			statsChart.resetComponent();
+			statsChart.width = 195;
+			statsChart.right = 10;
+			statsChart.top = 255;
+			statsChart.height = 200;
+			
+			tracy.resetComponent();
+			tracy.width = 400;
+			tracy.right = 10;
+			tracy.top = 470;
+			tracy.bottom = 10;
+			
+			sounder.close();
+			
+			
+		}
+		
 		
 	}
 }

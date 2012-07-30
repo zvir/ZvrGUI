@@ -5,8 +5,8 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 	import zvr.zvrGUI.core.ZvrStates;
 	import zvr.zvrGUI.skins.base.ZvrSkin;
 	import zvr.zvrGUI.skins.ZvrStyles;
-	import zvr.ZvrTools.ZvrPnt;
-	import zvr.ZvrTools.ZvrPntMath;
+	import zvr.zvrTools.ZvrPnt;
+	import zvr.zvrTools.ZvrPntMath;
 	/**
 	 * ...
 	 * @author Zvir

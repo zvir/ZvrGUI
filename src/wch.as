@@ -6,7 +6,7 @@ package
 	import zvr.zvrComps.zvrTool.zvrWatcher.Watcher;
 	import zvr.zvrComps.zvrTool.zvrWatcher.ZvrWatchItem;
 	import zvr.zvrGUI.core.ZvrItemRenderer;
-	import zvr.ZvrTools.ZvrTime;
+	import zvr.zvrTools.ZvrTime;
 		
 
 	/**
@@ -19,6 +19,12 @@ package
 		
 	public function wch(sender:Object, name:String, value:* = null, del:Boolean = false):ZvrWatchItem
 	{
+		
+		CONFIG::release
+		{
+			throw new Error("WCH");
+		}
+		
 		if (del)
 		{
 			Watcher.deleteWatch(sender, name);

@@ -9,15 +9,19 @@ package zvr.zvrGUI.skins
 	public class ZvrStyles 
 	{
 		
-		public static const LABEL_COLOR		:String = "labelColor";
-		public static const LABEL_FONT		:String = "labelFont";
-		public static const LABEL_FONT_SIZE	:String = "labelFontSize";
-		public static const LABEL_ALIGN		:String = "labelAlign";
+		public static const LABEL_COLOR			:String = "labelColor";
+		public static const LABEL_FONT			:String = "labelFont";
+		public static const LABEL_FONT_SIZE		:String = "labelFontSize";
+		public static const LABEL_ALIGN			:String = "labelAlign";
+		public static const LABEL_LINE_SPACING	:String = "labelLineSpacing";
+		static public const LABEL_LETTER_SPACING	:String = "labelLetterSpacing";
 		
 		public static const BG_COLOR		:String = "bgColor";
 		public static const BG_ALPHA		:String = "bgAlpha";
 		
 		public static const FR_COLOR		:String = "frColor";
+		public static const FR_ALPHA		:String = "frAlpha";
+		public static const FR_WEIGHT		:String = "frWeight";
 		
 		public static const FR_TOP_COLOR	:String = "frTopColor";
 		public static const FR_BOTTOM_COLOR	:String = "frBottomColor";
@@ -30,12 +34,13 @@ package zvr.zvrGUI.skins
 		public static const FR_LEFT_WEIGHT	:String = "frLeftWeight";
 		
 		
-		public static const FR_ALPHA		:String = "frAlpha";
+		
 		public static const FT_COLOR		:String = "ftColor";
 		public static const ICON			:String = "icon";
 		public static const BITMAP			:String = "bitmap";
 		public static const COLOR			:String = "color";
 		public static const COLOR_ALPHA		:String = "color_alpha";
+		public static const AUTO_SIZE		:String = "autoSize";
 		
 		
 		

@@ -210,7 +210,12 @@ package zvr.zvrKeyboard
 				_presedKeys.push(k);
 
 			}
-			updateWch();
+			
+			CONFIG::debug
+			{
+				updateWch();
+			}
+			
 			setKeyState(e.keyCode, true);
 		}
 		
@@ -223,14 +228,18 @@ package zvr.zvrKeyboard
 			
 			var i:int = _presedKeys.indexOf(k);
 			_presedKeys.splice(i, 1);
-			updateWch();
+			
+			CONFIG::debug
+			{
+				updateWch();
+			}
 			
 			setKeyState(e.keyCode, false);
 		}
 		
+		CONFIG::debug
 		private static function updateWch():void 
 		{
-			
 			var s:String = "";
 			
 			for (var i:int = 0; i < _presedKeys.length; i++) 
@@ -239,7 +248,6 @@ package zvr.zvrKeyboard
 			}
 			
 			wch("ZvrKeyboard", "pressed keys", s);
-			
 		}
 		
 		private static function setKeyState(code:uint, state:Boolean):void

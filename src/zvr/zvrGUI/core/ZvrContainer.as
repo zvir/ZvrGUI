@@ -38,10 +38,13 @@ package zvr.zvrGUI.core
 		protected var _mask:Sprite = new Sprite();	
 		private var _contentPadding:ZvrContentPadding;
 		private var _sizeManager:ZvrContainerSizeManager;
-		// TODO make paddings for content, here or in ZvrLayout, preferable here.
+		
+		private var _maskingEnabled:Boolean = true;
+		
 		
 		public function ZvrContainer(skinClass:Class)
 		{
+			_contents.mask = _mask;
 			super(_contents, skinClass);
 			_sizeManager = new ZvrContainerSizeManager(this);
 			_contentPadding = new ZvrContentPadding(contentPaddingSetter)
@@ -52,9 +55,6 @@ package zvr.zvrGUI.core
 			{
 				_base.setChildIndex(_skin.shell, _base.numChildren -1);
 			}
-			
-			_mask.mouseEnabled = false;
-			_contents.mask = _mask;
 			
 			addEventListener(ZvrComponentEvent.RESIZE, resized);
 			
@@ -171,7 +171,7 @@ package zvr.zvrGUI.core
 		{
 			var r:Rectangle = new Rectangle();
 			var e:ZvrComponent;
-			
+			var ex:ZvrExplicitReport;
 			//_test.graphics.clear();
 			
 			for (var i:int = 0; i < _presentElements.length; i++)
@@ -179,30 +179,32 @@ package zvr.zvrGUI.core
 				e = _presentElements[i];
 				
 				var b:Rectangle = e.independentBounds;
-				
 				var w:Number = b.right;
 				var h:Number = b.bottom;
+				
+				ex = e.explicit;
 				
 				r.width = Math.max(r.right, w);
 				r.height = Math.max(r.bottom, h);
 				
 				if (b.x < 0)
 				{
-					e.x -= b.x;
-					x += b.x;
+					if (ex.x == ZvrExplicitBounds.X) e.x -= b.x;
+					if (explicit.x == ZvrExplicitBounds.X) x += b.x;
 				}
 				
 				if (b.y < 0)
 				{
-					e.y -= b.y;
-					y += b.y;
+					if (ex.y == ZvrExplicitBounds.Y) e.y -= b.y;
+					if (explicit.y == ZvrExplicitBounds.Y) y += b.y;
 				}
 			}
 			
 			var paddingWidth:Number = _contentPadding.left + _contentPadding.right;
 			var paddingHeight:Number = _contentPadding.top + _contentPadding.bottom;
-			
+				
 			setSize(width ? r.width + paddingWidth: bounds.width, height ? r.height + paddingHeight : bounds.height);
+			
 		}
 		
 		private function computeContentSize():Array
@@ -496,6 +498,29 @@ package zvr.zvrGUI.core
 		public function get childrenPadding():ZvrContentPadding 
 		{
 			return _contentPadding;
+		}
+		
+		public function get maskingEnabled():Boolean 
+		{
+			return _maskingEnabled;
+		}
+		
+		public function set maskingEnabled(value:Boolean):void 
+		{
+			if (_maskingEnabled == value) return;
+			
+			_maskingEnabled = value;
+			
+			if (_maskingEnabled)
+			{
+				_contents.mask = _mask;
+				_mask.visible = true;
+			}
+			else
+			{
+				_contents.mask = null;
+				_mask.visible = false;
+			}
 		}
 		
 	}

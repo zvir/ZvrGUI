@@ -20,16 +20,18 @@ package zvr.zvrGUI.events
 		public static const STATE_CHANGE			:String = "scrollStateChange";
 		
 		private var _slider:ZvrSlider;
+		private var _delta:Number;
 		
-		public function ZvrSliderEvent(type:String, slider:ZvrSlider, bubbles:Boolean=false, cancelable:Boolean=false) 
+		public function ZvrSliderEvent(type:String, slider:ZvrSlider, delta:Number, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 
 			super(type, bubbles, cancelable);	
+			_delta = delta;
 			_slider = slider;
 		} 
 		
 		public override function clone():Event 
 		{ 
-			return new ZvrSliderEvent(type, _slider, bubbles, cancelable);
+			return new ZvrSliderEvent(type, _slider, _delta, bubbles, cancelable);
 		} 
 		
 		public override function toString():String 
@@ -40,6 +42,11 @@ package zvr.zvrGUI.events
 		public function get slider():ZvrSlider 
 		{
 			return _slider;
+		}
+		
+		public function get delta():Number 
+		{
+			return _delta;
 		}
 		
 	}

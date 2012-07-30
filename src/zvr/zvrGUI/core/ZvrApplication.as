@@ -26,6 +26,8 @@ package zvr.zvrGUI.core
 		private var _backgraoundLayer:ZvrContainer;
 		private var _popupLauer:ZvrContainer;
 		
+		private var _pixelSharp:Boolean;
+		
 		public function ZvrApplication() 
 		{
 			super(ZvrSkin);
@@ -50,7 +52,14 @@ package zvr.zvrGUI.core
 			
 			super.addChild(_popupLauer);
 			
-			addEventListener(Event.ADDED_TO_STAGE, addedToStage);
+			if (stage)
+			{
+				addedToStage(null);
+			}
+			else
+			{
+				addEventListener(Event.ADDED_TO_STAGE, addedToStage);
+			}
 			
 		}
 		
@@ -81,8 +90,9 @@ package zvr.zvrGUI.core
 		{
 			x = 0;
 			y = 0;
-			width = stage.stageWidth;
-			height = stage.stageHeight;
+			
+			width = pixelSharp ? int(stage.stageWidth * 0.5) * 2 : stage.stageWidth;
+			height = pixelSharp ? int(stage.stageHeight * 0.5) * 2 : stage.stageHeight;
 		}
 		
 		override public function addChild(child:DisplayObject):DisplayObject 
@@ -108,6 +118,17 @@ package zvr.zvrGUI.core
 		public function get popups():ZvrPopupManager 
 		{
 			return _popupManager;
+		}
+		
+		public function get pixelSharp():Boolean 
+		{
+			return _pixelSharp;
+		}
+		
+		public function set pixelSharp(value:Boolean):void 
+		{
+			_pixelSharp = value;
+			stage && stageResize(null);
 		}
 		
 	}

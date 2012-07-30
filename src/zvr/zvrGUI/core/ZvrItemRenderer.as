@@ -83,7 +83,6 @@ package zvr.zvrGUI.core
 		
 		public function set selected(v:Boolean):void
 		{
-			tr("set selected", v);
 			if (v)
 				addState(ZvrStates.SELECTED);
 			else

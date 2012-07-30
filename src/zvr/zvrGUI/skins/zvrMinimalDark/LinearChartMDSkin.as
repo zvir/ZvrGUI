@@ -13,7 +13,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 	import zvr.zvrGUI.skins.base.ZvrSkin;
 	import zvr.zvrGUI.vo.charts.Chart;
 	import zvr.zvrGUI.vo.charts.ChartPoint;
-	import zvr.ZvrTools.ZvrColor;
+	import zvr.zvrTools.ZvrColor;
 	
 		/**
 	 * @author	Michał Zwieruho "Zvir"

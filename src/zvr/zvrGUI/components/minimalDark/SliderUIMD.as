@@ -32,6 +32,7 @@ package zvr.zvrGUI.components.minimalDark
 			slider.left = 0;
 			slider.right = 0;
 			slider.top = 8;
+			slider.bottom = 0;
 			title.top = -6;
 			title.left = -2;
 			//value.labelAutoSize = false;

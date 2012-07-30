@@ -15,6 +15,8 @@ package zvr.zvrGUI.skins.base
 		
 		private var _getter:Boolean = true;
 		
+		private var _states:Vector.<String> = new Vector.<String>();
+		
 		private var _statesValues:Dictionary = new Dictionary();
 		private var _defaultValue:*;
 		
@@ -54,7 +56,9 @@ package zvr.zvrGUI.skins.base
 		
 		public function updateSkin(state:String, multiChange:Boolean = false):Function
 		{
-			var f:Function = updateStyle(getValue(state), multiChange);
+			var v:* = getValue(state);
+			
+			var f:Function = updateStyle(v, multiChange);
 			
 			if (f != null && multiChange)
 				return f;
@@ -151,17 +155,38 @@ package zvr.zvrGUI.skins.base
 			return s;
 		}
 		
-		public function setStateValue(state:String, value:*):void
+		public function setStateValue(states:Array, value:*):void
 		{
-			if (state == "" || state == "deafult")
+			if (states.length == 1 && (states[0] == "" || states[0] == "deafult"))
 			{
 				_defaultValue = value;
 			}
 			else
 			{
-				_statesValues[state] = value;
+				states.sort();
+				var s:String = states.join("|");
+				_statesValues[s] = value;
 			}
 			
+			for (var i:int = 0; i < states.length; i++) 
+			{
+				if (_states.indexOf(states[i] == -1) )_states.push(states[i]);
+			}
+			
+		}
+		
+		public function hasState(state:String):Boolean
+		{
+			return _states.indexOf(state) != -1;
+		}
+		
+		public function machesStates(states:Array):Boolean
+		{
+			for (var i:int = 0; i < states.length; i++) 
+			{
+				if (_states.indexOf(states[i]) != -1) return true;
+			}
+			return false;
 		}
 		
 		public function get statesValues():Dictionary 

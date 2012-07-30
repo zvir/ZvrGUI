@@ -77,8 +77,6 @@ package zvr.zvrComps.zvrTool.elements
 			toggler.exlcudeIn = "hided";
 			sounder.exlcudeIn = "hided";
 			
-			
-			
 			addChild(hide);
 			addChild(hideAll);
 			addChild(watcher);

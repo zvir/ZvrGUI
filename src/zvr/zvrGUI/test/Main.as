@@ -49,7 +49,7 @@ package zvr.zvrGUI.test
 	import zvr.zvrGUI.skins.ZvrStyles;
 	import zvr.zvrGUI.vo.charts.Chart;
 	import zvr.zvrKeyboard.ZvrKeyboard;
-	import zvr.ZvrTools.ZvrCompilationDate;
+	import zvr.zvrTools.ZvrCompilationDate;
 	
 	/**
 	 * ...

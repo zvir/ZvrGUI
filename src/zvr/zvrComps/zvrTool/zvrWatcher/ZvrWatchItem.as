@@ -32,6 +32,13 @@ package zvr.zvrComps.zvrTool.zvrWatcher
 		{
 			dispatchEvent(new ZvrWatcherItemEvent(ZvrWatcherItemEvent.CHANGE, this));
 		}
+		
+		public function dispose():void 
+		{
+			sender = null;
+			name = null;
+			_value = null;
+		}
 	}
 
 }

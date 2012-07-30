@@ -18,6 +18,11 @@ package
 		
 	public function tr(... args):void 
 	{
+		CONFIG::release
+		{
+			throw new Error("TR");
+		}
+		
 		Tracy.addTrace(args);
 	}
 	

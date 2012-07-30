@@ -1,7 +1,7 @@
 package zvr.zvrComps.zvrTool.zvrTracer 
 {
 	import flash.events.EventDispatcher;
-	import zvr.ZvrTools.ZvrTime;
+	import zvr.zvrTools.ZvrTime;
 		/**
 	 * @author	Michał Zwieruho "Zvir"
 	 * @www	www.zvir.pl, www.celavra.pl

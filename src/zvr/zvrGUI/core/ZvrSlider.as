@@ -63,9 +63,11 @@ package zvr.zvrGUI.core
 			
 			if (value < _min) value = _min;
 			
+			var d:Number = value - _max;
+			
 			_max = value;
 			
-			_dispatchEvent(ZvrSliderEvent.MAX_CHANGED);
+			_dispatchEvent(ZvrSliderEvent.MAX_CHANGED, d);
 			
 			position = validatePosition(position);
 			
@@ -84,9 +86,11 @@ package zvr.zvrGUI.core
 			
 			if (value > _max) value = _max;
 			
+			var d:Number = value - _min;
+			
 			_min = value;
 			
-			_dispatchEvent(ZvrSliderEvent.MIN_CHANGED);
+			_dispatchEvent(ZvrSliderEvent.MIN_CHANGED, d);
 			
 			position = validatePosition(position);
 		}
@@ -120,9 +124,12 @@ package zvr.zvrGUI.core
 			{
 				if (value < _min) value = _min;
 				if (value > rangeEnd) value = rangeEnd;
+				
+				var d:Number = value - position;
+				
 				_rangeBegin = value;
 				position = value;
-				_dispatchEvent(ZvrSliderEvent.RANGE_CHANGED);
+				_dispatchEvent(ZvrSliderEvent.RANGE_CHANGED, d);
 			}
 			else
 			{
@@ -159,8 +166,12 @@ package zvr.zvrGUI.core
 			{
 				if (value > _max) value = _max;
 				if (value < _rangeBegin ) value = _rangeBegin;
+				
+				var d:Number = value - _rangeEnd;
+				
 				_rangeEnd = value;
-				_dispatchEvent(ZvrSliderEvent.RANGE_CHANGED);
+				
+				_dispatchEvent(ZvrSliderEvent.RANGE_CHANGED, d);
 			}
 			else
 			{
@@ -193,7 +204,7 @@ package zvr.zvrGUI.core
 		{
 			if (_enabled == value) return;
 			_enabled = value;
-			_dispatchEvent(ZvrSliderEvent.STATE_CHANGE);
+			_dispatchEvent(ZvrSliderEvent.STATE_CHANGE, NaN);
 		}
 		
 		public function get dynamicRange():Boolean 
@@ -204,13 +215,13 @@ package zvr.zvrGUI.core
 		public function set dynamicRange(value:Boolean):void 
 		{
 			_dynamicRange = value;
-			_dispatchEvent(ZvrSliderEvent.DYNAMIC_RANGE_CHANGED);
+			_dispatchEvent(ZvrSliderEvent.DYNAMIC_RANGE_CHANGED, NaN);
 		}
 		
-		private function _dispatchEvent(type:String):void
+		private function _dispatchEvent(type:String, delta:Number):void
 		{
 			if (!_dispatch) return;
-			dispatchEvent(new ZvrSliderEvent(type, this));
+			dispatchEvent(new ZvrSliderEvent(type, this, delta));
 		}
 		
 		// UTILS TO MAKE LIFE EASIER :D
@@ -239,18 +250,25 @@ package zvr.zvrGUI.core
 				
 				if (value < min) value = _min;
 				if (value > max - r) value = _max - r;
+				
+				
+				var d:Number = value - _position;
+				
 				_position = value;
 				_rangeBegin = value;
 				_rangeEnd = _rangeBegin + r;
-				_dispatchEvent(ZvrSliderEvent.RANGE_CHANGED);
+				_dispatchEvent(ZvrSliderEvent.RANGE_CHANGED, d);
 			}
 			else
 			{
+				
+				d = value - _position;
+				
 				_position = value;
 				_rangeBegin = _position;
 				_rangeEnd = _position;
 				
-				_dispatchEvent(ZvrSliderEvent.POSITION_CHANGED);
+				_dispatchEvent(ZvrSliderEvent.POSITION_CHANGED, d);
 			}
 			
 		}

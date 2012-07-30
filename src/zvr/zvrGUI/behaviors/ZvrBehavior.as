@@ -78,7 +78,17 @@ package zvr.zvrGUI.behaviors
 		public function set component(value:ZvrComponent):void 
 		{
 			_component = value;
-			if (_stageSensitive) stageSensetive();
+			if (_stageSensitive) 
+			{
+				if (_component.stage)
+				{
+					addedToStage(null);
+				}
+				else
+				{
+					stageSensetive();
+				}
+			}
 		}
 		
 		public function stageSensetive():void

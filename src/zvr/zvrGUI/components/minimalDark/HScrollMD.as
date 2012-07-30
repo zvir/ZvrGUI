@@ -62,6 +62,7 @@ package zvr.zvrGUI.components.minimalDark
 			_areaBar.addChild(_areaScaleLeft);
 			_areaBar.addChild(_areaScaleRight);
 			
+			_areaButton.width = NaN;
 			_areaButton.right = 4;
 			_areaButton.left = 4;
 			
@@ -102,6 +103,7 @@ package zvr.zvrGUI.components.minimalDark
 			height = 3;
 			
 			_backgroundButton.left = 3;
+			_backgroundButton.width = NaN;
 			_backgroundButton.right = 3;
 			_backgroundButton.setStyle(ZvrStyles.BG_ALPHA, 0.3, ZvrStates.OVER);
 			_backgroundButton.setStyle(ZvrStyles.BG_ALPHA, 0.1);

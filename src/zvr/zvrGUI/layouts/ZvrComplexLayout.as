@@ -11,7 +11,7 @@ package zvr.zvrGUI.layouts
 	 * ...
 	 * @author Zvir
 	 */
-	public class ZvrButtonLayout extends ZvrLayout
+	public class ZvrComplexLayout extends ZvrLayout
 	{
 		
 		public static const VERTICAL:String = "vertical";
@@ -22,13 +22,16 @@ package zvr.zvrGUI.layouts
 		private var _horizontalAlign:String = ZvrHorizontalAlignment.LEFT;
 		private var _alignment:String = ZvrAlignment.HORIZONTAL;
 		
-		public function ZvrButtonLayout(cointainer:ZvrContainer, computeContentBounds:Function, registration:Function) 
+		private var _pixelSharp:Boolean = false;
+		
+		public function ZvrComplexLayout(cointainer:ZvrContainer, computeContentBounds:Function, registration:Function) 
 		{
 			super(cointainer, computeContentBounds, registration);
 		}
 		
 		override protected function layout():void 
 		{
+			
 			switch (_alignment) 
 			{
 				case ZvrAlignment.HORIZONTAL:
@@ -41,12 +44,25 @@ package zvr.zvrGUI.layouts
 			}
 			
 			var contentRect:Rectangle = getContentRectangle();
-			var buttonBounds:Rectangle = getContentAreaRectangle(contentRect);
+			var containerBounds:Rectangle = getContentAreaRectangle(contentRect);
 			
-			var c:Number =  buttonBounds.width / 2 - contentRect.width / 2;
-			var m:Number =  buttonBounds.height / 2 - contentRect.height / 2;
+			var c:Number =  containerBounds.width / 2 - contentRect.width / 2;
+			var m:Number =  containerBounds.height / 2 - contentRect.height / 2;
 			
 			// TODO finish rest combination of leyouting, test it, and if it's ok, maybe move it's parts or all to the rest layouts
+			
+			var firstComponentLeft:Number = 0;
+			var firstComponentTop:Number = 0;
+			var lastComponentRight:Number = 0;
+			var lastComponentBottom:Number = 0;
+			
+			if (elementes.length > 0)
+			{
+				firstComponentLeft = isNaN(elementes[0].left) ? 0 : elementes[0].left;
+				firstComponentTop = isNaN(elementes[0].top) ? 0 : elementes[0].top;
+				lastComponentRight = isNaN(elementes[elementes.length - 1].right) ? 0 : elementes[elementes.length - 1].right;
+				lastComponentBottom = isNaN(elementes[elementes.length - 1].bottom) ? 0 : elementes[elementes.length - 1].bottom;
+			}
 			
 			for (var i:int = 0; i < elementes.length; i++) 
 			{
@@ -56,12 +72,20 @@ package zvr.zvrGUI.layouts
 				{
 					if (_horizontalAlign == ZvrHorizontalAlignment.CENTER)
 					{
-						comp.x += int(c);
+						comp.x += getPos(c - firstComponentLeft * 0.5);
+					}
+					else if (_horizontalAlign == ZvrHorizontalAlignment.RIGHT)
+					{
+						comp.x += getPos(containerBounds.width - contentRect.width-lastComponentRight);
+					}
+					else if (_horizontalAlign == ZvrHorizontalAlignment.LEFT)
+					{
+						// deafult
 					}
 					
 					if (_verticalAlign == ZvrVerticalAlignment.MIDDLE)
 					{
-						comp.y += int(buttonBounds.height / 2 - comp.bounds.height / 2);
+						comp.y += getPos(containerBounds.height / 2 - comp.bounds.height / 2);
 					}
 				}
 				
@@ -70,37 +94,42 @@ package zvr.zvrGUI.layouts
 					
 					if (_horizontalAlign == ZvrHorizontalAlignment.CENTER)
 					{
-						comp.x += int(buttonBounds.width / 2 - comp.bounds.width / 2);
+						comp.x += getPos(containerBounds.width / 2 - comp.bounds.width / 2);
 					}
 					
 					if (_horizontalAlign == ZvrHorizontalAlignment.LEFT)
 					{
-						comp.x += int(buttonBounds.width / 2 - comp.bounds.width / 2);
+						comp.x -= getPos(comp.independentBounds.left);
 					}
 					
 					if (_horizontalAlign == ZvrHorizontalAlignment.RIGHT)
 					{
-						comp.x += int(buttonBounds.width / 2 - comp.bounds.width / 2);
+						comp.x += getPos(containerBounds.width - comp.independentBounds.width);
 					}
 					
 					if (_verticalAlign == ZvrVerticalAlignment.MIDDLE)
 					{
-						comp.y += int(m);
+						comp.y += getPos(m);
 					}
 					
 					if (_verticalAlign == ZvrVerticalAlignment.TOP)
 					{
-						comp.y += int(m);
+						comp.y += getPos(m);
 					}
 					
 					if (_verticalAlign == ZvrVerticalAlignment.BOTTOM)
 					{
-						comp.y += int(m);
+						comp.y += getPos(m);
 					}
 					
 				}
 				
 			}
+		}
+		
+		private function getPos(v:Number):Number
+		{
+			return _pixelSharp ? int(v) : v;
 		}
 		
 		private function horizontalAlignment():void
@@ -114,7 +143,7 @@ package zvr.zvrGUI.layouts
 				comp.x = x + w + (isNaN(comp.left) ? 0 : comp.left);
 				comp.y = 0;
 				x = comp.x;
-				w = comp.bounds.width + gap + (isNaN(comp.right) ? 0 : comp.right);
+				w = comp.bounds.width + _gap + (isNaN(comp.right) ? 0 : comp.right);
 			}
 			
 		}
@@ -130,7 +159,7 @@ package zvr.zvrGUI.layouts
 				comp.y = y + h + (isNaN(comp.top) ? 0 : comp.top);
 				comp.x = 0;
 				y = comp.y;
-				h = comp.bounds.height + gap;
+				h = comp.bounds.height + _gap;
 			}
 		}
 		
@@ -175,6 +204,17 @@ package zvr.zvrGUI.layouts
 		public function set gap(value:Number):void 
 		{
 			_gap = value;
+		}
+		
+		public function get pixelSharp():Boolean 
+		{
+			return _pixelSharp;
+		}
+		
+		public function set pixelSharp(value:Boolean):void 
+		{
+			_pixelSharp = value;
+			update();
 		}
 		
 	}

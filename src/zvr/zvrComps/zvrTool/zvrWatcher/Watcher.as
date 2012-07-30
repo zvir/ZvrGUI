@@ -52,7 +52,11 @@ package zvr.zvrComps.zvrTool.zvrWatcher
 			if (!watches[sender]) return;
 			if (watches[sender][name] == undefined) return;
 			
-			if (watcher) watcher.deleteWatch(watches[sender][name]);
+			if (watcher) 
+			{
+				watcher.deleteWatch(watches[sender][name]);
+			}
+			
 			delete watches[sender][name]
 		}
 		

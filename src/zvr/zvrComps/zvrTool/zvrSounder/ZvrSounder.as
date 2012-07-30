@@ -18,9 +18,9 @@ package zvr.zvrComps.zvrTool.zvrSounder
 	import zvr.zvrGUI.components.minimalDark.WindowMD;
 	import zvr.zvrGUI.events.ZvrComponentEvent;
 	import zvr.zvrGUI.events.ZvrSliderEvent;
-	import zvr.ZvrTools.ZvrColor;
-	import zvr.ZvrTools.ZvrMath;
-	import zvr.ZvrTools.ZvrSnd;
+	import zvr.zvrTools.ZvrColor;
+	import zvr.zvrTools.ZvrMath;
+	import zvr.zvrTools.ZvrSnd;
 	
 	/**
 	 * ...
@@ -101,8 +101,9 @@ package zvr.zvrComps.zvrTool.zvrSounder
 		}
 		
 		private function get contHeight():Number
-		{
-			return panel.scroller.contentAreaHeight -13 - _volumeBar.bounds.height;
+		{ 
+			var h:Number = panel.scroller.contentAreaHeight -13 - _volumeBar.bounds.height;
+			return h < 10 ? 10 : h;
 		}
 		
 		private function onResize(e:ZvrComponentEvent):void 

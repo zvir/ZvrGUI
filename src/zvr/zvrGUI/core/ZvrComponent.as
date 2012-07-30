@@ -143,7 +143,7 @@ package zvr.zvrGUI.core
 		
 		private function get xPosition():Number
 		{
-			if (_explicit.x == ZvrExplicitBounds.NONE && _explicit.width == ZvrExplicitBounds.RIGHT && _owner)
+			if (_explicit.x == ZvrExplicitBounds.NONE && _explicit.right == ZvrExplicitBounds.RIGHT && _owner)
 			{
 				return _owner.contentAreaWidth - validateWidth(_rect.width) - _right;
 			}
@@ -169,7 +169,8 @@ package zvr.zvrGUI.core
 		
 		public function get yPosition():Number
 		{
-			if (_explicit.y == ZvrExplicitBounds.NONE && _explicit.height == ZvrExplicitBounds.BOTTOM && _owner)
+			
+			if (_explicit.y == ZvrExplicitBounds.NONE && _explicit.bottom == ZvrExplicitBounds.BOTTOM && _owner)
 			{
 				return _owner.contentAreaHeight - validateHeight(_rect.height) - _bottom;
 			}
@@ -197,16 +198,15 @@ package zvr.zvrGUI.core
 		{
 			var w:Number = 0;
 			
-			if (_explicit.x == ZvrExplicitBounds.NONE && _explicit.width == ZvrExplicitBounds.RIGHT && _owner)
+			if (_explicit.x == ZvrExplicitBounds.NONE && _explicit.right == ZvrExplicitBounds.RIGHT && _owner)
 			{
-				w = validateWidth(_rect.width);
+				w = _rect.width;
 			}
-			else if (_explicit.x == ZvrExplicitBounds.LEFT && _explicit.width == ZvrExplicitBounds.RIGHT && _owner)
+			else if (_explicit.width == ZvrExplicitBounds.NONE && _explicit.x == ZvrExplicitBounds.LEFT && _explicit.right == ZvrExplicitBounds.RIGHT && _owner)
 			{
-				//w = _owner.contentAreaWidth == 0 || _owner.contentAreaWidth < validateWidth(_rect.width) ? validateWidth(_rect.width) + _right + _left : _owner.contentAreaWidth - _right - _left;
 				w = _owner.contentAreaWidth - _right - _left;
 			}
-			else if (_explicit.x == ZvrExplicitBounds.X && _explicit.width == ZvrExplicitBounds.RIGHT && _owner)
+			else if (_explicit.width == ZvrExplicitBounds.NONE && _explicit.x == ZvrExplicitBounds.X && _explicit.right == ZvrExplicitBounds.RIGHT && _owner)
 			{
 				w = _owner.contentAreaWidth - (isNaN(_rect.x) ? 0 : _rect.x) - _right;
 			}
@@ -230,16 +230,15 @@ package zvr.zvrGUI.core
 			
 			var h:Number = 0;
 			
-			if (_explicit.y == ZvrExplicitBounds.NONE && _explicit.height == ZvrExplicitBounds.BOTTOM && _owner)
+			if (_explicit.y == ZvrExplicitBounds.NONE && _explicit.bottom == ZvrExplicitBounds.BOTTOM && _owner)
 			{
 				h = _rect.height;
 			}
-			else if (_explicit.y == ZvrExplicitBounds.TOP && _explicit.height == ZvrExplicitBounds.BOTTOM && _owner)
+			else if (_explicit.height == ZvrExplicitBounds.NONE && _explicit.y == ZvrExplicitBounds.TOP && _explicit.bottom == ZvrExplicitBounds.BOTTOM && _owner)
 			{
-				//h = _owner.contentAreaHeight == 0 || _owner.contentAreaHeight < _rect.height ? _rect.height + _top + _bottom : _owner.contentAreaHeight - _top - _bottom;
 				h = _owner.contentAreaHeight - _top - _bottom;
 			}
-			else if (_explicit.y == ZvrExplicitBounds.Y && _explicit.height == ZvrExplicitBounds.BOTTOM && _owner)
+			else if (_explicit.height == ZvrExplicitBounds.NONE && _explicit.y == ZvrExplicitBounds.Y && _explicit.bottom == ZvrExplicitBounds.BOTTOM && _owner)
 			{
 				h = _owner.contentAreaHeight - (isNaN(_rect.y) ? 0 : _rect.y) - _bottom;
 			}
@@ -282,7 +281,7 @@ package zvr.zvrGUI.core
 			validateBounds();
 		}
 		
-		private function validateBounds(dispatchEvents:Boolean = true, exitMassChange:Boolean = false):void
+		public function validateBounds(dispatchEvents:Boolean = true, exitMassChange:Boolean = false):void
 		{
 			
 			var b:Rectangle = new Rectangle();
@@ -471,6 +470,27 @@ package zvr.zvrGUI.core
 			_skinUpdateSize();
 		}
 		
+		public function resetComponent():void
+		{
+			_explicit.x = ZvrExplicitBounds.NONE;
+			_explicit.y = ZvrExplicitBounds.NONE;
+			_explicit.width = ZvrExplicitBounds.NONE;
+			_explicit.height = ZvrExplicitBounds.NONE;
+			_explicit.bottom = ZvrExplicitBounds.NONE;
+			_explicit.right = ZvrExplicitBounds.NONE;
+			
+			_rect.x = 0;
+			_rect.y = 0;
+			_rect.width = validateWidth(0);
+			_rect.height = validateHeight(0);
+			
+			_bottom = 0;
+			_right = 0;
+			
+			validateBounds();
+			
+		}
+		
 		// PUBLIC GETERS AND SETTERS
 		
 		override public function get x():Number
@@ -480,6 +500,13 @@ package zvr.zvrGUI.core
 		
 		override public function set x(value:Number):void
 		{
+			if (isNaN(value))
+			{
+				_explicit.x = ZvrExplicitBounds.NONE;
+				_rect.x = 0;
+				return;
+			}
+			
 			if (_rect.x == value && _explicit.x == ZvrExplicitBounds.X)
 				return;
 			
@@ -496,6 +523,13 @@ package zvr.zvrGUI.core
 		
 		override public function set y(value:Number):void
 		{
+			if (isNaN(value))
+			{
+				_explicit.y = ZvrExplicitBounds.NONE;
+				_rect.y = 0;
+				return;
+			}
+			
 			if (_rect.y == value && _explicit.y == ZvrExplicitBounds.Y)
 				return;
 			
@@ -512,6 +546,13 @@ package zvr.zvrGUI.core
 		
 		override public function set height(value:Number):void
 		{
+			if (isNaN(value))
+			{
+				_explicit.height = ZvrExplicitBounds.NONE;
+				_rect.height = validateHeight(0);
+				return;
+			}
+			
 			_rect.height = validateHeight(value);
 			_explicit.height = ZvrExplicitBounds.HEIGHT;
 			
@@ -525,6 +566,13 @@ package zvr.zvrGUI.core
 		
 		override public function set width(value:Number):void
 		{
+			if (isNaN(value))
+			{
+				_explicit.width = ZvrExplicitBounds.NONE;
+				_rect.width = validateWidth(0);
+				return;
+			}
+			
 			_rect.width = validateWidth(value);
 			_explicit.width = ZvrExplicitBounds.WIDTH;
 			
@@ -538,6 +586,14 @@ package zvr.zvrGUI.core
 		
 		public function set left(value:Number):void
 		{
+			
+			if (isNaN(value))
+			{
+				_explicit.x = ZvrExplicitBounds.NONE;
+				_left = 0;
+				return;
+			}
+			
 			_explicit.x = ZvrExplicitBounds.LEFT;
 			_left = value;
 			
@@ -549,11 +605,23 @@ package zvr.zvrGUI.core
 			return _right;
 		}
 		
+		/**
+		 * Distance form right edge of component to ovner right edge.
+		 * This parameter hase lowest priority, to make it work x/left or width
+		 * should be sie to NaN, in other case it will be not taken to accaunt
+		 * durring bounds validation
+		 */
+		
 		public function set right(value:Number):void
 		{
-			_explicit.width = ZvrExplicitBounds.RIGHT;
-			if (_explicit.x == ZvrExplicitBounds.X)
-				_explicit.x = ZvrExplicitBounds.NONE;
+			if (isNaN(value))
+			{
+				_explicit.right = ZvrExplicitBounds.NONE;
+				_right = 0;
+				return;
+			}
+			
+			_explicit.right = ZvrExplicitBounds.RIGHT;
 			_right = value;
 			
 			validateBounds();
@@ -579,9 +647,15 @@ package zvr.zvrGUI.core
 		
 		public function set bottom(value:Number):void
 		{
-			_explicit.height = ZvrExplicitBounds.BOTTOM;
-			if (_explicit.y == ZvrExplicitBounds.Y)
-				_explicit.y = ZvrExplicitBounds.NONE;
+			
+			if (isNaN(value))
+			{
+				_explicit.bottom = ZvrExplicitBounds.NONE;
+				_bottom = 0;
+				return;
+			}
+			
+			_explicit.bottom = ZvrExplicitBounds.BOTTOM;
 			_bottom = value;
 			
 			validateBounds();
@@ -595,7 +669,6 @@ package zvr.zvrGUI.core
 		public function set verticalCenter(value:Number):void
 		{
 			_explicit.y = ZvrExplicitBounds.VERTICAL_CENTER;
-			_explicit.height = ZvrExplicitBounds.HEIGHT;
 			_verticalCenter = value;
 			validateBounds();
 		}
@@ -608,7 +681,6 @@ package zvr.zvrGUI.core
 		public function set horizontalCenter(value:Number):void
 		{
 			_explicit.x = ZvrExplicitBounds.HORIZONTAL_CENTER;
-			_explicit.width = ZvrExplicitBounds.WIDTH;
 			_horizontalCenter = value;
 			validateBounds();
 		}
@@ -720,34 +792,23 @@ package zvr.zvrGUI.core
 			if (!_presents.present)
 				return b;
 			
-			if ((_explicit.x == ZvrExplicitBounds.LEFT && _explicit.width == ZvrExplicitBounds.RIGHT) || (_explicit.x == ZvrExplicitBounds.X && _explicit.width == ZvrExplicitBounds.RIGHT) || (_explicit.width == ZvrExplicitBounds.PERCTENT_WIDTH))
-				b.width = minWidth;
-			else
-				b.width = validateWidth(_rect.width);
-			
 			b.width = validateWidth(_rect.width);
 			b.width += (isNaN(_right) ? 0 : _right) + (isNaN(_left) ? 0 : _left);
-			
-			// TODO why the fuck this is done in that way done ??
-			
-			if ((_explicit.y == ZvrExplicitBounds.TOP && _explicit.height == ZvrExplicitBounds.BOTTOM) || (_explicit.y == ZvrExplicitBounds.Y && _explicit.height == ZvrExplicitBounds.BOTTOM) || (_explicit.height == ZvrExplicitBounds.PERCTENT_HEIGHT))
-				b.height = validateHeight(_rect.height);
-			else
-				b.height = validateHeight(_rect.height);
-			
+
+			b.height = validateHeight(_rect.height);
 			b.height += (isNaN(_bottom) ? 0 : _bottom) + (isNaN(_top) ? 0 : _top);
 			
-			if (_explicit.x == ZvrExplicitBounds.NONE && _explicit.width == ZvrExplicitBounds.RIGHT)
+			if (_explicit.x == ZvrExplicitBounds.NONE && _explicit.right == ZvrExplicitBounds.RIGHT)
 				b.x = (isNaN(_left) ? 0 : _left);
 			else if (_explicit.x == ZvrExplicitBounds.HORIZONTAL_CENTER)
 				b.x = 0;
 			else
 				b.x = _bounds.x - (isNaN(_left) ? 0 : _left);
 			
-			if (_explicit.y == ZvrExplicitBounds.NONE && _explicit.height == ZvrExplicitBounds.BOTTOM)
+			if (_explicit.y == ZvrExplicitBounds.NONE && _explicit.bottom == ZvrExplicitBounds.BOTTOM)
 				b.y = (isNaN(_top) ? 0 : _top);
 			else if (_explicit.y == ZvrExplicitBounds.VERTICAL_CENTER)
-				b.x = 0;
+				b.y = 0;
 			else
 				b.y = _bounds.y - (isNaN(_top) ? 0 : _top);
 			
@@ -919,18 +980,22 @@ package zvr.zvrGUI.core
 			super.visible = value;
 		}
 		
-		public function setLayoutPosition(x:Number, y:Number):void
+		public function set layoutPositionX(x:Number):void
 		{
 			super.x = x;
+		}
+		
+		public function set layoutPositionY(y:Number):void
+		{
 			super.y = y;
 		}
 		
-		public function getLayoutPositionX():Number
+		public function get layoutPositionX():Number
 		{
 			return super.x;
 		}
 		
-		public function getLayoutPositionY():Number
+		public function get layoutPositionY():Number
 		{
 			return super.y;
 		}
@@ -1066,6 +1131,12 @@ package zvr.zvrGUI.core
 			validateBounds();
 			
 		}
+		
+		public function getPosition():Point
+		{
+			return new Point(super.x, super.y);
+		}
+		
 	}
 }
 

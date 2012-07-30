@@ -48,7 +48,6 @@ package zvr.zvrGUI.skins.base
 			
 			_getComponentHeight = getComponentHeight;
 			_getComponentWidth = getComponentWidth;
-			
 		}
 		
 		protected function updateComponentSize(width:Number, height:Number):void
@@ -78,11 +77,23 @@ package zvr.zvrGUI.skins.base
 		
 		protected function create():void
 		{
+			
+			//_body = new Sprite();
+			
 			// to be overrided;
 		}
 		
 		protected function updateSize():void
 		{
+			/*var sp:Sprite = _body as Sprite;
+			if (sp)
+			{
+			sp.graphics.clear();
+			sp.graphics.beginFill(0x137D1C, 0.7);
+			sp.graphics.lineStyle(1, 0x87ED8E, 0.8);
+			sp.graphics.drawRect(0, 0, componentWidth, componentHeight);
+			}*/
+			
 			// to be overrided;
 		}
 		
@@ -151,6 +162,11 @@ package zvr.zvrGUI.skins.base
 				}
 			}
 			return _styles.setStyle(styleName, value, state);
+		}
+		
+		public function forceUpdateSize():void
+		{
+			updateSize();
 		}
 		
 		public function getStyle(styleName:String):*

@@ -49,10 +49,10 @@ package zvr.zvrGUI.layouts.data
 		{
 			super.updateItem(virtual, bounds);
 			
-			
 			if (virtual.bounds)
 			{
-				virtual.itemRenderer.setLayoutPosition(virtual.itemRenderer.getLayoutPositionX(), virtual.bounds.y - bounds.y);
+				virtual.itemRenderer.layoutPositionX = virtual.itemRenderer.layoutPositionX;
+				virtual.itemRenderer.layoutPositionY = virtual.bounds.y - bounds.y;
 			}
 		}
 		

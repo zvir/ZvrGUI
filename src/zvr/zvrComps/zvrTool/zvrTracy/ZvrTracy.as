@@ -4,14 +4,19 @@ package zvr.zvrComps.zvrTool.zvrTracy
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.UncaughtErrorEvent;
+	import flash.system.System;
 	import flash.text.TextFormat;
+	import zvr.zvrGUI.components.minimalDark.ButtonMD;
 	import zvr.zvrGUI.components.minimalDark.TextAreaMD;
+	import zvr.zvrGUI.components.minimalDark.ToggleButtonMD;
 	import zvr.zvrGUI.components.minimalDark.WindowMD;
+	import zvr.zvrGUI.core.ZvrGroup;
 	import zvr.zvrGUI.core.ZvrScroll;
+	import zvr.zvrGUI.layouts.ZvrHorizontalLayout;
 	import zvr.zvrGUI.skins.zvrMinimalDark.ColorsMD;
 	import zvr.zvrGUI.skins.zvrMinimalDarkFonts.MDFonts;
 	import zvr.zvrGUI.skins.ZvrStyles;
-	import zvr.ZvrTools.ZvrTime;
+	import zvr.zvrTools.ZvrTime;
 	
 		/**
 	 * @author	Michał Zwieruho "Zvir"
@@ -26,6 +31,12 @@ package zvr.zvrComps.zvrTool.zvrTracy
 		private var _text:String;
 		private var _texts:Array = new Array();
 		private var _statusText:String;
+		
+		private var _options:ZvrGroup;
+		
+		private var _clearButton:ButtonMD = new ButtonMD();
+		private var _copyToClipBoard:ButtonMD = new ButtonMD();
+		private var _enableButton:ToggleButtonMD = new ToggleButtonMD();
 		
 		public var _patterns:Array = [
 			new ZvrTracyPattern(0xff0000, /(?<=\s|^)(\S*error\S*)(?=\s|$)/gi), // error
@@ -45,10 +56,37 @@ package zvr.zvrComps.zvrTool.zvrTracy
 		{
 			title.text = "ZvrTracy v1.0";
 			
+			_options = new ZvrGroup();
+			_options.percentWidth = 100;
+			_options.setLayout(ZvrHorizontalLayout);
+			ZvrHorizontalLayout(_options.layout).gap = 1;
+			_options.height = 17;
+			
+			_clearButton.contentPadding.padding = 0;
+			_copyToClipBoard.contentPadding.padding = 0;
+			_enableButton.contentPadding.padding = 0;
+			
+			_clearButton.label.text = "clear";
+			_copyToClipBoard.label.text = "copy";
+			_enableButton.disabledLabelText = "enable";
+			_enableButton.enabledLabelText = "disable";
+			_enableButton.selected = true;
+			
+			
+			
+			_clearButton.addEventListener(MouseEvent.CLICK, clearClick);
+			_copyToClipBoard.addEventListener(MouseEvent.CLICK, copyToClipBoardClick);
+			
+			_options.addChild(_clearButton);
+			_options.addChild(_copyToClipBoard);
+			_options.addChild(_enableButton);
+			addChild(_options);
+			
 			addChild(_textArea);
 			_textArea.scroll = panel.scroller;
+			_textArea.top = 17;
+			_textArea.bottom = 0;
 			_textArea.percentWidth = 100;
-			_textArea.percentHeight = 100;
 			_textArea.wrap = false;
 			
 			_textArea.setStyle(ZvrStyles.LABEL_FONT, MDFonts.Mono0765);
@@ -62,7 +100,6 @@ package zvr.zvrComps.zvrTool.zvrTracy
 			
 		}
 		
-		
 		public function forceUpdate():void
 		{
 			exitFrame(null);
@@ -71,6 +108,12 @@ package zvr.zvrComps.zvrTool.zvrTracy
 		private function exitFrame(e:Event):void 
 		{
 			if (!visible) return;
+			
+			if (!_enableButton.selected)
+			{
+				_texts.length = 0;
+				return;
+			}
 
 			if (_texts.length == 0) return;
 			
@@ -125,6 +168,19 @@ package zvr.zvrComps.zvrTool.zvrTracy
 			_texts.length = 0;
 			_textArea.text = "Cleard\n";
 		}
+		
+		private function clearClick(e:MouseEvent):void 
+		{
+			clear();
+		}
+		
+		private function copyToClipBoardClick(e:MouseEvent):void 
+		{
+			System.setClipboard(_textArea.text);
+			tr("Tracer content copied to clipboard");
+		}
+		
+		
 	}
 
 }

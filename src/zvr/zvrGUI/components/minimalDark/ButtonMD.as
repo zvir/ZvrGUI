@@ -12,7 +12,7 @@ package zvr.zvrGUI.components.minimalDark
 	import zvr.zvrGUI.events.ZvrLabelEvent;
 	import zvr.zvrGUI.events.ZvrStyleChangeEvent;
 	import zvr.zvrGUI.layouts.ZvrAlignment;
-	import zvr.zvrGUI.layouts.ZvrButtonLayout;
+	import zvr.zvrGUI.layouts.ZvrComplexLayout;
 	import zvr.zvrGUI.layouts.ZvrHorizontalAlignment;
 	import zvr.zvrGUI.layouts.ZvrHorizontalLayout;
 	import zvr.zvrGUI.layouts.ZvrVerticalAlignment;
@@ -36,7 +36,6 @@ package zvr.zvrGUI.components.minimalDark
 		
 		public function ButtonMD(skin:Class = null) 
 		{
-
 			super(skin ? skin : ButtonMDSkin);
 			
 			autoSize = ZvrAutoSize.CONTENT;
@@ -48,8 +47,9 @@ package zvr.zvrGUI.components.minimalDark
 			
 			contentPadding.padding = 4;
 			
-			super.setLayout(ZvrButtonLayout);
+			super.setLayout(ZvrComplexLayout);
 			buttonLayout.gap = 2;
+			buttonLayout.pixelSharp = true;
 			buttonLayout.alignment = ZvrAlignment.HORIZONTAL;
 			buttonLayout.horizontalAlign = ZvrHorizontalAlignment.CENTER;
 			buttonLayout.verticalAlign = ZvrVerticalAlignment.MIDDLE;
@@ -71,7 +71,16 @@ package zvr.zvrGUI.components.minimalDark
 			_label.addEventListener(ZvrLabelEvent.TEXT_CHANGE, labelChange);
 			mouseChildren = false;
 			
+			_states.add(ZvrStates.NORMAL);
 			
+		}
+		
+		override protected function defineStates():void 
+		{
+			_states.define(ZvrStates.NORMAL);
+			_states.define(ZvrStates.OVER);
+			_states.define(ZvrStates.DOWN);
+			_states.define(ZvrStates.FOCUSED);
 		}
 		
 		private function labelChange(e:ZvrLabelEvent):void 
@@ -86,9 +95,9 @@ package zvr.zvrGUI.components.minimalDark
 			if (_icon.includeInLayout != bitmap) _icon.includeInLayout = bitmap;
 		}
 		
-		public function get buttonLayout():ZvrButtonLayout
+		public function get buttonLayout():ZvrComplexLayout
 		{
-			return layout as ZvrButtonLayout;
+			return layout as ZvrComplexLayout;
 		}
 		
 		override public function setLayout(layout:Class):void 

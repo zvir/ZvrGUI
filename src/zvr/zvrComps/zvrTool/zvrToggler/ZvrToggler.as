@@ -27,6 +27,7 @@ package zvr.zvrComps.zvrTool.zvrToggler
 			
 			var t:ZvrTogglerItem = new ZvrTogglerItem();
 			t.name = name;
+			t.toggler = this;
 			_togglers[name] = t;
 			
 			var b:ToggleButtonMD = new ToggleButtonMD();
@@ -36,6 +37,11 @@ package zvr.zvrComps.zvrTool.zvrToggler
 			return t;
 		}
 		
+		public function remove(name:String):void 
+		{
+			_togglers[name] = null;
+			delete _togglers[name];
+		}
 	}
 
 }

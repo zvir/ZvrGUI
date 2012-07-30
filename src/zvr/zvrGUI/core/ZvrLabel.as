@@ -34,6 +34,15 @@ package zvr.zvrGUI.core
 			exitMassChangeMode();
 		}
 		
+		public function set htmlText(value:String):void 
+		{
+			if (_text == value) return;
+			enterMassChangeMode();
+			_text = value;
+			_dispatchEvent(ZvrLabelEvent.TEXT_CHANGE, ZvrLabelChangeKind.HTML, value);
+			exitMassChangeMode();
+		}
+		
 		public function appendText(value:String):void
 		{
 			_text = _text + value;

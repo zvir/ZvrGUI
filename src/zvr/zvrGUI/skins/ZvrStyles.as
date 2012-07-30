@@ -18,6 +18,8 @@ package zvr.zvrGUI.skins
 		public static const BG_ALPHA		:String = "bgAlpha";
 		
 		public static const FR_COLOR		:String = "frColor";
+		public static const FR_ALPHA		:String = "frAlpha";
+		public static const FR_WEIGHT		:String = "frWeight";
 		
 		public static const FR_TOP_COLOR	:String = "frTopColor";
 		public static const FR_BOTTOM_COLOR	:String = "frBottomColor";
@@ -30,12 +32,13 @@ package zvr.zvrGUI.skins
 		public static const FR_LEFT_WEIGHT	:String = "frLeftWeight";
 		
 		
-		public static const FR_ALPHA		:String = "frAlpha";
+		
 		public static const FT_COLOR		:String = "ftColor";
 		public static const ICON			:String = "icon";
 		public static const BITMAP			:String = "bitmap";
 		public static const COLOR			:String = "color";
 		public static const COLOR_ALPHA		:String = "color_alpha";
+		public static const AUTO_SIZE		:String = "autoSize";
 		
 		
 		

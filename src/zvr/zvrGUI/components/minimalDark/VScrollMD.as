@@ -61,6 +61,7 @@ package zvr.zvrGUI.components.minimalDark
 			_areaBar.addChild(_areaScaleBottom);
 			
 			_areaButton.top = 4;
+			_areaButton.height = NaN;
 			_areaButton.bottom = 4;
 			
 			_areaDragBehavior = new ZvrDragable();
@@ -98,6 +99,7 @@ package zvr.zvrGUI.components.minimalDark
 			_backgroundButton.addEventListener(MouseEvent.MOUSE_DOWN, backgroundClick);
 			
 			_backgroundButton.top = 3;
+			_backgroundButton.height = NaN;
 			_backgroundButton.bottom = 3;
 			_backgroundButton.setStyle(ZvrStyles.BG_ALPHA, 0.3, ZvrStates.OVER);
 			_backgroundButton.setStyle(ZvrStyles.BG_ALPHA, 0.1);

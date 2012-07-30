@@ -81,8 +81,8 @@ package zvr.zvrGUI.core
 		{
 			x = 0;
 			y = 0;
-			width = stage.stageWidth;
-			height = stage.stageHeight;
+			width = int(stage.stageWidth * 0.5) * 2;
+			height = int(stage.stageHeight * 0.5) * 2;
 		}
 		
 		override public function addChild(child:DisplayObject):DisplayObject 

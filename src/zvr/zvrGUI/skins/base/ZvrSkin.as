@@ -39,6 +39,7 @@ package zvr.zvrGUI.skins.base
 			registerStyles();
 			setStyles();
 			_styles.init();
+			
 		}
 		
 		private function registerComponent(updateComponentSize:Function, updateComponentPosition:Function, getComponentWidth:Function, getComponentHeight:Function):void

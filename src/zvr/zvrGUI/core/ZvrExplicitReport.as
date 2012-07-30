@@ -10,12 +10,15 @@ package zvr.zvrGUI.core
 	{
 		public var x:String = ZvrExplicitBounds.NONE;
 		public var y:String = ZvrExplicitBounds.NONE;
-		public var width:String = ZvrExplicitBounds.WIDTH;
-		public var height:String = ZvrExplicitBounds.HEIGHT;
+		public var width:String = ZvrExplicitBounds.NONE;
+		public var height:String = ZvrExplicitBounds.NONE;
+		public var right:String = ZvrExplicitBounds.NONE;
+		public var bottom:String = ZvrExplicitBounds.NONE;
+		
 		
 		public function toString():String
 		{
-			return "x:" + x + " y:" + y + " width:" + width + " height:" + height;
+			return "x:" + x + " y:" + y + " width:" + width + " height:" + height + " right:" + right + " bottom:" + bottom;
 		}
 		
 	}

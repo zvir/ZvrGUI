@@ -139,8 +139,6 @@ package zvr.zvrGUI.behaviors
 				component.removeEventListener(MouseEvent.ROLL_OVER, mouseOver);
 			}
 			
-			
-			
 			component.skin.body.removeEventListener(FocusEvent.FOCUS_IN, focusIn);
 			component.buttonMode = false;
 			removeKeyboardEvents();

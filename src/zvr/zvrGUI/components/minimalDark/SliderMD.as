@@ -64,6 +64,7 @@ package zvr.zvrGUI.components.minimalDark
 			_areaBar.addChild(_areaScaleLeft);
 			_areaBar.addChild(_areaScaleRight);
 			
+			_areaButton.width = NaN;
 			_areaButton.right = 4;
 			_areaButton.left = 4;
 			
@@ -113,12 +114,14 @@ package zvr.zvrGUI.components.minimalDark
 			
 			if (dynamicRange)
 			{
+				_areaButton.width = NaN;
 				_areaButton.right = 4;
 				_areaButton.left = 4;
 				_areaBar.minWidth = 18;
 			}
 			else
 			{
+				_areaButton.width = NaN;
 				_areaButton.right = 0;
 				_areaButton.left = 0;
 				_areaBar.minWidth = 10;

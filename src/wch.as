@@ -19,6 +19,12 @@ package
 		
 	public function wch(sender:Object, name:String, value:* = null, del:Boolean = false):ZvrWatchItem
 	{
+		
+		CONFIG::release
+		{
+			throw new Error("WCH");
+		}
+		
 		if (del)
 		{
 			Watcher.deleteWatch(sender, name);

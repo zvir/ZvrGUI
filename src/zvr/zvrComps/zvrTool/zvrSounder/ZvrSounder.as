@@ -101,8 +101,9 @@ package zvr.zvrComps.zvrTool.zvrSounder
 		}
 		
 		private function get contHeight():Number
-		{
-			return panel.scroller.contentAreaHeight -13 - _volumeBar.bounds.height;
+		{ 
+			var h:Number = panel.scroller.contentAreaHeight -13 - _volumeBar.bounds.height;
+			return h < 10 ? 10 : h;
 		}
 		
 		private function onResize(e:ZvrComponentEvent):void 

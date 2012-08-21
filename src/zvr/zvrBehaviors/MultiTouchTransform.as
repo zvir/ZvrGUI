@@ -1,8 +1,6 @@
-package zvr.zvrBehaviors
+package zvr.zvrBehaviors 
 {
 	import flash.display.DisplayObject;
-	import flash.display.InteractiveObject;
-	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
@@ -10,446 +8,145 @@ package zvr.zvrBehaviors
 	import flash.geom.Matrix;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
-	
-	import zvr.zvrTools.ZvrMath;
-	import zvr.zvrTools.ZvrPnt;
-	import zvr.zvrTools.ZvrPntMath;
-	import zvr.zvrTools.ZvrTransform; 
-
+	import zvr.zvrTools.ZvrTransform;
 	/**
 	 * ...
 	 * @author Zvir
 	 */
-	
-	[Event(name = "event", 		type = "zvr.zvrBehaviors.MultiTouchTransformEvent")]
-	 
-	public class MultiTouchTransform extends EventDispatcher
+
+	public class MultiTouchTransform extends MultiTouchTransformProcessor
 	{
 		
-	/*	private var _scaleEnabled:Boolean = true;
-		private var _dragEnabled:Boolean = true;
-		private var _rotateEnabled:Boolean = true;*/
-		
-		private const MINIMUM_POINTS_DISTANCE:Number = 110;
-		
 		private var _handler:EventDispatcher;
-		
-		private var _transforming:Boolean = false;
-		
-		private var _point1:ZvrPnt = new ZvrPnt();
-		private var _point2:ZvrPnt = new ZvrPnt();
-		
-		private var _centerPoint:ZvrPnt = new ZvrPnt();
-		private var _centerPointOffset:ZvrPnt = new ZvrPnt();
-		private var _lastCenterPoint:ZvrPnt = new ZvrPnt();
-		
-		private var _rotation:Number = 0;
-		private var _distance:Number = 0;
-		
-		private var _touchPoint1:ZvrPnt;
-		private var _touchPoint2:ZvrPnt;
-		
-		private var _touchPoint1ID:int;
-		private var _touchPoint2ID:int;
-		
-		private var _smoothPoint1:ZvrPnt = new ZvrPnt();
-		private var _smoothPoint2:ZvrPnt = new ZvrPnt();
-		
-		private var _xPositinDelta:Number = 0;
-		private var _yPositinDelta:Number = 0;
-		private var _scaleDelta:Number = 1;
-		private var _rotationDelta:Number = 0;
-		
-		private var _easing:Number = 0.1;
-		
-		private var _inputSmoothig:Number = 0.5;
-		
-		public var onePointDrag:Boolean;
-		
-		CONFIG::debug
-		private var _ids:Array = [];
 		private var _stage:EventDispatcher;
 		
 		public function MultiTouchTransform(handler:EventDispatcher, stage:EventDispatcher = null) 
 		{
-			
-			
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
-			CONFIG::debug
-			{
-				if (!Multitouch.supportsTouchEvents) 
-				{
-					tr("Error, Touch Events are not supported");
-				}
-			}
-			
 			_handler = handler;
-			_handler.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin);
-			_handler.addEventListener(TouchEvent.TOUCH_END, touchEnd);
-			
 			_stage = stage;
 			_stage ||= _handler;
 			
-			
-			
-			CONFIG::debug
-			{
-				_stage.addEventListener(Event.ENTER_FRAME, testEnterFrame);
+			if (Multitouch.supportsTouchEvents)
+			{				
+				_handler.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin);
+				_handler.addEventListener(TouchEvent.TOUCH_END, touchEnd);
 			}
+			else
+			{
+				_handler.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+				_handler.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+			}
+			
 		}
 		
-		CONFIG::debug
-		private function testEnterFrame(e:Event):void
+		override public function dispose():void
 		{
-			wch(this, "_touchPoint1", _touchPoint1 || "null"); 
-			wch(this, "_touchPoint2", _touchPoint2 || "null"); 
-			wch(this, "_touchPoint1ID", _touchPoint1 ? _touchPoint1ID : ""); 
-			wch(this, "_touchPoint2ID", _touchPoint2 ? _touchPoint2ID : ""); 
-			wch(this, "_centerPointOffset", _centerPointOffset || ""); 
-			wch(this, "_distance", _distance); 
-			wch(this, "_rotation", _rotation); 
-			wch(this, "_lastCenterPoint", _lastCenterPoint); 
-			wch(this, "_scaleDelta", _scaleDelta); 
-			wch(this, "_rotationDelta", _rotationDelta); 
+			super.dispose();
 			
-			var s:String = _ids.join(", ");
+			if (Multitouch.supportsTouchEvents)
+			{				
+				_handler.removeEventListener(TouchEvent.TOUCH_BEGIN, touchBegin);
+				_handler.removeEventListener(TouchEvent.TOUCH_END, touchEnd);
+				_handler.removeEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+			}
+			else
+			{
+				_handler.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+				_handler.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
+				_handler.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+			}
 			
-			wch(this, "_ids", s); 
+			_handler = null;
+			_stage = null;
 			
+		}
+		
+		override protected function end():void 
+		{
+			super.end();
+			
+			if (Multitouch.supportsTouchEvents)
+			{				
+				_handler.removeEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+			}
+			else
+			{
+				_handler.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+			}
+			
+			_stage.removeEventListener(Event.ENTER_FRAME, enterFrame);
+		}
+		
+		override protected function begin():void 
+		{
+			
+			super.begin();
+			
+			if (Multitouch.supportsTouchEvents)
+			{				
+				_handler.addEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+			}
+			else
+			{
+				_handler.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+			}
+			
+			_stage.addEventListener(Event.ENTER_FRAME, enterFrame);
+			
+		}
+		
+		public function stop():void
+		{
+			removeAllPoint();
+			end();
+		}
+		
+		private function enterFrame(e:Event):void 
+		{
+			update();
 		}
 		
 		private function touchBegin(e:TouchEvent):void 
 		{
-			CONFIG::debug
-			{
-				tr("touchBegin touchPointID:", e.touchPointID);
-				if (_ids.indexOf(e.touchPointID) == -1)
-				{
-					_ids.push(e.touchPointID);
-				}
-			}
-			
-			if (!_touchPoint1)
-			{
-				_touchPoint1 = _point1;
-				_touchPoint1.x = e.stageX;
-				_touchPoint1.y = e.stageY;
-				_touchPoint1ID = e.touchPointID;	
-				_centerPoint.copyFrom(_touchPoint1);
-				_lastCenterPoint.copyFrom(_centerPoint);
-				_smoothPoint1.copyFrom(_touchPoint1);
-				_distance = 0;
-				_rotation = 0;
-				
-				_stage.removeEventListener(Event.ENTER_FRAME, easeEnterframe);
-				startTransform();
-				_handler.addEventListener(TouchEvent.TOUCH_MOVE, updateTouchPoints);
-			}
-			else if (!_touchPoint2)
-			{
-				_touchPoint2 = _point2;
-				_touchPoint2.x = e.stageX;
-				_touchPoint2.y = e.stageY;
-				_touchPoint2ID = e.touchPointID;
-				
-				ZvrPntMath.setBetween(_centerPoint, _smoothPoint1, _touchPoint2, 0.5);				
-				_lastCenterPoint.copyFrom(_centerPoint);
-				
-				_smoothPoint2.copyFrom(_touchPoint2);
-				
-				_distance = ZvrPntMath.distance(_smoothPoint1, _smoothPoint2);
-				_rotation = ZvrPntMath.angle(_smoothPoint1, _smoothPoint2);
-			}
-			
-			
-			if (onePointDrag && _touchPoint1)
-			{
-				CONFIG::debug
-				{
-					tr("starting one point transform");
-				}
-				_handler.addEventListener(TouchEvent.TOUCH_MOVE, updateTouchPoints);
-				
-			}
-			else
-			{
-				if (_touchPoint2 && _touchPoint1)
-				{
-					tr("starting teo point transform");
-					_handler.addEventListener(TouchEvent.TOUCH_MOVE, updateTouchPoints);
-					
-				}
-			}
+			addPoint(e.touchPointID, e.stageX, e.stageY);
 		}
 		
 		private function touchEnd(e:TouchEvent):void 
 		{
-			CONFIG::debug
-			{
-				tr("touchEnd, touchPointID:", e.touchPointID);
-				var i:int = _ids.indexOf(e.touchPointID)
-				if (i != -1)
-				{
-					_ids.splice(i, 1);
-				}
-			}
-			
-			if (e.touchPointID == _touchPoint1ID)
-			{
-				if (_touchPoint2 && onePointDrag)
-				{
-					_touchPoint1ID = _touchPoint2ID;
-					_touchPoint1.copyFrom(_touchPoint2);
-					_smoothPoint1.copyFrom(_smoothPoint2);
-					_centerPoint.copyFrom(_smoothPoint1);
-					_lastCenterPoint.copyFrom(_smoothPoint1);
-					
-					_touchPoint2 = null;
-				}
-				else
-				{
-					_touchPoint1 = null;
-				}
-			}
-			else if	(e.touchPointID == _touchPoint2ID)
-			{	
-				_touchPoint2 = null;	
-				
-				CONFIG::debug
-				{
-					tr("touchEnd, CASE 2");
-				}
-				_centerPoint.copyFrom(_smoothPoint1);
-				_lastCenterPoint.copyFrom(_smoothPoint1);
-			}
-			
-			if (!_touchPoint1)
-			{				
-				endTransform();
-				_handler.removeEventListener(TouchEvent.TOUCH_MOVE, updateTouchPoints);
-			}
-			
+			removePoint(e.touchPointID);
 		}
 		
-		private function endTransform():void
+		private function touchMove(e:TouchEvent):void 
 		{
-			if (!_transforming) return;
-			
-			CONFIG::debug
-			{
-				tr("endTransform");
-			}
-			
-			_stage.removeEventListener(Event.ENTER_FRAME, enterFrameSmoothing);
-			
-			if (_easing < 1)
-			{
-				CONFIG::debug
-				{
-					tr("start easeEnterframe");
-				}
-				
-				_stage.addEventListener(Event.ENTER_FRAME, easeEnterframe);
-			}
-			
-			_transforming = false;
-			
+			updatePoint(e.touchPointID, e.stageX, e.stageY);
 		}
 		
-		private function startTransform():void
+		private function mouseDown(e:MouseEvent):void 
 		{
-			
-			_transforming = true;
-			
-			CONFIG::debug
-			{
-				tr("start touch transform", _distance.toFixed(2), _rotation.toFixed(2));
-			}
-			
-			_stage.addEventListener(Event.ENTER_FRAME, enterFrameSmoothing);
-			_stage.removeEventListener(Event.ENTER_FRAME, easeEnterframe);
+			addPoint(0, e.stageX, e.stageY);
 		}
 		
-		private function updateTouchPoints(e:TouchEvent):void 
+		private function mouseUp(e:MouseEvent):void 
 		{
-			if (e.touchPointID == _touchPoint1ID)
-			{
-				_touchPoint1.x = e.stageX;
-				_touchPoint1.y = e.stageY;
-			}
-			
-			if (_touchPoint2 && e.touchPointID == _touchPoint2ID)
-			{
-				_touchPoint2.x = e.stageX;
-				_touchPoint2.y = e.stageY;
-			}
-			
-			if (_touchPoint1 && _touchPoint2)
-			{
-				var d:Boolean =  ZvrPntMath.distance(_touchPoint1, _touchPoint2) > MINIMUM_POINTS_DISTANCE;
-			}
-			else
-			{
-				d = true;
-			}
-			
-			if (_touchPoint1 && _transforming && !d)
-			{
-				CONFIG::debug
-				{
-					tr("endTransform utp");
-				}
-				
-				endTransform();
-			}
-			
-			if (_touchPoint1 && !_transforming && d)
-			{
-				CONFIG::debug
-				{
-					tr("startTransform utp");
-				}
-				
-				startTransform();
-			}
-			
+			removePoint(0);
 		}
 		
-		private function transform(p1:ZvrPnt, p2:ZvrPnt = null):void 
+		private function mouseMove(e:MouseEvent):void 
 		{
-			if (!p2)
-			{
-				transformOnePoint(p1);
-				return;
-			}
-			
-			ZvrPntMath.setBetween(_centerPoint, p1, p2, 0.5);
-			
-			var rotation:Number = ZvrPntMath.angle(p1, p2);
-			var distance:Number = ZvrPntMath.distance(p1, p2);
-			
-			_rotationDelta = rotation - _rotation;
-			
-			_rotationDelta = _rotationDelta > 180 ? _rotationDelta - 360 : _rotationDelta;
-			_rotationDelta = _rotationDelta < -180 ? _rotationDelta + 360 : _rotationDelta;
-			
-			_xPositinDelta = _centerPoint.x - _lastCenterPoint.x;
-			_yPositinDelta = _centerPoint.y - _lastCenterPoint.y;
-			
-			_scaleDelta = distance / _distance;
-			
-			CONFIG::debug
-			{
-				tr("touch transform", distance.toFixed(2), rotation.toFixed(2),  _rotationDelta.toFixed(1), _scaleDelta.toFixed(1));
-			}
-			
-			_rotation = rotation;
-			_distance = distance;
-			
-			_lastCenterPoint.copyFrom(_centerPoint);
-			
-			dispatchEvent(new MultiTouchTransformEvent(MultiTouchTransformEvent.EVENT, this, _rotationDelta, _centerPoint.x, _centerPoint.y, _xPositinDelta, _yPositinDelta, _scaleDelta));
+			updatePoint(0, e.stageX, e.stageY);
 		}
 		
-		private function transformOnePoint(p:ZvrPnt):void 
-		{
-			
-			_centerPoint.copyFrom(p);
-			_xPositinDelta = _centerPoint.x - _lastCenterPoint.x;
-			_yPositinDelta = _centerPoint.y - _lastCenterPoint.y;
-
-			CONFIG::debug
-			{
-				tr("touch transform",  _rotationDelta.toFixed(1), _scaleDelta.toFixed(1));
-			}
-			
-			_distance = 0;
-			
-			_rotationDelta = ZvrMath.smoothTrans(_rotationDelta, 0, _easing);
-			_scaleDelta = ZvrMath.smoothTrans(_scaleDelta, 1, _easing);
-			
-			_lastCenterPoint.copyFrom(_centerPoint);
-			
-			dispatchEvent(new MultiTouchTransformEvent(MultiTouchTransformEvent.EVENT, this, _rotationDelta, _centerPoint.x, _centerPoint.y, _xPositinDelta, _yPositinDelta, _scaleDelta));
-		}
-		
-		
-		private function enterFrameSmoothing(e:Event):void 
-		{
-			ZvrPntMath.smoothTrans(_smoothPoint1, _touchPoint1.x , _touchPoint1.y, _inputSmoothig);
-			_touchPoint2 && ZvrPntMath.smoothTrans(_smoothPoint2, _touchPoint2.x , _touchPoint2.y, _inputSmoothig);
-			transform(_smoothPoint1, _touchPoint2 ? _smoothPoint2 : null);
-		}
-		
-		private function easeEnterframe(e:Event):void 
-		{
-			_rotationDelta = ZvrMath.smoothTrans(_rotationDelta, 0, _easing);
-			_scaleDelta = ZvrMath.smoothTrans(_scaleDelta, 1, _easing);
-			
-			_xPositinDelta = ZvrMath.smoothTrans(_xPositinDelta, 0, _easing);
-			_yPositinDelta = ZvrMath.smoothTrans(_yPositinDelta, 0, _easing);
-			 
-			_centerPoint.x -= _xPositinDelta;
-			_centerPoint.y -= _yPositinDelta;
-			
-			dispatchEvent(new MultiTouchTransformEvent(MultiTouchTransformEvent.EVENT, this, _rotationDelta, _centerPoint.x, _centerPoint.y, _xPositinDelta, _yPositinDelta, _scaleDelta));
-			
-			if (
-				
-				Math.abs(_rotationDelta) < 0.001 && 
-				Math.abs(_scaleDelta - 1) < 0.001 &&
-				Math.abs(_xPositinDelta) < 0.001 && 
-				Math.abs(_yPositinDelta) < 0.001
-				
-				)
-				{
-					CONFIG::debug
-					{
-						tr("end easeEnterframe");
-					}
-					_stage.removeEventListener(Event.ENTER_FRAME, easeEnterframe);
-				}
-		}
-		
-		public function transformDisplayObject(displayObject:DisplayObject):void
+		public function transformDisplayObject(displayObject:DisplayObject, e:MultiTouchTransformEvent):void
 		{
 			var m:Matrix = displayObject.transform.matrix;
-			m.translate(_xPositinDelta, _yPositinDelta);
+			m.translate(e.xPositinDelta, e.yPositinDelta);
 			displayObject.transform.matrix = m;
-			ZvrTransform.rotateAroundExternalPoint(displayObject, _rotationDelta, _centerPoint.x, _centerPoint.y);
-			ZvrTransform.scaleAroundPoint(displayObject, displayObject.scaleX * _scaleDelta, displayObject.scaleY * _scaleDelta, _centerPoint.x, _centerPoint.y);
+			ZvrTransform.rotateAroundExternalPoint(displayObject, e.rotationDelta, e.centerX, e.centerY);
+			ZvrTransform.scaleAroundPoint(displayObject, displayObject.scaleX * e.scaleDelta, displayObject.scaleY * e.scaleDelta, e.centerX, e.centerY); 
 		}
 		
-		public function get touchPoint1():ZvrPnt 
-		{
-			return _touchPoint1;
-		}
-		
-		public function get touchPoint2():ZvrPnt 
-		{
-			return _touchPoint2;
-		}
-		
-		public function get inputSmoothig():Number 
-		{
-			return _inputSmoothig;
-		}
-		
-		public function set inputSmoothig(value:Number):void 
-		{
-			_inputSmoothig = value;
-		}
-		
-		public function destroy():void 
-		{
-			_handler.removeEventListener(TouchEvent.TOUCH_MOVE, updateTouchPoints);
-			_handler.removeEventListener(TouchEvent.TOUCH_BEGIN, touchBegin);
-			_handler.removeEventListener(TouchEvent.TOUCH_END, touchEnd);
-			_stage.removeEventListener(Event.ENTER_FRAME, easeEnterframe);
-			_stage.removeEventListener(Event.ENTER_FRAME, enterFrameSmoothing);
-			_handler = null;
-		}
 	}
 
 }

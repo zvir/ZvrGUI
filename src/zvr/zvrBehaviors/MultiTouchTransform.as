@@ -31,12 +31,11 @@ package zvr.zvrBehaviors
 			if (Multitouch.supportsTouchEvents)
 			{				
 				_handler.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin);
-				_handler.addEventListener(TouchEvent.TOUCH_END, touchEnd);
 			}
 			else
 			{
 				_handler.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				_handler.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+				
 			}
 			
 		}
@@ -48,14 +47,14 @@ package zvr.zvrBehaviors
 			if (Multitouch.supportsTouchEvents)
 			{				
 				_handler.removeEventListener(TouchEvent.TOUCH_BEGIN, touchBegin);
-				_handler.removeEventListener(TouchEvent.TOUCH_END, touchEnd);
-				_handler.removeEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+				_stage.removeEventListener(TouchEvent.TOUCH_END, touchEnd);
+				_stage.removeEventListener(TouchEvent.TOUCH_MOVE, touchMove);
 			}
 			else
 			{
 				_handler.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				_handler.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
-				_handler.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				_stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
+				_stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 			}
 			
 			_handler = null;
@@ -69,11 +68,13 @@ package zvr.zvrBehaviors
 			
 			if (Multitouch.supportsTouchEvents)
 			{				
-				_handler.removeEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+				_stage.removeEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+				_stage.removeEventListener(TouchEvent.TOUCH_END, touchEnd);
 			}
 			else
 			{
-				_handler.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				_stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				_stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			}
 			
 			_stage.removeEventListener(Event.ENTER_FRAME, enterFrame);
@@ -86,11 +87,13 @@ package zvr.zvrBehaviors
 			
 			if (Multitouch.supportsTouchEvents)
 			{				
-				_handler.addEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+				_stage.addEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+				_stage.addEventListener(TouchEvent.TOUCH_END, touchEnd);
 			}
 			else
 			{
-				_handler.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				_stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				_stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			}
 			
 			_stage.addEventListener(Event.ENTER_FRAME, enterFrame);

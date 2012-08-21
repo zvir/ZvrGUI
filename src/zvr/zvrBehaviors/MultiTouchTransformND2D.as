@@ -33,12 +33,10 @@ package zvr.zvrBehaviors
 			if (Multitouch.supportsTouchEvents)
 			{				
 				_handler.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin);
-				_handler.addEventListener(TouchEvent.TOUCH_END, touchEnd);
 			}
 			else
 			{
 				_handler.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				_handler.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			}
 			
 		}
@@ -50,14 +48,14 @@ package zvr.zvrBehaviors
 			if (Multitouch.supportsTouchEvents)
 			{				
 				_handler.removeEventListener(TouchEvent.TOUCH_BEGIN, touchBegin);
-				_handler.removeEventListener(TouchEvent.TOUCH_END, touchEnd);
-				_handler.removeEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+				_stage.removeEventListener(TouchEvent.TOUCH_END, touchEnd);
+				_stage.removeEventListener(TouchEvent.TOUCH_MOVE, touchMove);
 			}
 			else
 			{
 				_handler.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				_handler.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
-				_handler.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				_stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
+				_stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 			}
 			
 			_stage.removeEventListener(Event.ENTER_FRAME, enterFrame);
@@ -73,11 +71,13 @@ package zvr.zvrBehaviors
 			
 			if (Multitouch.supportsTouchEvents)
 			{				
-				_handler.removeEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+				_stage.removeEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+				_stage.removeEventListener(TouchEvent.TOUCH_END, touchEnd);
 			}
 			else
 			{
-				_handler.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				_stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				_stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			}
 			
 			_stage.removeEventListener(Event.ENTER_FRAME, enterFrame);
@@ -89,11 +89,13 @@ package zvr.zvrBehaviors
 			
 			if (Multitouch.supportsTouchEvents)
 			{				
-				_handler.addEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+				_stage.addEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+				_stage.addEventListener(TouchEvent.TOUCH_END, touchEnd);
 			}
 			else
 			{
-				_handler.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				_stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				_stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			}
 			
 			_stage.addEventListener(Event.ENTER_FRAME, enterFrame);
@@ -123,8 +125,7 @@ package zvr.zvrBehaviors
 		
 		private function touchMove(e:TouchEvent):void 
 		{
-			var sp:Point = Node2D(e.currentTarget).localToGlobal(new Point(e.localX, e.localY));
-			updatePoint(e.touchPointID, sp.x, sp.y);
+			updatePoint(e.touchPointID, e.stageX, e.stageY);
 		}
 		
 		private function mouseDown(e:MouseEvent):void 
@@ -140,8 +141,7 @@ package zvr.zvrBehaviors
 		
 		private function mouseMove(e:MouseEvent):void 
 		{
-			var sp:Point = Node2D(e.currentTarget).localToGlobal(new Point(e.localX, e.localY));
-			updatePoint(0, sp.x, sp.y);
+			updatePoint(0, e.stageX, e.stageY);
 		}
 		
 	}

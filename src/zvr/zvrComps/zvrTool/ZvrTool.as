@@ -8,6 +8,7 @@ package zvr.zvrComps.zvrTool
 	import flash.events.UncaughtErrorEvent;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
+	import zvr.zvrTools.ZvrDevice;
 	
 	import utils.garbageCollection.gc;
 	import utils.type.getClass;
@@ -152,6 +153,8 @@ package zvr.zvrComps.zvrTool
 			tr("----------------------------------------------------------------------------");
 			tr("ZvrComonents ver: 0.3");
 			tr("Development_progress: Solving last issues with behaviors");
+			tr("----------------------------------------------------------------------------");
+			tr("Device:", ZvrDevice.DEVICE);
 			tr("----------------------------------------------------------------------------");
 			
 			tgr("Garbage Collector").setFunction(gc);

@@ -9,7 +9,9 @@ package zvr.zvrBehaviors
 	public class MultiTouchTransformEvent extends Event 
 	{
 		
-		public static const EVENT:String = "event";
+		public static const UPDATE:String = "update";
+		public static const BEGIN:String = "begin";
+		public static const END:String = "end";
 		
 		private var _rotationDelta:Number;
 		private var _xPositinDelta:Number;
@@ -17,12 +19,10 @@ package zvr.zvrBehaviors
 		private var _scaleDelta:Number;
 		private var _centerX:Number;
 		private var _centerY:Number;
-		private var _multiTouchTransform:MultiTouchTransform;
 		
-		public function MultiTouchTransformEvent(type:String, multiTouchTransform:MultiTouchTransform, rotationDelta:Number, centerX:Number, centerY:Number, xPositinDelta:Number, yPositinDelta:Number,  scaleDelta:Number, bubbles:Boolean = false, cancelable:Boolean = false) 
+		public function MultiTouchTransformEvent(type:String, rotationDelta:Number = 0, centerX:Number = 0, centerY:Number = 0, xPositinDelta:Number = 0, yPositinDelta:Number = 0,  scaleDelta:Number = 0, bubbles:Boolean = false, cancelable:Boolean = false) 
 		{ 
 			super(type, bubbles, cancelable);
-			_multiTouchTransform = multiTouchTransform;
 			_centerX = centerX;
 			_centerY = centerY;
 			_scaleDelta = scaleDelta;
@@ -33,7 +33,7 @@ package zvr.zvrBehaviors
 		
 		public override function clone():Event 
 		{ 
-			return new MultiTouchTransformEvent(type, _multiTouchTransform, _rotationDelta, _centerX, _centerY, xPositinDelta, yPositinDelta, _scaleDelta,bubbles, cancelable);
+			return new MultiTouchTransformEvent(type, _rotationDelta, _centerX, _centerY, xPositinDelta, yPositinDelta, _scaleDelta,bubbles, cancelable);
 		} 
 		
 		public override function toString():String 
@@ -69,11 +69,6 @@ package zvr.zvrBehaviors
 		public function get scaleDelta():Number 
 		{
 			return _scaleDelta;
-		}
-		
-		public function get multiTouchTransform():MultiTouchTransform 
-		{
-			return _multiTouchTransform;
 		}
 		
 	}

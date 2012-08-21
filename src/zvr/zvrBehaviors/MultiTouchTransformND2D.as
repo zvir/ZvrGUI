@@ -1,11 +1,13 @@
 package zvr.zvrBehaviors 
 {
+	import de.nulldesign.nd2d.display.Node2D;
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
 	import zvr.zvrTools.ZvrTransform;
@@ -14,13 +16,13 @@ package zvr.zvrBehaviors
 	 * @author Zvir
 	 */
 
-	public class MultiTouchTransform extends MultiTouchTransformProcessor
+	public class MultiTouchTransformND2D extends MultiTouchTransformProcessor
 	{
 		
-		private var _handler:EventDispatcher;
+		private var _handler:Node2D;
 		private var _stage:EventDispatcher;
 		
-		public function MultiTouchTransform(handler:EventDispatcher, stage:EventDispatcher = null) 
+		public function MultiTouchTransformND2D(handler:Node2D, stage:EventDispatcher = null) 
 		{
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
@@ -58,6 +60,8 @@ package zvr.zvrBehaviors
 				_handler.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 			}
 			
+			_stage.removeEventListener(Event.ENTER_FRAME, enterFrame);
+			
 			_handler = null;
 			_stage = null;
 			
@@ -81,7 +85,6 @@ package zvr.zvrBehaviors
 		
 		override protected function begin():void 
 		{
-			
 			super.begin();
 			
 			if (Multitouch.supportsTouchEvents)
@@ -94,7 +97,6 @@ package zvr.zvrBehaviors
 			}
 			
 			_stage.addEventListener(Event.ENTER_FRAME, enterFrame);
-			
 		}
 		
 		public function stop():void
@@ -110,7 +112,8 @@ package zvr.zvrBehaviors
 		
 		private function touchBegin(e:TouchEvent):void 
 		{
-			addPoint(e.touchPointID, e.stageX, e.stageY);
+			var sp:Point = Node2D(e.currentTarget).localToGlobal(new Point(e.localX, e.localY));
+			addPoint(e.touchPointID, sp.x, sp.y);
 		}
 		
 		private function touchEnd(e:TouchEvent):void 
@@ -120,12 +123,14 @@ package zvr.zvrBehaviors
 		
 		private function touchMove(e:TouchEvent):void 
 		{
-			updatePoint(e.touchPointID, e.stageX, e.stageY);
+			var sp:Point = Node2D(e.currentTarget).localToGlobal(new Point(e.localX, e.localY));
+			updatePoint(e.touchPointID, sp.x, sp.y);
 		}
 		
 		private function mouseDown(e:MouseEvent):void 
 		{
-			addPoint(0, e.stageX, e.stageY);
+			var sp:Point = Node2D(e.currentTarget).localToGlobal(new Point(e.localX, e.localY));
+			addPoint(0, sp.x, sp.y);
 		}
 		
 		private function mouseUp(e:MouseEvent):void 
@@ -135,16 +140,8 @@ package zvr.zvrBehaviors
 		
 		private function mouseMove(e:MouseEvent):void 
 		{
-			updatePoint(0, e.stageX, e.stageY);
-		}
-		
-		public function transformDisplayObject(displayObject:DisplayObject, e:MultiTouchTransformEvent):void
-		{
-			var m:Matrix = displayObject.transform.matrix;
-			m.translate(e.xPositinDelta, e.yPositinDelta);
-			displayObject.transform.matrix = m;
-			ZvrTransform.rotateAroundExternalPoint(displayObject, e.rotationDelta, e.centerX, e.centerY);
-			ZvrTransform.scaleAroundPoint(displayObject, displayObject.scaleX * e.scaleDelta, displayObject.scaleY * e.scaleDelta, e.centerX, e.centerY); 
+			var sp:Point = Node2D(e.currentTarget).localToGlobal(new Point(e.localX, e.localY));
+			updatePoint(0, sp.x, sp.y);
 		}
 		
 	}

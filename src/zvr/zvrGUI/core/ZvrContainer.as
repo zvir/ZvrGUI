@@ -305,6 +305,11 @@ package zvr.zvrGUI.core
 			
 			dispatchEvent(new ZvrContainerEvent(ZvrContainerEvent.ELEMENT_ADDED, this, element));
 			
+			if (skin.shell)
+			{
+				_base.setChildIndex(_skin.shell, _base.numChildren -1);
+			}
+			
 			return super.addChild(child);
 		}
 		

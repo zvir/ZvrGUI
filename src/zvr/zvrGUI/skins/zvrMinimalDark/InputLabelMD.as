@@ -5,7 +5,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 	import zvr.zvrGUI.core.ZvrAutoSize;
 	import zvr.zvrGUI.core.ZvrGroup;
 	import zvr.zvrGUI.layouts.ZvrAlignment;
-	import zvr.zvrGUI.layouts.ZvrButtonLayout;
+	import zvr.zvrGUI.layouts.ZvrComplexLayout;
 	import zvr.zvrGUI.layouts.ZvrHorizontalAlignment;
 	import zvr.zvrGUI.layouts.ZvrVerticalAlignment;
 	/**
@@ -28,7 +28,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			//contentPadding.padding = 10;
 			height = 20;
 			
-			super.setLayout(ZvrButtonLayout);
+			super.setLayout(ZvrComplexLayout);
 			buttonLayout.gap = 2;
 			buttonLayout.alignment = ZvrAlignment.HORIZONTAL;
 			buttonLayout.horizontalAlign = ZvrHorizontalAlignment.LEFT;
@@ -43,9 +43,9 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			//input.labelAutoSize = false;
 		}
 		
-		public function get buttonLayout():ZvrButtonLayout
+		public function get buttonLayout():ZvrComplexLayout
 		{
-			return layout as ZvrButtonLayout;
+			return layout as ZvrComplexLayout;
 		}
 	}
 

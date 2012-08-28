@@ -219,5 +219,9 @@ package zvr.zvrTools
 			return a;
 		}
 		
+		public static function logx(val:Number, base:Number = 10):Number
+		{
+			return Math.log(val) / Math.log(base);
+		}
 	}
 }

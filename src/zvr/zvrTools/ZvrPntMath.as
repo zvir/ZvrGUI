@@ -6,8 +6,8 @@ package zvr.zvrTools
 	 */
 	public class ZvrPntMath 
 	{
-		static private const DEGREES_TO_RADIANS:Number = 180 / Math.PI;
-		static private const RADIANS_TO_DEGREES:Number = Math.PI * 180;
+		static private const RADIANS_TO_DEGREES:Number = 180 / Math.PI;
+		static private const DEGREES_TO_RADIANS:Number = Math.PI / 180;
 		
 		public static function angle(p1:ZvrPnt, p2:ZvrPnt = null):Number
 		{
@@ -16,11 +16,11 @@ package zvr.zvrTools
 			
 			if (p2 == null)
 			{
-				angle = Math.atan2(p1.x, p1.y) / Math.PI * 180;
+				angle = Math.atan2(p1.x, p1.y) * RADIANS_TO_DEGREES;
 			}
 			else
 			{
-				angle = Math.atan2(p2.x - p1.x, -1 * (p2.y - p1.y)) / Math.PI * 180;
+				angle = Math.atan2(p2.x - p1.x, -1 * (p2.y - p1.y)) * RADIANS_TO_DEGREES;
 			}
 			
 			return angle < 0 ? angle + 360 : angle;
@@ -38,7 +38,7 @@ package zvr.zvrTools
 			
 			ang = Math.acos((a * a + b * b - c * c) / (2 * a * b));
 			
-			return ang / Math.PI * 180;
+			return ang * RADIANS_TO_DEGREES;
 			
 		}
 		
@@ -135,7 +135,7 @@ package zvr.zvrTools
 		
 		public static function polar(p:ZvrPnt, radius:Number, angle:Number):void
 		{
-			angle *= Math.PI / 180;
+			angle *= DEGREES_TO_RADIANS;
 			p.x += radius * Math.cos(angle);
 			p.y += radius * Math.sin(angle);
 		}
@@ -143,7 +143,7 @@ package zvr.zvrTools
 		public static function getPolar(radius:Number, angle:Number):ZvrPnt
 		{
 			var p:ZvrPnt = new ZvrPnt();
-			angle *= Math.PI / 180;
+			angle *= DEGREES_TO_RADIANS;
 			p.x = radius * Math.cos(angle);
 			p.y = radius * Math.sin(angle);
 			return p;

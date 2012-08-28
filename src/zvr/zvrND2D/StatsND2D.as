@@ -34,6 +34,7 @@
 
 package zvr.zvrND2D {
 
+	import de.nulldesign.nd2d.display.BitmapFont2DZVR;
 	import de.nulldesign.nd2d.display.Node2D;
 	import de.nulldesign.nd2d.display.Sprite2D;
 	import de.nulldesign.nd2d.materials.texture.Texture2D;
@@ -47,10 +48,14 @@ package zvr.zvrND2D {
 	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	import flash.utils.getTimer;
+	import zvr.zvrGUI.skins.zvrMinimalDark.ColorsMD;
+	import zvr.zvrGUI.skins.zvrMinimalDarkFonts.MDFonts;
 	import zvr.zvrTools.ZvrMath;
 
 	public class StatsND2D extends Node2D {
 		
+		
+		public static var instance:StatsND2D;
 		
 		[Embed(source = "../../../assets/statsND2D.png")]
 		private static const Bmp:Class;
@@ -88,14 +93,22 @@ package zvr.zvrND2D {
 		
 		private var _fpss:Vector.<uint> = new Vector.<uint>();
 		
+		private var _text:BitmapFont2DZVR;
+		
+		
+		
         public function StatsND2D():void
 		{
+			
+			instance = this;
+			
             mem_max = 0;
 			
 			_bg = new Sprite2D(tex);
 			_slider1 = new Sprite2D(sliderTex);
 			_slider3 = new Sprite2D(sliderTex);
 			_slider2 = new Sprite2D(sliderTex);
+			_text = FontTextureGenerator.texture(FontTextureGenerator.commonChar1, MDFonts.Mono0755, 8, ColorsMD.c2, 6, 13, 50);
 			
             addEventListener(Event.ADDED_TO_STAGE, init, false, 0, true);
         }
@@ -107,15 +120,13 @@ package zvr.zvrND2D {
 			addChild(_slider1);
 			addChild(_slider2);
 			addChild(_slider3);
+			addChild(_text);
 			
 			_slider1.x = 40 + _slider1.width * 0.5;
 			_slider1.y = 19 + 1;
 			
 			_slider1.height = 2;
 			_slider3.height = 6;
-			
-/*			_slider1.alpha = 0.3;
-			_slider3.alpha = 0.3;*/
 			
 			_slider3.x = 40 + _slider3.width * 0.5;
 			_slider3.y = 19 + 5;
@@ -124,8 +135,11 @@ package zvr.zvrND2D {
 			_slider2.y = 50 + 4;
 			
 			_bg.x = 128;
-			_bg.y = 32;
+			_bg.y = 40;
 			
+			_text.x = 40;
+			_text.y = 69;
+			_text.text = "STATS";
         }
 		
 		override protected function step(elapsed:Number):void 
@@ -165,5 +179,10 @@ package zvr.zvrND2D {
 			}
 
         }
+		
+		public function set text(value:String):void 
+		{
+			_text.text = value;
+		}
     }
 }

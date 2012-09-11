@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!--ant-->
-<project name="zvrGUI" basedir="." default="compile">
+<project name="zvrGUI" basedir="." default="compile_release">
 <!-- set up a prefix for all environment variables -->
   <property environment="env."/>
 <!-- load user properties to override defaults -->
@@ -31,16 +31,42 @@
     <echo>[init] Bin and Report directories created</echo>
   </target>
 <!-- Compile Release SWC -->
-  <target name="compile" depends="init">
+  <target name="compile_debug" depends="init">
     <echo>[compile] Compiling release SWC</echo>
     <echo>[compile] Using Flex SDK at: ${FLEX_HOME}</echo>
     <java jar="${FLEX_HOME}/lib/compc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
 <!-- Build our SWC with a versioned name. -->
-      <arg value="-output=${bin.loc}/${project.name.versioned}.swc"/>
+      <arg value="-output=${bin.loc}/${project.name.versioned}_debug.swc"/>
 <!-- Include classes from SWCs in this folder, but only the ones we use. -->
       <arg value="-library-path+=${lib.loc}"/>
 <!-- We want all the zvrGUI package classes in the SWC being built. -->
       <arg value="-source-path=${main.src.loc}"/>
+      <arg value="-external-library-path+=${FLEX_HOME}/frameworks/libs/framework.swc"/>
+      <arg value="-include-classes+=zvr.zvrComps.zvrTool.ZvrTool"/>
+      <arg value="-define=CONFIG::debug,true"/>
+      <arg value="-define=CONFIG::release,false"/>
+<!-- Boolean mosh pit! -->
+      <arg value="-incremental=true"/>
+      <arg value="-static-link-runtime-shared-libraries=true"/>
+      <arg value="-verbose-stacktraces=true"/>
+      <arg value="-headless-server=true"/>
+<!-- Include manifests and such -->
+      <arg line="-source-path+='./','${main.src.loc}'"/>
+    </java>
+    <echo>[compile] Release SWC ${project.name.versioned}.swc created successfully</echo>
+  </target>
+<!-- Compile Release SWC -->
+  <target name="compile_release" depends="compile_debug">
+    <echo>[compile] Compiling release SWC</echo>
+    <echo>[compile] Using Flex SDK at: ${FLEX_HOME}</echo>
+    <java jar="${FLEX_HOME}/lib/compc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
+<!-- Build our SWC with a versioned name. -->
+      <arg value="-output=${bin.loc}/${project.name.versioned}_release.swc"/>
+<!-- Include classes from SWCs in this folder, but only the ones we use. -->
+      <arg value="-library-path+=${lib.loc}"/>
+<!-- We want all the zvrGUI package classes in the SWC being built. -->
+      <arg value="-source-path=${main.src.loc}"/>
+      <arg value="-external-library-path+=${FLEX_HOME}/frameworks/libs/framework.swc"/>
       <arg value="-include-classes+=zvr.zvrComps.zvrTool.ZvrTool"/>
       <arg value="-define=CONFIG::debug,false"/>
       <arg value="-define=CONFIG::release,true"/>
@@ -55,7 +81,7 @@
     <echo>[compile] Release SWC ${project.name.versioned}.swc created successfully</echo>
   </target>
 <!-- Build Documentation -->
-  <target name="asdoc" depends="compile">
+  <target name="asdoc" depends="compile_release">
     <echo>[asdoc] Generating ASDOC documentation</echo>
     <tstamp>
       <format property="docgen.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>

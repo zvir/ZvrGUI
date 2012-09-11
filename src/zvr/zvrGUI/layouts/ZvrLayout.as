@@ -38,8 +38,13 @@ package zvr.zvrGUI.layouts
 		private var _contentAreaRectangle:Rectangle = new Rectangle();
 		private var _updatating:Boolean = false;
 		
-		public function ZvrLayout(container:ZvrContainer, computeContentBounds:Function, registration:Function) 
+		private var _contentHeightAreaIndependent:Object;
+		private var _contentWidthAreaIndependent:Object;
+		private var _contentAreaIndependent:Function;
+		
+		public function ZvrLayout(container:ZvrContainer, computeContentBounds:Function, registration:Function, contentAreaIndependent:Function) 
 		{
+			_contentAreaIndependent = contentAreaIndependent;
 			_container = container;
 			_computeContentBounds = computeContentBounds;
 			registration(update);
@@ -62,6 +67,11 @@ package zvr.zvrGUI.layouts
 			layout();
 			exitMassChangeMode();
 			_updatating = false;
+		}
+		
+		protected function setContentAreaIndependent(width:Object, height:Object):void
+		{
+			_contentAreaIndependent(width, height);
 		}
 		
 		protected function layout():void

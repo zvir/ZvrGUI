@@ -115,6 +115,7 @@ package zvr.zvrGUI.components.minimalDark
 				dispatchEvent(new ZvrSelectedEvent(ZvrSelectedEvent.SELECTED_CHANGE, this, !s));
 			}
 		}
+		
 		/*
 		public function setSelectedWituotDispachingEvent(v:Boolean):void
 		{

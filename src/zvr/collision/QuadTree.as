@@ -502,6 +502,7 @@ package zvr.collision
 						
 						node.tree = this;
 						
+						//collistion test
 						//GameDisplayContainer.world.setQuad(node);
 						
 						_nodes[int((offset + 1) + (y * levelEdgeSize + x))] = node;

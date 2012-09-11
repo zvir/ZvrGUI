@@ -15,9 +15,9 @@ package zvr.zvrGUI.layouts
 		
 		private var _gap:Number = 10;
 		
-		public function ZvrVerticalLayout(cointainer:ZvrContainer, computeContentBounds:Function, registration:Function) 
+		public function ZvrVerticalLayout(cointainer:ZvrContainer, computeContentBounds:Function, registration:Function, contentAreaIndependent:Function) 
 		{
-			super(cointainer, computeContentBounds, registration);
+			super(cointainer, computeContentBounds, registration, contentAreaIndependent);
 		}
 		
 		override protected function layout():void 

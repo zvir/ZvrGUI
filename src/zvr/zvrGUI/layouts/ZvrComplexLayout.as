@@ -24,9 +24,9 @@ package zvr.zvrGUI.layouts
 		
 		private var _pixelSharp:Boolean = false;
 		
-		public function ZvrComplexLayout(cointainer:ZvrContainer, computeContentBounds:Function, registration:Function) 
+		public function ZvrComplexLayout(cointainer:ZvrContainer, computeContentBounds:Function, registration:Function, contentAreaIndependent:Function) 
 		{
-			super(cointainer, computeContentBounds, registration);
+			super(cointainer, computeContentBounds, registration, contentAreaIndependent);
 		}
 		
 		override protected function layout():void 
@@ -114,12 +114,12 @@ package zvr.zvrGUI.layouts
 					
 					if (_verticalAlign == ZvrVerticalAlignment.TOP)
 					{
-						comp.y += getPos(m);
+						//comp.y += getPos(m);
 					}
 					
 					if (_verticalAlign == ZvrVerticalAlignment.BOTTOM)
 					{
-						comp.y += getPos(m);
+						comp.y += getPos(containerBounds.height - contentRect.height-lastComponentBottom);
 					}
 					
 				}
@@ -143,7 +143,7 @@ package zvr.zvrGUI.layouts
 				comp.x = x + w + (isNaN(comp.left) ? 0 : comp.left);
 				comp.y = 0;
 				x = comp.x;
-				w = comp.bounds.width + _gap + (isNaN(comp.right) ? 0 : comp.right);
+				w = comp.independentBounds.width + _gap + (isNaN(comp.right) ? 0 : comp.right);
 			}
 			
 		}
@@ -159,7 +159,7 @@ package zvr.zvrGUI.layouts
 				comp.y = y + h + (isNaN(comp.top) ? 0 : comp.top);
 				comp.x = 0;
 				y = comp.y;
-				h = comp.bounds.height + _gap;
+				h = comp.independentBounds.height + _gap + (isNaN(comp.bottom) ? 0 : comp.bottom);
 			}
 		}
 		
@@ -171,6 +171,10 @@ package zvr.zvrGUI.layouts
 		public function set alignment(value:String):void 
 		{
 			_alignment = value;
+			
+			if (_alignment == ZvrAlignment.HORIZONTAL) setContentAreaIndependent(false, true);
+			if (_alignment == ZvrAlignment.VERTICAL) setContentAreaIndependent(true, false);
+			
 			update();
 		}
 		

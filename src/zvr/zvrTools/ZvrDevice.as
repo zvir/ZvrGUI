@@ -11,11 +11,12 @@ package zvr.zvrTools
 		public static const IPAD_1	:String = "ipad1";
 		public static const IPAD_2	:String = "ipad2";
 		public static const IPAD_3	:String = "ipad3";
+		public static const PC		:String = "pc";
 		
-		public static const IPHONE_1	:String = "IPHONE1";
-		public static const IPHONE_2	:String = "IPHONE2";
-		public static const IPHONE_3	:String = "IPHONE3";
-		public static const IPHONE_4	:String = "IPHONE4";
+		public static const IPHONE_1	:String = "iphone1";
+		public static const IPHONE_2	:String = "iphone2";
+		public static const IPHONE_3	:String = "iphone3";
+		public static const IPHONE_4	:String = "iphone4";
 		
 		private static function getDevice():String
 		{	

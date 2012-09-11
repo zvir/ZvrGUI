@@ -114,9 +114,23 @@ package zvr.zvrND2D {
             addEventListener(Event.ADDED_TO_STAGE, init, false, 0, true);
         }
 
+		override public function dispose(l:String):void 
+		{
+			super.dispose(l);
+			_bg = null;
+			_slider1 = null;
+			_slider3 = null;
+			_slider2 = null;
+			_text = null;
+			
+			removeEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		
         private function init(e:Event):void
 		{
             
+			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
 			addChild(_bg);
 			addChild(_slider1);
 			addChild(_slider2);

@@ -4,7 +4,6 @@ package zvr.zvrComps.zvrTool.zvtStatsChart
 	import flash.events.MouseEvent;
 	import flash.system.System;
 	import flash.utils.getTimer;
-	import net.hires.debug.Stats;
 	import utils.array.average;
 	import utils.array.sum;
 	import zvr.zvrGUI.components.minimalDark.SimpleChartMD;

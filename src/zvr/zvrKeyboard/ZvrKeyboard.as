@@ -1,6 +1,5 @@
 package zvr.zvrKeyboard
 {
-	import de.popforge.ui.KeyboardShortcut;
 	import flash.display.DisplayObject;
 	import flash.display.Stage;
 	import flash.events.Event;

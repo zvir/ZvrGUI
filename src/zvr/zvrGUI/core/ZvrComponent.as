@@ -240,7 +240,14 @@ package zvr.zvrGUI.core
 			}
 			else if (_explicit.height == ZvrExplicitBounds.NONE && _explicit.y == ZvrExplicitBounds.Y && _explicit.bottom == ZvrExplicitBounds.BOTTOM && _owner)
 			{
-				h = _owner.contentAreaHeight - (isNaN(_rect.y) ? 0 : _rect.y) - _bottom;
+				if (_owner.contentHeightAreaIndependent)
+				{
+					h = _owner.contentAreaHeight - (isNaN(_rect.y) ? 0 : _rect.y) - _bottom;
+				}
+				else
+				{
+					h = validateHeight(_rect.height) + (isNaN(_bottom) ? 0 : _bottom) + (isNaN(_top) ? 0 : _top);
+				}
 			}
 			else if (_explicit.height == ZvrExplicitBounds.HEIGHT)
 			{
@@ -254,6 +261,7 @@ package zvr.zvrGUI.core
 			{
 				h = _rect.height;
 			}
+			
 			return isNaN(h) ? 0 : h;
 		
 		}

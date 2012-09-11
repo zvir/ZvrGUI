@@ -29,7 +29,7 @@ package zvr.zvrGUI.core
 		
 		protected var _contentWidth:Number = 0;
 		protected var _contentHeight:Number = 0;
-		private var _elements:Vector.<ZvrComponent> = new Vector.<ZvrComponent>;
+		protected var _elements:Vector.<ZvrComponent> = new Vector.<ZvrComponent>;
 		private var _presentElements:Vector.<ZvrComponent> = new Vector.<ZvrComponent>;
 		private var _test:Sprite = new Sprite();
 		private var _layout:ZvrLayout;
@@ -38,8 +38,10 @@ package zvr.zvrGUI.core
 		protected var _mask:Sprite = new Sprite();	
 		private var _contentPadding:ZvrContentPadding;
 		private var _sizeManager:ZvrContainerSizeManager;
-		
 		private var _maskingEnabled:Boolean = true;
+		
+		private var _contentHeightAreaIndependent:Boolean;
+		private var _contentWidthAreaIndependent:Boolean;
 		
 		
 		public function ZvrContainer(skinClass:Class)
@@ -133,7 +135,6 @@ package zvr.zvrGUI.core
 				
 			if (!component.present && i >= 0)
 				_presentElements.splice(i, 1);
-			
 		}
 		
 		// TODO Move updatateSiz,e autoSizeToContent to ZvrContainerSizeManager
@@ -169,10 +170,13 @@ package zvr.zvrGUI.core
 		 
 		protected function autoSizeToContent(width:Boolean, height:Boolean):void
 		{
+			
+			_contentHeightAreaIndependent = height;
+			_contentWidthAreaIndependent = width;
+			
 			var r:Rectangle = new Rectangle();
 			var e:ZvrComponent;
 			var ex:ZvrExplicitReport;
-			//_test.graphics.clear();
 			
 			for (var i:int = 0; i < _presentElements.length; i++)
 			{
@@ -409,13 +413,19 @@ package zvr.zvrGUI.core
 				if (getQualifiedClassName(layout) == getQualifiedClassName(getClass(_layout))) return;
 				_layout.destroy();
 			}
-			_layout = new layout(this, computeContentSize, registerLayout);
+			_layout = new layout(this, computeContentSize, registerLayout, setContentAreaIndependent);
 			updateLayout();
 		}
 		
 		private function registerLayout(updateLayoutFunction:Function):void 
 		{
 			_updateLayout = updateLayoutFunction;
+		}
+		
+		private function setContentAreaIndependent(width:Object, height:Object):void
+		{
+			_contentWidthAreaIndependent = width;
+			_contentHeightAreaIndependent = height;
 		}
 		
 		public function get layout():ZvrLayout
@@ -526,6 +536,16 @@ package zvr.zvrGUI.core
 				_contents.mask = null;
 				_mask.visible = false;
 			}
+		}
+		
+		public function get contentHeightAreaIndependent():Boolean 
+		{
+			return _contentHeightAreaIndependent;
+		}
+		
+		public function get contentWidthAreaIndependent():Boolean 
+		{
+			return _contentWidthAreaIndependent;
 		}
 		
 	}

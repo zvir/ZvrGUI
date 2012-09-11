@@ -22,13 +22,15 @@ import com.blackmoon.theFew.airFight.handlers.*;
 		public var disposeItems:Vector.<ZvrInitializerItem> = new Vector.<ZvrInitializerItem>();
 		
 		public var time:int;
+		public var totalMemeory:int;
+		public var itemMememory:int;
+		public var sTime:int;
 		public var stepTime:int;
 		public var timeOut:int = 15;
 		public var addingStart:int = 0;
 		
 		public var report:Function;
 		public var complete:Function;
-		
 		private var reporting:Boolean;
 		
 		public function ZvrInitializer()
@@ -44,7 +46,7 @@ import com.blackmoon.theFew.airFight.handlers.*;
 			trace("INIT START");
 			
 			time = getTimer();
-			
+			sTime = time;
 			sp.addEventListener(Event.ENTER_FRAME, initEnterFrame);
 			
 			stepTime = getTimer();
@@ -113,28 +115,25 @@ import com.blackmoon.theFew.airFight.handlers.*;
 			if (reporting)
 			{
 				reporting = false;
-				
-				if (report != null && head)
-				{
-					report((current+1) / initCount, head.name || "");
-				}
-				
+				if (report != null && head) report((current+1) / initCount, head.name || "");
 				return;
 			}
 			
 			if (!head)
 			{	
 				sp.removeEventListener(Event.ENTER_FRAME, initEnterFrame);
-				trace("INIT DONE");
-				dispose();
+				
+				trace("INIT DONE", (getTimer() - sTime) + "ms", Number(totalMemeory * 0.000000954 ).toFixed(3) + " MB");
+				
 				if (complete != null) complete();
-				complete = null;
+				
+				dispose();
+				
 				return;
 			}
 			
 			reporting = true;
-				
-			//trace("INIT STEP, (" + (getTimer() - stepTime) + "ms)");
+			
 			
 			var st:int = getTimer();
 			var item:ZvrInitializerItem = head;
@@ -142,16 +141,25 @@ import com.blackmoon.theFew.airFight.handlers.*;
 			while (item)
 			{
 				time = getTimer();
+				
+				itemMememory = System.totalMemory;
+				
 				item.init();
+				
 				current++;
-				trace("INITIALIZED:", (current) + "/" + initCount, "(" + (getTimer() - time) + "ms)", item.name || "");
+				
+				itemMememory = System.totalMemory - itemMememory;
+				
+				totalMemeory += itemMememory;
+				
+				trace("INITIALIZED:", (current) + "/" + initCount, "(" + (getTimer() - time) + "ms)", Number(itemMememory * 0.000000954 ).toFixed(3) + " MB", item.name || "");
 				disposeItems.push(item);
 				head = item.next;
 				item = (getTimer() - st) < timeOut ? head : null;
 			}
 		}
 		
-		private function dispose():void 
+		public function dispose():void 
 		{
 			trace("INIT DISPOSE");			
 			
@@ -160,11 +168,13 @@ import com.blackmoon.theFew.airFight.handlers.*;
 				item.dispose();
 			}
 			
+			sp.removeEventListener(Event.ENTER_FRAME, initEnterFrame);
 			sp = null;
 			head = null;
 			tail = null;
 			disposeItems = null;
 			report = null;
+			complete = null;
 			
 		}
 		

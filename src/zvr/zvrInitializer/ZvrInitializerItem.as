@@ -92,6 +92,7 @@ package zvr.zvrInitializer
 			property = null;
 			constructorClass = null;
 			dynamicParamTo = null;
+			
 		}
 		
 	}

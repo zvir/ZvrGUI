@@ -23,7 +23,7 @@ package zvr.zvrND2D
 		
 		public function set totalFrames(value:uint):void 
 		{
-			trace("totalFrames", value);
+			//trace("totalFrames", value);
 			_totalFrames = value;
 		}
 		

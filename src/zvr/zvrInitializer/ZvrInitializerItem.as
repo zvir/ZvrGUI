@@ -1,5 +1,7 @@
 package zvr.zvrInitializer
 {
+	import com.blackmoon.theFew.airFight.view.GameDisplayContainer;
+	import flash.events.EventDispatcher;
 	import flash.utils.getTimer;
 	/**
 	 * ...
@@ -7,6 +9,8 @@ package zvr.zvrInitializer
 	 */
 	public class ZvrInitializerItem
 	{
+		public var propertyName:String;
+		public var functionName:String;
 		
 		public var next:ZvrInitializerItem;
 		public var prev:ZvrInitializerItem;
@@ -20,6 +24,10 @@ package zvr.zvrInitializer
 		public var constructorClass:Class;
 		
 		public var dynamicParamTo:ZvrInitializerItem;
+		
+		public var eventType:String;
+		public var eventObject:EventDispatcher;
+		
 		
 		public function ZvrInitializerItem()
 		{
@@ -43,12 +51,50 @@ package zvr.zvrInitializer
 					
 					return p;
 				}
-				else
+				else 
 				{
-					return initFinction.apply(thisObject, args);
+					var a:*
+					var f:Function;
+					
+					
+					if (propertyName)
+					{
+						a = [thisObject[propertyName]];
+					}
+					else
+					{
+						a = args
+					}
+					
+					if (functionName)
+					{
+						
+						var fp:Array = functionName.split(".");
+						
+						var o:* = thisObject;
+						
+						for (var i:int = 0; i < fp.length-1; i++) 
+						{
+							o = o[fp[i]];
+						}
+						
+						f = o[fp[fp.length - 1]];
+					}
+					else
+					{
+						f = initFinction;
+					}
+					
+					if (!propertyName && !functionName)
+					{
+						return f.apply(thisObject, a);
+					}
+					else
+					{
+						return f.apply(null, a);
+					}
 				}
 			}
-			
 		}
 		
 		public function addDynamicParam(initFinction:Function, thisObject:* = null, name:String = null, ... rest):ZvrInitializerItem
@@ -80,6 +126,20 @@ package zvr.zvrInitializer
 			
 		}
 		
+		
+		public function addDynamicProperty(propertyName:String):ZvrInitializerItem
+		{
+			this.propertyName = propertyName;
+			return this;
+		}
+		
+		public function addDynamicFunction(functionName:String):ZvrInitializerItem
+		{
+			this.functionName = functionName;
+			return this;
+		}
+		
+		
 		public function dispose():void 
 		{
 			next = null;
@@ -93,6 +153,12 @@ package zvr.zvrInitializer
 			constructorClass = null;
 			dynamicParamTo = null;
 			
+		}
+		
+		public function addEvent(eventType:String, eventDispatcher:EventDispatcher):void 
+		{
+			this.eventType = eventType
+			this.eventObject = eventDispatcher;
 		}
 		
 	}

@@ -17,8 +17,9 @@ package zvr.zvrGUI.components.minimalDark
 		
 		public var slider:SliderMD;
 		public var value:LabelMD;
-		
 		public var title:LabelMD;
+		
+		public var sliderValueToFixed:int = -1;
 		
 		public function SliderUIMD() 
 		{
@@ -61,13 +62,14 @@ package zvr.zvrGUI.components.minimalDark
 		
 		private function updateValue(e:ZvrSliderEvent):void 
 		{
+			
 			if (slider.dynamicRange)
 			{
 				value.text = String(slider.rangeBegin).substr(0, 6) + " : "  + String(slider.rangeEnd).substr(0, 6);
 			}
 			else
 			{
-				value.text = String(slider.position).substr(0, 6);
+				value.text = sliderValueToFixed == -1 ? String(slider.rangeBegin).substr(0, 6) : slider.position.toFixed(sliderValueToFixed);//String(slider.position).substr(0, 6);
 			}
 			
 		}

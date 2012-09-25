@@ -39,6 +39,8 @@ package zvr.zvrBehaviors
 		
 		private var _end:Boolean;
 		
+		public var enabled:Boolean = true;
+		
 		public function MultiTouchTransformProcessor() 
 		{
 			
@@ -121,6 +123,7 @@ package zvr.zvrBehaviors
 		
 		public function update():void
 		{
+			
 			updateSmoothPoints();
 			
 			switch (_points.length) 
@@ -171,7 +174,7 @@ package zvr.zvrBehaviors
 			_center.x -= _xPositinDelta;
 			_center.y -= _yPositinDelta;
 			
-			dispatchEvent(new MultiTouchTransformEvent(MultiTouchTransformEvent.UPDATE, _rotationDelta, _center.x, _center.y, _xPositinDelta, _yPositinDelta, _scaleDelta));
+			if (enabled) dispatchEvent(new MultiTouchTransformEvent(MultiTouchTransformEvent.UPDATE, _rotationDelta, _center.x, _center.y, _xPositinDelta, _yPositinDelta, _scaleDelta));
 			
 		}
 		
@@ -188,7 +191,7 @@ package zvr.zvrBehaviors
 			
 			_lastCenter.copyFrom(_center);
 			
-			dispatchEvent(new MultiTouchTransformEvent(MultiTouchTransformEvent.UPDATE, _rotationDelta, _center.x, _center.y, _xPositinDelta, _yPositinDelta, _scaleDelta));
+			if (enabled) dispatchEvent(new MultiTouchTransformEvent(MultiTouchTransformEvent.UPDATE, _rotationDelta, _center.x, _center.y, _xPositinDelta, _yPositinDelta, _scaleDelta));
 		}
 		
 		private function updateMulti():void
@@ -210,7 +213,7 @@ package zvr.zvrBehaviors
 			
 			_lastCenter.copyFrom(_center);
 			
-			dispatchEvent(new MultiTouchTransformEvent(MultiTouchTransformEvent.UPDATE, _rotationDelta, _center.x, _center.y, _xPositinDelta, _yPositinDelta, _scaleDelta));
+			if (enabled) dispatchEvent(new MultiTouchTransformEvent(MultiTouchTransformEvent.UPDATE, _rotationDelta, _center.x, _center.y, _xPositinDelta, _yPositinDelta, _scaleDelta));
 			
 		}
 		

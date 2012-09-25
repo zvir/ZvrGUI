@@ -48,13 +48,13 @@ package zvr.zvrGUI.core
 			return _panel;
 		}
 		
-		final public function close():void
+		public function close():void
 		{
 			closed();
 			_dispatchEvent(ZvrWindowEvent.CLOSE);
 		}
 		
-		final public function restore():void
+		public function restore():void
 		{
 			if (currentStates.indexOf(ZvrStates.RESTORED) != -1)
 				return;
@@ -62,7 +62,7 @@ package zvr.zvrGUI.core
 			manageStates(ZvrStates.RESTORED, [ZvrStates.MAXIMILIZED, ZvrStates.MINIMALIZED]);
 		}
 		
-		final public function minimalize():void
+		public function minimalize():void
 		{
 			if (currentStates.indexOf(ZvrStates.MINIMALIZED) != -1)
 				return;
@@ -70,7 +70,7 @@ package zvr.zvrGUI.core
 			manageStates(ZvrStates.MINIMALIZED, [ZvrStates.MAXIMILIZED, ZvrStates.RESTORED]);
 		}
 		
-		final public function maximilize():void
+		public function maximilize():void
 		{
 			if (currentStates.indexOf(ZvrStates.MAXIMILIZED) != -1)
 				return;

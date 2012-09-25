@@ -45,7 +45,7 @@ package zvr.zvrGUI.behaviors
 			
 			
 			component.addEventListener(FocusEvent.FOCUS_IN, focusIn);
-			component.skin.body.addEventListener(FocusEvent.FOCUS_IN, focusIn);
+			if (component.skin.body) component.skin.body.addEventListener(FocusEvent.FOCUS_IN, focusIn);
 			component.buttonMode = true;
 			
 		}
@@ -139,7 +139,8 @@ package zvr.zvrGUI.behaviors
 				component.removeEventListener(MouseEvent.ROLL_OVER, mouseOver);
 			}
 			
-			component.skin.body.removeEventListener(FocusEvent.FOCUS_IN, focusIn);
+			if (component.skin.body) component.skin.body.removeEventListener(FocusEvent.FOCUS_IN, focusIn);
+			
 			component.buttonMode = false;
 			removeKeyboardEvents();
 			component.manageStates([ZvrStates.NORMAL], [ZvrStates.DOWN, ZvrStates.OVER, ZvrStates.FOCUSED])
@@ -150,8 +151,8 @@ package zvr.zvrGUI.behaviors
 		{
 			component.addEventListener(FocusEvent.FOCUS_OUT, focusOut);
 			component.removeEventListener(FocusEvent.FOCUS_IN, focusIn);
-			component.skin.body.removeEventListener(FocusEvent.FOCUS_IN, focusIn);
-			component.skin.body.addEventListener(FocusEvent.FOCUS_OUT, focusOut);
+			if (component.skin.body) component.skin.body.removeEventListener(FocusEvent.FOCUS_IN, focusIn);
+			if (component.skin.body) component.skin.body.addEventListener(FocusEvent.FOCUS_OUT, focusOut);
 			component.addState(ZvrStates.FOCUSED);
 			addKeyboardEvents();
 		}
@@ -193,7 +194,7 @@ package zvr.zvrGUI.behaviors
 		{
 			component.addEventListener(FocusEvent.FOCUS_IN, focusIn);
 			component.removeEventListener(FocusEvent.FOCUS_OUT, focusOut);
-			component.skin.body.addEventListener(FocusEvent.FOCUS_IN, focusIn);
+			if (component.skin.body) component.skin.body.addEventListener(FocusEvent.FOCUS_IN, focusIn);
 			component.removeState(ZvrStates.FOCUSED);
 			removeKeyboardEvents();
 		}

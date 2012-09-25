@@ -38,6 +38,7 @@ package zvr.zvrND2D {
 	import de.nulldesign.nd2d.display.Node2D;
 	import de.nulldesign.nd2d.display.Sprite2D;
 	import de.nulldesign.nd2d.materials.texture.Texture2D;
+	import de.nulldesign.nd2d.materials.texture.TextureOption;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
@@ -60,6 +61,7 @@ package zvr.zvrND2D {
 		[Embed(source = "../../../assets/statsND2D.png")]
 		private static const Bmp:Class;
 		private static const BitmapD:BitmapData = Bitmap(new Bmp()).bitmapData;
+		
 		private var tex:Texture2D;
 		
 		private var sliderTex:Texture2D;
@@ -85,15 +87,33 @@ package zvr.zvrND2D {
         /**
          * <b>Stats</b> FPS, MS and MEM, all in one.
          */
-		
 		private var _bg:Sprite2D;
 		private var _slider1:Sprite2D;
 		private var _slider2:Sprite2D;
 		private var _slider3:Sprite2D;
 		
+		private var _tSlider1:Sprite2D;
+		private var _tSlider2:Sprite2D;
+		private var _tSlider3:Sprite2D;
+		private var _tSlider4:Sprite2D;
+		private var _tSlider5:Sprite2D;
+		
 		private var _fpss:Vector.<uint> = new Vector.<uint>();
 		
 		private var _text:BitmapFont2DZVR;
+		
+		private var _ts1:Array = [1];
+		private var _ts2:Array = [1];
+		private var _ts3:Array = [1];
+		private var _ts4:Array = [1];
+		
+		private var _t1:int;
+		private var _t2:int;
+		private var _t3:int;
+		private var _t4:int;
+		
+		private var _ft:int;
+		
 		
         public function StatsND2D():void
 		{
@@ -101,14 +121,25 @@ package zvr.zvrND2D {
 			instance = this;
 			
             mem_max = 0;
-			
+			//0x1cd2ae
 			tex = Texture2D.textureFromBitmapData(BitmapD); 
-			sliderTex = Texture2D.textureFromBitmapData(new BitmapData(64, 8, false, 0x1cd2ae));
+			sliderTex = Texture2D.textureFromBitmapData(new BitmapData(64, 8, false, 0xffffff));
+			sliderTex.textureOptions = TextureOption.QUALITY_LOW;
+			
+			
 			
 			_bg = new Sprite2D(tex);
 			_slider1 = new Sprite2D(sliderTex);
 			_slider3 = new Sprite2D(sliderTex);
 			_slider2 = new Sprite2D(sliderTex);
+			
+			_tSlider1 = new Sprite2D(sliderTex);
+			_tSlider2 = new Sprite2D(sliderTex);
+			_tSlider3 = new Sprite2D(sliderTex);
+			_tSlider4 = new Sprite2D(sliderTex);
+			_tSlider5 = new Sprite2D(sliderTex);
+			
+			
 			_text = FontTextureGenerator.texture(FontTextureGenerator.commonChar1, MDFonts.Mono0755, 8, ColorsMD.c2, 6, 13, 50);
 			
             addEventListener(Event.ADDED_TO_STAGE, init, false, 0, true);
@@ -121,6 +152,13 @@ package zvr.zvrND2D {
 			_slider1 = null;
 			_slider3 = null;
 			_slider2 = null;
+			
+			_tSlider1 = null;
+			_tSlider2 = null;
+			_tSlider3 = null;
+			_tSlider4 = null;
+			_tSlider5 = null;
+			
 			_text = null;
 			
 			removeEventListener(Event.ADDED_TO_STAGE, init);
@@ -135,6 +173,19 @@ package zvr.zvrND2D {
 			addChild(_slider1);
 			addChild(_slider2);
 			addChild(_slider3);
+			
+			_slider1.tint = 0x1cd2ae;
+			_slider2.tint = 0x1cd2ae;
+			_slider3.tint = 0x1cd2ae;
+			
+			addChild(_tSlider4);
+			
+			addChild(_tSlider1);
+			addChild(_tSlider2);
+			addChild(_tSlider3);
+			addChild(_tSlider5);
+			
+			
 			addChild(_text);
 			
 			_slider1.x = 40 + _slider1.width * 0.5;
@@ -149,11 +200,33 @@ package zvr.zvrND2D {
 			_slider2.x = 40 + _slider2.width * 0.5;
 			_slider2.y = 50 + 4;
 			
+			_tSlider1.width = 20;
+			_tSlider2.width = 20;
+			_tSlider3.width = 20;
+			_tSlider4.width = 20;
+			
+			_tSlider1.tint = 0x00FFFF;
+			_tSlider2.tint = 0xFF0000;
+			_tSlider3.tint = 0xFF0000;
+			_tSlider4.tint = 0x16A98B;
+			_tSlider5.tint = 0x56E9CB;
+			
+			_tSlider1.x = 50;
+			_tSlider2.x = 70;
+			_tSlider3.x = 90;
+			_tSlider4.x = 110;
+			
+			_tSlider1.y = 85;
+			_tSlider2.y = 85;
+			_tSlider3.y = 85;
+			_tSlider4.y = 85;
+			_tSlider5.y = 85;
+			
 			_bg.x = 128;
-			_bg.y = 40;
+			_bg.y = 60;
 			
 			_text.x = 40;
-			_text.y = 69;
+			_text.y = 96;
 			_text.text = "STATS";
         }
 		
@@ -161,6 +234,10 @@ package zvr.zvrND2D {
 		{
 			super.step(elapsed);
             mem = Number((System.totalMemory * 0.000000954));
+			
+			var t:int =  getTimer();
+			t4 = t - _ft;
+			_ft = t;
 			
 			fps = 1 / elapsed;
 			
@@ -191,13 +268,62 @@ package zvr.zvrND2D {
 				_slider1.x = 40 + _slider1.width * 0.5;
 				_slider3.x = 40 + _slider3.width * 0.5;
 				_slider2.x = 40 + _slider2.width * 0.5;
+				
+				_tSlider1.width = getTa(_ts1) * 4;
+				_tSlider2.width = getTa(_ts2) * 4;
+				_tSlider3.width = getTa(_ts3) * 4;
+				
+				_tSlider1.x = 40 + _tSlider1.width * 0.5;
+				_tSlider2.x = _tSlider1.x + _tSlider1.width * 0.5 + _tSlider2.width * 0.5;
+				_tSlider3.x = _tSlider2.x + _tSlider2.width * 0.5 + _tSlider3.width * 0.5;
+				
+				_tSlider4.width = getTa(_ts4) * 4;
+				_tSlider4.width = _tSlider4.width > 216 ? 216 : _tSlider4.width;
+				_tSlider4.x = 40 + _tSlider4.width * 0.5;
+				
+				_tSlider5.width = 2;
+				_tSlider5.x = 40 + (1000 / _stage.frameRate) * 4;
+				
 			}
-
+			
         }
 		
 		public function set text(value:String):void 
 		{
 			_text.text = value;
 		}
+		
+		public function set t1(v:int):void { _t1 = v; setT(v, _ts1); }
+		public function set t2(v:int):void { _t2 = v; setT(v, _ts2); }
+		public function set t3(v:int):void { _t3 = v; setT(v, _ts3); }
+		private function set t4(v:int):void { _t4 = v; setT(v, _ts4); }
+		
+		public function get t1():int { return _t1;	}
+		public function get t2():int { return _t2;	}
+		public function get t3():int { return _t3;	}
+		private function get t4():int { return _t4;	}
+		
+		private function setT(v:int, a:Array):void
+		{
+			a.push(v);
+			if (a.length > 10) a.shift();
+		}
+		
+		private function getTa(a:Array):Number
+		{
+			var v:Number = 0;
+			
+			for (var i:int = 0; i <a.length; i++) 
+			{
+				v += a[i];
+			}
+			
+			v /= a.length;
+			
+			v = v == 0 ? 0.1 : v;
+			
+			return v;
+		}
+		
     }
 }

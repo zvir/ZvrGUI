@@ -47,11 +47,13 @@ package zvr.zvrTools
 		{
 			var m:Matrix = displayObject.transform.matrix;
 			
-			m.tx -= x;
-			m.ty -= y;
+			/*m.tx -= x;
+			m.ty -= y;*/
+			m.translate( -x, -y);
 			m.scale(scaleXDelta, scaleYDelta);
-			m.tx += x;
-			m.ty += y;
+			m.translate(x, y);
+			/*m.tx += x;
+			m.ty += y;*/
 			
 			displayObject.transform.matrix = m;
 			

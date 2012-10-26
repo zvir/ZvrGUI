@@ -2,6 +2,7 @@ package zvr.zvrGUI.behaviors
 {
 	import flash.events.MouseEvent;
 	import utils.display.bringToFront;
+	import zvr.zvrGUI.core.ZvrComponent;
 		/**
 	 * @author	Michał Zwieruho "Zvir"
 	 * @www	www.zvir.pl, www.celavra.pl
@@ -23,7 +24,7 @@ package zvr.zvrGUI.behaviors
 		
 		private function mouseDown(e:MouseEvent):void 
 		{
-			bringToFront(component);
+			bringToFront(ZvrComponent(component));
 		}
 		
 		override protected function disable():void

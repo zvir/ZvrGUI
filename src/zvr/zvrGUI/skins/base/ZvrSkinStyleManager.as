@@ -2,6 +2,7 @@ package zvr.zvrGUI.skins.base
 {
 	import flash.utils.Dictionary;
 	import zvr.zvrGUI.components.minimalDark.WindowTitleMD;
+	import zvr.zvrGUI.core.IZvrComponent;
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.events.ZvrStateChangeEvent;
 		/**
@@ -14,10 +15,10 @@ package zvr.zvrGUI.skins.base
 	{
 		private var _initialized:Boolean = false;
 		private var _styles:Dictionary = new Dictionary();
-		private var _skin:ZvrSkin;
-		private var _component:ZvrComponent;
+		private var _skin:IZvrSkin;
+		private var _component:IZvrComponent;
 		
-		public function ZvrSkinStyleManager(skin:ZvrSkin, component:ZvrComponent) 
+		public function ZvrSkinStyleManager(skin:IZvrSkin, component:IZvrComponent)
 		{
 			_component = component;
 			_skin = skin;
@@ -38,7 +39,7 @@ package zvr.zvrGUI.skins.base
 		{
 			if (!_styles[styleName])
 			{
-				if (_component.hasOwnProperty(styleName)) 
+				if (Object(_component).hasOwnProperty(styleName))
 				{
 					registerStyle(styleName, new ZvrProperty(_component, styleName));
 					if (state) _styles[styleName].deafultValue = _component[styleName];

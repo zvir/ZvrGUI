@@ -7,6 +7,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	import zvr.zvrGUI.core.ZvrComponent;
+	import zvr.zvrGUI.skins.base.ZvrFlashSkin;
 	import zvr.zvrGUI.skins.base.ZvrSkin;
 	import zvr.zvrTools.ZvrColor;
 	
@@ -30,7 +31,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 		{
 			_bitmapData = new Raster(1, 1);
 			_bitmap.bitmapData = _bitmapData;
-			_body = new Sprite();
+			_body = new ZvrFlashSkin();
 			sprite.addChild(_bitmap);
 		}
 		

@@ -5,6 +5,7 @@ package zvr.zvrGUI.managers
 	import flash.utils.Dictionary;
 	import zvr.zvrGUI.behaviors.ZvrDragable;
 	import zvr.zvrGUI.behaviors.ZvrResizable;
+	import zvr.zvrGUI.core.IZvrComponent;
 	import zvr.zvrGUI.core.ZvrApplication;
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.core.ZvrExplicitBounds;
@@ -82,7 +83,7 @@ package zvr.zvrGUI.managers
 		{
 			if (ZvrKeyboard.CTRL.pressed) return;
 			
-			var comp:ZvrComponent = e.component;
+			var comp:IZvrComponent = e.component;
 			var prevent:Boolean = false;
 			var i:int;
 
@@ -132,7 +133,7 @@ package zvr.zvrGUI.managers
 			
 			if (ZvrKeyboard.CTRL.pressed) return;
 			
-			var comp:ZvrComponent = e.component;
+			var comp:IZvrComponent = e.component;
 			
 			var i:int;
 			var snapGuide:ZvrSnapGuide;
@@ -216,7 +217,7 @@ package zvr.zvrGUI.managers
 			var dragable:ZvrDragable = component.behaviors.getBehavior(ZvrDragable.NAME) as ZvrDragable;
 			var resizable:ZvrResizable = component.behaviors.getBehavior(ZvrResizable.NAME) as ZvrResizable;
 			
-			dragable.addEventListener(ZvrDragBehaviorEvent.DRAGING, dragging);
+			dragable.addEventListener(ZvrDragBehaviorEvent.DRAGGING, dragging);
 			dragable.addEventListener(ZvrDragBehaviorEvent.STOP_DRAG, draggingStop);
 			resizable.addEventListener(ZvrResizeBehaviorEvent.RESIZING, resizing);
 			resizable.addEventListener(ZvrResizeBehaviorEvent.STOP_RESIZE, resizeStop);
@@ -238,7 +239,7 @@ package zvr.zvrGUI.managers
 			finishSnapping(e.component);
 		}
 		
-		private function finishSnapping(comp:ZvrComponent):void
+		private function finishSnapping(comp:IZvrComponent):void
 		{
 			var exp:ZvrExplicitReport;
 			exp = comp.explicit;
@@ -274,7 +275,7 @@ package zvr.zvrGUI.managers
 			var dragable:ZvrDragable = component.behaviors.getBehavior(ZvrDragable.NAME) as ZvrDragable;
 			var resizable:ZvrResizable = component.behaviors.getBehavior(ZvrResizable.NAME) as ZvrResizable;
 			
-			dragable.removeEventListener(ZvrDragBehaviorEvent.DRAGING, dragging);
+			dragable.removeEventListener(ZvrDragBehaviorEvent.DRAGGING, dragging);
 
 			resizable.removeEventListener(ZvrResizeBehaviorEvent.RESIZING, resizing);
 			

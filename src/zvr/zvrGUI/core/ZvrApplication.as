@@ -105,7 +105,7 @@ package zvr.zvrGUI.core
 			return _windowsLayer.removeChild(child);
 		}
 		
-		override public function get presentElements():Vector.<ZvrComponent> 
+		override public function get presentElements():Vector.<IZvrComponent>
 		{
 			return _windowsLayer.presentElements;
 		}

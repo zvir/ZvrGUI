@@ -1,7 +1,8 @@
 package zvr.zvrGUI.events 
 {
 	import flash.events.Event;
-	import zvr.zvrGUI.core.ZvrComponent;
+
+	import zvr.zvrGUI.core.IZvrComponent;
 	
 	/**
 	 * ...
@@ -9,11 +10,11 @@ package zvr.zvrGUI.events
 	 */
 	public class ZvrEvent extends Event 
 	{
-		private var _component:ZvrComponent;
+		private var _component:IZvrComponent;
 		
 		public static const USER_INPUT:String = "userInput";
 		
-		public function ZvrEvent(type:String, component:ZvrComponent, bubbles:Boolean=false, cancelable:Boolean=false) 
+		public function ZvrEvent(type:String, component:IZvrComponent, bubbles:Boolean=false, cancelable:Boolean=false)
 		{ 
 			super(type, bubbles, cancelable);
 			_component = component;
@@ -30,7 +31,7 @@ package zvr.zvrGUI.events
 			return formatToString("ZvrEvent", "type", "component", "bubbles", "cancelable", "eventPhase"); 
 		}
 		
-		public function get component():ZvrComponent 
+		public function get component():IZvrComponent
 		{
 			return _component;
 		}

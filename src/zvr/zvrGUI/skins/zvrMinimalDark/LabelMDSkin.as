@@ -11,6 +11,9 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+
+	import zvr.zvrGUI.skins.base.ZvrFlashSkin;
+
 	//import flash.text.TextInteractionMode;
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.core.ZvrLabel;
@@ -63,7 +66,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			_textField.antiAliasType = AntiAliasType.NORMAL;
 			//_textField.filters = new Array(new DropShadowFilter(1, 45, 0x000000, 0.9, 1, 1, 5, 3));
 			
-			_body = new Sprite();
+			_body = new ZvrFlashSkin();
 			Sprite(_body).addChild(_textField);
 			
 			//_body = _textField;

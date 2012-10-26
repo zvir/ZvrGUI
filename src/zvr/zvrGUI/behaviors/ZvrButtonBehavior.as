@@ -7,6 +7,8 @@ package zvr.zvrGUI.behaviors
 	import flash.events.TouchEvent;
 	import flash.ui.Keyboard;
 	import flash.ui.Multitouch;
+
+	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.core.ZvrStates;
 	import zvr.zvrKeyboard.ZvrKeyboard;
 	
@@ -29,8 +31,8 @@ package zvr.zvrGUI.behaviors
 		
 		override protected function enable():void
 		{
-			if (!enabled || !component.stage) return;
-			component.focusRect = false;
+			if (!enabled || !component.onStage) return;
+			ZvrComponent(component).focusRect = false;
 			
 			if (Multitouch.supportsTouchEvents)
 			{
@@ -46,7 +48,7 @@ package zvr.zvrGUI.behaviors
 			
 			component.addEventListener(FocusEvent.FOCUS_IN, focusIn);
 			if (component.skin.body) component.skin.body.addEventListener(FocusEvent.FOCUS_IN, focusIn);
-			component.buttonMode = true;
+			ZvrComponent(component).buttonMode = true;
 			
 		}
 		
@@ -88,12 +90,12 @@ package zvr.zvrGUI.behaviors
 			if (Multitouch.supportsTouchEvents)
 			{
 				component.removeEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
-				component.stage.addEventListener(TouchEvent.TOUCH_END, mouseUp);
+				ZvrComponent(component).stage.addEventListener(TouchEvent.TOUCH_END, mouseUp);
 			}
 			else
 			{
 				component.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				component.stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+				ZvrComponent(component).stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			}
 			
 			
@@ -107,22 +109,22 @@ package zvr.zvrGUI.behaviors
 			{
 				component.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
 				component.addEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
-				component.stage.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
+				ZvrComponent(component).stage.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
 			}
 			else
 			{
 				component.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
 				component.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				component.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
+				ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			}
 			
 			component.manageStates(ZvrStates.NORMAL, ZvrStates.DOWN);			
-			if (component.stage.focus != component) component.stage.focus = component;
+			if (ZvrComponent(component).stage.focus != component) ZvrComponent(component).stage.focus = ZvrComponent(component);
 		}
 		
 		override protected function disable():void
 		{
-			if (enabled || !component.stage) return;
+			if (enabled || !component.onStage) return;
 			
 			if (Multitouch.supportsTouchEvents)
 			{
@@ -140,8 +142,8 @@ package zvr.zvrGUI.behaviors
 			}
 			
 			if (component.skin.body) component.skin.body.removeEventListener(FocusEvent.FOCUS_IN, focusIn);
-			
-			component.buttonMode = false;
+
+			ZvrComponent(component).buttonMode = false;
 			removeKeyboardEvents();
 			component.manageStates([ZvrStates.NORMAL], [ZvrStates.DOWN, ZvrStates.OVER, ZvrStates.FOCUSED])
 		}

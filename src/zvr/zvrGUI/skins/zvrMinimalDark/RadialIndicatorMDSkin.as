@@ -3,6 +3,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 	import flash.display.Sprite;
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.core.ZvrStates;
+	import zvr.zvrGUI.skins.base.ZvrFlashSkin;
 	import zvr.zvrGUI.skins.base.ZvrSkin;
 	import zvr.zvrGUI.skins.ZvrStyles;
 	import zvr.zvrTools.ZvrPnt;
@@ -22,7 +23,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 		
 		override protected function create():void
 		{
-			_body = new Sprite();
+			_body = new ZvrFlashSkin();
 			drawBackground();
 		}
 		

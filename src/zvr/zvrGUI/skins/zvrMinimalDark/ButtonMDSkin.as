@@ -9,6 +9,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 	import zvr.zvrGUI.core.ZvrStates;
 	import zvr.zvrGUI.events.ZvrLabelEvent;
 	import zvr.zvrGUI.events.ZvrStateChangeEvent;
+	import zvr.zvrGUI.skins.base.ZvrFlashSkin;
 	import zvr.zvrGUI.skins.base.ZvrSkin;
 	import zvr.zvrGUI.skins.ZvrStyles;
 	
@@ -32,7 +33,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 		
 		override protected function create():void
 		{
-			_body = new Sprite();
+			_body = new ZvrFlashSkin();
 			button.label.addEventListener(ZvrLabelEvent.TEXT_CHANGE, labelChange);
 			button.addEventListener(ZvrStateChangeEvent.CHANGE, stateChange);
 			
@@ -177,12 +178,12 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			
 			if (e.newStates.indexOf(ZvrStates.DISABLED) != -1)
 			{
-				_body.alpha = 0.5;
+				spriteBody.alpha = 0.5;
 				drawBackground();
 			}
 			else if (e.removedStates.indexOf( ZvrStates.DISABLED) != -1)
 			{
-				_body.alpha = 1;
+				spriteBody.alpha = 1;
 				drawBackground();
 			}
 			
@@ -196,7 +197,10 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			drawBackground();
 		}
 		
-		
+		private function get spriteBody():Sprite
+		{
+			return _body as Sprite;
+		}
 	}
 
 }

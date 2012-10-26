@@ -10,6 +10,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 	import flash.utils.getTimer;
 	import zvr.zvrGUI.components.minimalDark.LinearChartMD;
 	import zvr.zvrGUI.core.ZvrComponent;
+	import zvr.zvrGUI.skins.base.ZvrFlashSkin;
 	import zvr.zvrGUI.skins.base.ZvrSkin;
 	import zvr.zvrGUI.vo.charts.Chart;
 	import zvr.zvrGUI.vo.charts.ChartPoint;
@@ -51,7 +52,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 		{
 			_bitmapData = new Raster(1, 1);
 			_bitmap.bitmapData = _bitmapData;
-			_body = new Sprite();
+			_body = new ZvrFlashSkin();
 			sprite.addEventListener(Event.EXIT_FRAME, render);
 			sprite.addChild(_bitmap);
 		}

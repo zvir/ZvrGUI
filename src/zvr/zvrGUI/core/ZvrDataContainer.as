@@ -1,18 +1,15 @@
 package zvr.zvrGUI.core 
 {
-	import flash.events.Event;
-	import flash.events.MouseEvent;
+
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
 	import mx.collections.ArrayCollection;
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
-	import zvr.zvrGUI.core.ZvrItemRenderer;
 	import zvr.zvrGUI.events.ZvrComponentEvent;
 	import zvr.zvrGUI.events.ZvrDataContainerEvent;
 	import zvr.zvrGUI.layouts.data.ZvrDataLayout;
-	import zvr.zvrGUI.layouts.ZvrLayout;
 	import zvr.zvrGUI.managers.ZvrDataItemsManager;
 		/**
 	 * @author	Michał Zwieruho "Zvir"

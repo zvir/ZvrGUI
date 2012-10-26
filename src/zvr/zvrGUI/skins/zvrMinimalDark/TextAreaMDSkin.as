@@ -8,6 +8,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 	import zvr.zvrGUI.core.ZvrLabel;
 	import zvr.zvrGUI.core.ZvrLabelChangeKind;
 	import zvr.zvrGUI.events.ZvrLabelEvent;
+	import zvr.zvrGUI.skins.base.ZvrFlashSkin;
 	import zvr.zvrGUI.skins.base.ZvrSkin;
 	import zvr.zvrGUI.skins.base.ZvrTextFormatStyle;
 	import zvr.zvrGUI.skins.zvrMinimalDark.LabelMDSkin;
@@ -41,7 +42,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			_textField.autoSize = TextFieldAutoSize.NONE;
 			_textField.mouseWheelEnabled = false;
 			
-			_body = new Sprite();
+			_body = new ZvrFlashSkin();
 			Sprite(_body).addChild(_textField);
 			
 			_blend = new Sprite();

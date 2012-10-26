@@ -7,6 +7,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.core.ZvrStates;
 	import zvr.zvrGUI.events.ZvrStateChangeEvent;
+	import zvr.zvrGUI.skins.base.ZvrFlashSkin;
 	import zvr.zvrGUI.skins.base.ZvrSkin;
 	import zvr.zvrGUI.skins.ZvrStyles;
 	
@@ -25,7 +26,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 		
 		override protected function create():void
 		{
-			_shell = new Sprite();
+			_shell = new ZvrFlashSkin();
 			//drawBackground();
 			
 			_component.addEventListener(ZvrStateChangeEvent.CHANGE, stateChange);

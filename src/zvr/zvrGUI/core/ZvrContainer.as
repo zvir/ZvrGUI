@@ -11,7 +11,8 @@ package zvr.zvrGUI.core
 	import zvr.zvrGUI.events.ZvrContainerEvent;
 	import zvr.zvrGUI.events.ZvrComponentEvent;
 	import zvr.zvrGUI.layouts.ZvrLayout;
-	
+	import zvr.zvrGUI.skins.base.IZvrSkinLayer;
+
 	/**
 	 * @author	Michał Zwieruho "Zvir"
 	 * @www	www.zvir.pl, www.celavra.pl
@@ -24,13 +25,13 @@ package zvr.zvrGUI.core
 	[Event(name="contentPositionChanged",type="zvr.zvrGUI.events.ZvrContainerEvent")]
 	
 	
-	public class ZvrContainer extends ZvrContainerRelay
+	public class ZvrContainer extends ZvrContainerRelay implements IZvrContainer
 	{
 		
 		protected var _contentWidth:Number = 0;
 		protected var _contentHeight:Number = 0;
-		protected var _elements:Vector.<ZvrComponent> = new Vector.<ZvrComponent>;
-		private var _presentElements:Vector.<ZvrComponent> = new Vector.<ZvrComponent>;
+		protected var _elements:Vector.<IZvrComponent> = new Vector.<IZvrComponent>;
+		private var _presentElements:Vector.<IZvrComponent> = new Vector.<IZvrComponent>;
 		private var _test:Sprite = new Sprite();
 		private var _layout:ZvrLayout;
 		private var _updateLayout:Function;
@@ -49,13 +50,14 @@ package zvr.zvrGUI.core
 			_contents.mask = _mask;
 			super(_contents, skinClass);
 			_sizeManager = new ZvrContainerSizeManager(this);
-			_contentPadding = new ZvrContentPadding(contentPaddingSetter)
+			_contentPadding = new ZvrContentPadding(contentPaddingSetter);
+
 			_base.addChild(_contents);
 			_base.addChild(_mask);
 			
 			if (_skin.shell)
 			{
-				_base.setChildIndex(_skin.shell, _base.numChildren -1);
+				_base.setChildIndex(_skin.shell as DisplayObject, _base.numChildren -1);
 			}
 			
 			addEventListener(ZvrComponentEvent.RESIZE, resized);
@@ -97,7 +99,7 @@ package zvr.zvrGUI.core
 		
 		private function elementPresentsChange(e:ZvrComponentEvent):void
 		{
-			updatePresentElement(e.component);
+			updatePresentElement(e.component as ZvrComponent);
 			updateContainer();
 		}
 		
@@ -175,7 +177,7 @@ package zvr.zvrGUI.core
 			_contentWidthAreaIndependent = width;
 			
 			var r:Rectangle = new Rectangle();
-			var e:ZvrComponent;
+			var e:IZvrComponent;
 			var ex:ZvrExplicitReport;
 			
 			for (var i:int = 0; i < _presentElements.length; i++)
@@ -215,7 +217,7 @@ package zvr.zvrGUI.core
 		{
 			var h:Number = 0;
 			var w:Number = 0;
-			var e:ZvrComponent;
+			var e:IZvrComponent;
 			
 			for (var i:int = 0; i < _elements.length; i++)
 			{
@@ -311,7 +313,7 @@ package zvr.zvrGUI.core
 			
 			if (skin.shell)
 			{
-				_base.setChildIndex(_skin.shell, _base.numChildren -1);
+				_base.setChildIndex(_skin.shell as DisplayObject, _base.numChildren -1);
 			}
 			
 			return super.addChild(child);
@@ -354,17 +356,17 @@ package zvr.zvrGUI.core
 			return _elements.length;
 		}
 		
-		public function getElementAt(index:int):ZvrComponent
+		public function getElementAt(index:int):IZvrComponent
 		{
-			return _elements[index] as ZvrComponent;
+			return _elements[index] as IZvrComponent;
 		}
 		
-		public function getElementIndex(element:ZvrComponent):int
+		public function getElementIndex(element:IZvrComponent):int
 		{
 			return _elements.indexOf(element);
 		}
 		
-		public function setElementIndex(child:DisplayObject, index:int):void
+		public function setElementIndex(child:IZvrComponent, index:int):void
 		{
 			if (!(child is ZvrComponent)) return;
 			var i:int = getElementIndex(child as ZvrComponent);
@@ -489,7 +491,7 @@ package zvr.zvrGUI.core
 		 * @return Vector of components that need to be layout.
 		 */
 		
-		public function get presentElements():Vector.<ZvrComponent>
+		public function get presentElements():Vector.<IZvrComponent>
 		{
 			return _presentElements;
 		}
@@ -547,7 +549,28 @@ package zvr.zvrGUI.core
 		{
 			return _contentWidthAreaIndependent;
 		}
-		
+
+		public function addComponent(child:IZvrComponent):IZvrComponent
+		{
+			return null;
+		}
+
+		public function removeComponent(child:IZvrComponent):IZvrComponent
+		{
+			return null;
+		}
+
+		public function addSkinLayer(skinLayer:IZvrSkinLayer):void
+		{
+		}
+
+		public function addShellLayer(skinLayer:IZvrSkinLayer):void
+		{
+		}
+
+		public function updateShellDepth(skinLayer:IZvrSkinLayer):void
+		{
+		}
 	}
 }
 

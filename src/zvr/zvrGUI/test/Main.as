@@ -1,8 +1,6 @@
 package zvr.zvrGUI.test
 {
-	
-	import adobe.utils.CustomActions;
-	import away3d.test.Panel;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -19,7 +17,6 @@ package zvr.zvrGUI.test
 	import flash.utils.clearTimeout;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
-	import net.hires.debug.Stats;
 	import utils.color.toHexString;
 	import zvr.zvrComps.zvrTool.ZvrTool;
 	import zvr.zvrGUI.components.minimalDark.ButtonMD;
@@ -41,7 +38,6 @@ package zvr.zvrGUI.test
 	import zvr.zvrGUI.events.ZvrComponentEvent;
 	import zvr.zvrGUI.events.ZvrStateChangeEvent;
 	import zvr.zvrGUI.layouts.ZvrAlignment;
-	import zvr.zvrGUI.layouts.ZvrButtonLayout;
 	import zvr.zvrGUI.layouts.ZvrHorizontalAlignment;
 	import zvr.zvrGUI.layouts.ZvrVerticalLayout;
 	import zvr.zvrGUI.layouts.ZvrHorizontalLayout;
@@ -242,7 +238,7 @@ package zvr.zvrGUI.test
 			tb.addEventListener(ZvrStateChangeEvent.CHANGE, tbStateChange);
 			tb.autoSize = ZvrAutoSize.MANUAL;
 			tb.width = 150;
-			ZvrButtonLayout(tb.layout).horizontalAlign = ZvrHorizontalAlignment.CENTER;
+			//ZvrButtonLayout(tb.layout).horizontalAlign = ZvrHorizontalAlignment.CENTER;
 			tr(b.width, b.contentPadding.left, b.contentPadding.right);
 			
 			//createTextfield();
@@ -345,17 +341,17 @@ package zvr.zvrGUI.test
 			
 			tr("----------------");
 			ButtonMD(e.target).enterMassChangeMode();
-			if (ButtonMD(e.target).icon.bitmap)
+			if (ButtonMD(e.target).icon.bitmapData)
 			{
 				tr("> icon change");
-			ButtonMD(e.target).icon.bitmap = 
-				ButtonMD(e.target).icon.bitmap.width != 64 ? 
+			ButtonMD(e.target).icon.bitmapData =
+				ButtonMD(e.target).icon.bitmapData.width != 64 ?
 					TextureFillsMD.getBitmapData(TextureFillsMD.CELAVRA_LOGO_64) : TextureFillsMD.getBitmapData(TextureFillsMD.CELAVRA_LOGO_32)
 			}
 			else
 			{
 				tr("> icon change");
-				ButtonMD(e.target).icon.bitmap = TextureFillsMD.getBitmapData(TextureFillsMD.CELAVRA_LOGO_16)
+				ButtonMD(e.target).icon.bitmapData = TextureFillsMD.getBitmapData(TextureFillsMD.CELAVRA_LOGO_16)
 			}
 			
 			//ButtonMD(e.target).icon.setStyle(ZvrStyles.COLOR, 0xff0000);

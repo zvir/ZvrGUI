@@ -37,32 +37,32 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 		{
 			super(component, registration);
 		}
-		
-		override protected function updateSize():void
+
+		override public function updateSize():void
 		{
 			drawBackground();
 		}
-		
-		override protected function create():void
+
+		override public function create():void
 		{
 			_body = new Sprite();
 			_indicator = new Shape();
 			Sprite(_body).addChild(_indicator);
 		}
-		
-		override protected function registerStyles():void
+
+		override public function registerStyles():void
 		{
 			registerStyle(ZvrStyles.BG_COLOR, drawBackground);
 			registerStyle(ZvrStyles.BG_ALPHA, drawBackground);
 			registerStyle(ZvrStyles.FR_COLOR, drawBackground);
 			registerStyle(ZvrStyles.FR_ALPHA, drawBackground);
 			registerStyle(ZvrStyles.FR_WEIGHT, drawBackground);
-			
+
 			registerStyle("indicatorPosition", updateIndicatorPosition);
 			registerStyle("indicatorColor", drawBackground);
 		}
-		
-		override protected function setStyles():void
+
+		override public function setStyles():void
 		{
 			setStyle(ZvrStyles.BG_COLOR, TextureFillsMD.getBitmapData(TextureFillsMD.BUTTON_NORMAL_PATERN));
 			setStyle(ZvrStyles.FR_COLOR, ColorsMD.c3, ZvrStates.NORMAL);
@@ -71,7 +71,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			setStyle("indicatorPosition", TR);
 			setStyle("indicatorColor", ColorsMD.c1);
 		}
-		
+
 		private function drawBackground():void 
 		{
 			if (!sprite) return;

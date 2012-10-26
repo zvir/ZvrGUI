@@ -1,9 +1,7 @@
 package zvr.zvrGUI.layouts 
 {
-	import zvr.zvrGUI.core.ZvrContainer;
-	import zvr.zvrGUI.core.ZvrComponent;
-	import zvr.zvrGUI.events.ZvrContainerEvent;
-	import zvr.zvrGUI.events.ZvrComponentEvent;
+	import zvr.zvrGUI.core.IZvrComponent;
+	import zvr.zvrGUI.core.IZvrContainer;
 	
 	/**
 	 * @author	Michał Zwieruho "Zvir"
@@ -16,9 +14,9 @@ package zvr.zvrGUI.layouts
 		
 		private var _gap:Number = 10;
 		
-		public function ZvrHorizontalLayout(cointainer:ZvrContainer, computeContentBounds:Function, registration:Function, contentAreaIndependent:Function) 
+		public function ZvrHorizontalLayout(container:IZvrContainer, computeContentBounds:Function, registration:Function, contentAreaIndependent:Function)
 		{
-			super(cointainer, computeContentBounds, registration, contentAreaIndependent);
+			super(container, computeContentBounds, registration, contentAreaIndependent);
 		}
 		
 		override protected function layout():void 
@@ -26,9 +24,9 @@ package zvr.zvrGUI.layouts
 			var x:Number = 0;
 			var w:Number = 0;
 			
-			for (var i:int = 0; i < elementes.length; i++) 
+			for (var i:int = 0; i < elementes.length; i++)
 			{
-				var comp:ZvrComponent = elementes[i];
+				var comp:IZvrComponent = elementes[i];
 				comp.x = x + w + (isNaN(comp.left) ? 0 : comp.left);
 				x = comp.x;
 				w = comp.bounds.width + gap + (isNaN(comp.right) ? 0 : comp.right);

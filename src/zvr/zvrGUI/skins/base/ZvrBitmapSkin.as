@@ -17,7 +17,7 @@ package zvr.zvrGUI.skins.base
 	public class ZvrBitmapSkin extends ZvrSkin
 	{
 		
-		private var _bitmap:Bitmap = new Bitmap();
+		private var _bitmap:ZvrFlashBitmapSkin = new ZvrFlashBitmapSkin();
 		
 		public function ZvrBitmapSkin(bitmapComponent:ZvrBitmap, registration:Function) 
 		{

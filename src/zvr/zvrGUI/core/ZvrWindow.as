@@ -1,10 +1,8 @@
 package zvr.zvrGUI.core
 {
-	import flash.display.DisplayObject;
-	import zvr.zvrGUI.core.ZvrComponent;
+
 	import zvr.zvrGUI.events.ZvrStateChangeEvent;
 	import zvr.zvrGUI.events.ZvrWindowEvent;
-	import zvr.zvrGUI.layouts.ZvrLayout;
 	
 	/**
 	 * @author	Michał Zwieruho "Zvir"

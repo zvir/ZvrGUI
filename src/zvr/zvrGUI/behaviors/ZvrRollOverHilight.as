@@ -29,41 +29,41 @@ package zvr.zvrGUI.behaviors
 		
 		override protected function enable():void
 		{
-			component.focusRect = false;
-			component.addEventListener(MouseEvent.ROLL_OVER, mouseOver);
-			component.addEventListener(Event.REMOVED_FROM_STAGE, componentRemovedFromStage);
+			ZvrComponent(component).focusRect = false;
+			ZvrComponent(component).addEventListener(MouseEvent.ROLL_OVER, mouseOver);
+			ZvrComponent(component).addEventListener(Event.REMOVED_FROM_STAGE, componentRemovedFromStage);
 		}
 		
 		private function componentRemovedFromStage(e:Event):void 
 		{
-			component.stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOut);
-			component.stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOver);
+			ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOut);
+			ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOver);
 		}
 		
 		private function mouseDown(e:MouseEvent):void 
 		{
 			_mouseDown = true;
-			component.stage.addEventListener(MouseEvent.MOUSE_UP, stageMouseUp);
+			ZvrComponent(component).stage.addEventListener(MouseEvent.MOUSE_UP, stageMouseUp);
 		}
 		
 		private function stageMouseUp(e:MouseEvent):void 
 		{
-			component.addEventListener(MouseEvent.ROLL_OUT, mouseOut);
+			ZvrComponent(component).addEventListener(MouseEvent.ROLL_OUT, mouseOut);
 		}
 		
 		private function mouseOver(e:MouseEvent):void 
 		{
 			_mouseOver = true;
-			component.addEventListener(MouseEvent.ROLL_OUT, mouseOut);
+			ZvrComponent(component).addEventListener(MouseEvent.ROLL_OUT, mouseOut);
 			
 			if (e && e.buttonDown)
 			{
-				component.stage.addEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOver);
+				ZvrComponent(component).stage.addEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOver);
 				return;
 			}
 			
-			component.removeEventListener(MouseEvent.ROLL_OVER, mouseOver);
-			component.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+			ZvrComponent(component).removeEventListener(MouseEvent.ROLL_OVER, mouseOver);
+			ZvrComponent(component).addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 			
 			component.addState(ZvrStates.HILIGHT);
 			
@@ -73,17 +73,17 @@ package zvr.zvrGUI.behaviors
 		{
 			_mouseOver = false;
 			
-			component.stage && component.stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOver);
+			ZvrComponent(component).stage && ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOver);
 			
 			if (e && e.buttonDown)
 			{
-				component.stage && component.stage.addEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOut);
+				component.onStage && ZvrComponent(component).stage.addEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOut);
 				return;
 			}
 			
-			component.removeEventListener(MouseEvent.ROLL_OUT, mouseOut);
-			component.addEventListener(MouseEvent.ROLL_OVER, mouseOver);
-			component.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+			ZvrComponent(component).removeEventListener(MouseEvent.ROLL_OUT, mouseOut);
+			ZvrComponent(component).addEventListener(MouseEvent.ROLL_OVER, mouseOver);
+			ZvrComponent(component).removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 			
 			component.removeState(ZvrStates.HILIGHT);	
 		}
@@ -92,9 +92,9 @@ package zvr.zvrGUI.behaviors
 		{
 			_mouseDown = false;
 			
-			if (!component.stage) return;
+			if (!component.onStage) return;
 			
-			component.stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOut);
+			ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOut);
 			
 			if (!_mouseOver) 
 				mouseOut(null);
@@ -104,9 +104,9 @@ package zvr.zvrGUI.behaviors
 		{
 			_mouseDown = false;
 			
-			if (!component.stage) return;
+			if (!component.onStage) return;
 			
-			component.stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOver);
+			ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseCheckOver);
 			
 			if (_mouseOver) 
 				mouseOver(null);
@@ -114,8 +114,8 @@ package zvr.zvrGUI.behaviors
 		
 		override protected function disable():void
 		{
-			component.removeEventListener(MouseEvent.ROLL_OUT, mouseOut);
-			component.removeEventListener(MouseEvent.ROLL_OVER, mouseOver);
+			ZvrComponent(component).removeEventListener(MouseEvent.ROLL_OUT, mouseOut);
+			ZvrComponent(component).removeEventListener(MouseEvent.ROLL_OVER, mouseOver);
 			component.removeState(ZvrStates.HILIGHT);
 		}
 		

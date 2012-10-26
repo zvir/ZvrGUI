@@ -84,21 +84,21 @@ package zvr.zvrGUI.components.minimalDark
 		
 		private function windowRestore(e:ZvrWindowEvent):void 
 		{			
-			maximilaze.icon.bitmap = _maximilizeBD;
-			minimalize.icon.bitmap  = _minimalizeBD;
+			maximilaze.icon.bitmapData = _maximilizeBD;
+			minimalize.icon.bitmapData  = _minimalizeBD;
 		}
 		
 		private function windowMinimalize(e:ZvrWindowEvent):void 
 		{
-			maximilaze.icon.bitmap = _maximilizeBD;
-			minimalize.icon.bitmap  = _restoreBD2;
+			maximilaze.icon.bitmapData = _maximilizeBD;
+			minimalize.icon.bitmapData  = _restoreBD2;
 		}
 		
 		private function windowMaximilize(e:ZvrWindowEvent):void 
 		{
 			
-			maximilaze.icon.bitmap = _restoreBD;
-			minimalize.icon.bitmap  = _minimalizeBD;
+			maximilaze.icon.bitmapData = _restoreBD;
+			minimalize.icon.bitmapData  = _minimalizeBD;
 		}
 		
 		private function click(e:MouseEvent):void 

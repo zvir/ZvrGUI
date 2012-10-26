@@ -1,7 +1,9 @@
 package zvr.zvrGUI.events 
 {
 	import flash.events.Event;
-	import zvr.zvrGUI.core.ZvrComponent;
+
+	import zvr.zvrGUI.core.IZvrComponent;
+
 	
 	/**
 	 * @author	Michał Zwieruho "Zvir"
@@ -13,12 +15,12 @@ package zvr.zvrGUI.events
 	{
 		public static const CHANGE:String = "stateChange";
 		
-		private var _component:ZvrComponent;
+		private var _component:IZvrComponent;
 		private var _newStates:Array;
 		private var _currentStates:Array;
 		private var _removedStates:Array;
 		
-		public function ZvrStateChangeEvent(type:String, component:ZvrComponent, newStates:Array, removedStates:Array, currentStates:Array, bubbles:Boolean=false, cancelable:Boolean=false) 
+		public function ZvrStateChangeEvent(type:String, component:IZvrComponent, newStates:Array, removedStates:Array, currentStates:Array, bubbles:Boolean=false, cancelable:Boolean=false)
 		{ 
 			super(type, bubbles, cancelable);
 			_removedStates = removedStates == null ? [] : removedStates;
@@ -53,7 +55,7 @@ package zvr.zvrGUI.events
 			return formatToString("ZvrStateChangeEvent", "type",  "_component", "newState", "currentStates", "bubbles", "cancelable", "eventPhase"); 
 		}
 		
-		public function get component():ZvrComponent 
+		public function get component():IZvrComponent
 		{
 			return _component;
 		}

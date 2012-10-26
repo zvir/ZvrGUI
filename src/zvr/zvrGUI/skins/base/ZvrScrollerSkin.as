@@ -19,7 +19,7 @@ package zvr.zvrGUI.skins.base
 		
 		override protected function create():void
 		{
-			_body = new Sprite();
+			_body = new ZvrFlashSkin();
 			drawBackground();
 		}
 		

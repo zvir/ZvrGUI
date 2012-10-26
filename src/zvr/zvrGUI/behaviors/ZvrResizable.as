@@ -57,9 +57,9 @@ package zvr.zvrGUI.behaviors
 				_resizeHandlers[i].removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 			}
 			
-			if (component.stage) {
-				component.stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);	
-				component.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
+			if (component.onStage) {
+				ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);	
+				ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			}
 		}
 		
@@ -71,11 +71,11 @@ package zvr.zvrGUI.behaviors
 		
 		private function mouseDown(e:MouseEvent):void 
 		{
-			component.stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);	
-			component.stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+			ZvrComponent(component).stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);	
+			ZvrComponent(component).stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			
-			_point.x = component.mouseX;
-			_point.y = component.mouseY;
+			_point.x = ZvrComponent(component).mouseX;
+			_point.y = ZvrComponent(component).mouseY;
 			
 			_dispatchEvent(ZvrResizeBehaviorEvent.START_RESIZE);
 			
@@ -83,8 +83,8 @@ package zvr.zvrGUI.behaviors
 		
 		private function mouseUp(e:MouseEvent):void 
 		{
-			component.stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);	
-			component.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
+			ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);	
+			ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			
 			_dispatchEvent(ZvrResizeBehaviorEvent.STOP_RESIZE);
 			
@@ -125,8 +125,8 @@ package zvr.zvrGUI.behaviors
 		
 		private function bottomRightResize():void
 		{
-			var w:Number = _point.x - component.mouseX;
-			var h:Number = _point.y - component.mouseY;
+			var w:Number = _point.x - ZvrComponent(component).mouseX;
+			var h:Number = _point.y - ZvrComponent(component).mouseY;
 			
 			var th:Number = component.bounds.height;
 			var tw:Number = component.bounds.width;

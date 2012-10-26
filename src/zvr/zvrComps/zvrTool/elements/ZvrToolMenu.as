@@ -61,7 +61,7 @@ package zvr.zvrComps.zvrTool.elements
 			
 			hide.label.text = ">";
 			hideAll.label.text = "Hide All";
-			closeBt.icon.bitmap = TextureFillsMD.getBitmapData(TextureFillsMD.CELAVRA_LOGO_16);
+			closeBt.icon.bitmapData = TextureFillsMD.getBitmapData(TextureFillsMD.CELAVRA_LOGO_16);
 			watcher.label.text = "Watcher";
 			stats.label.text = "Chats";
 			tracer.label.text = "Tracer";
@@ -69,13 +69,13 @@ package zvr.zvrComps.zvrTool.elements
 			toggler.label.text = "Toggler";	
 			sounder.label.text = "Sounder";	
 			
-			hideAll.exlcudeIn = "hided";
-			watcher.exlcudeIn = "hided";
-			stats.exlcudeIn = "hided";
-			tracer.exlcudeIn = "hided";	
-			tracy.exlcudeIn = "hided";
-			toggler.exlcudeIn = "hided";
-			sounder.exlcudeIn = "hided";
+			hideAll.excludeIn = "hided";
+			watcher.excludeIn = "hided";
+			stats.excludeIn = "hided";
+			tracer.excludeIn = "hided";
+			tracy.excludeIn = "hided";
+			toggler.excludeIn = "hided";
+			sounder.excludeIn = "hided";
 			
 			addChild(hide);
 			addChild(hideAll);

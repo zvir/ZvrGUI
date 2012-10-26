@@ -1,5 +1,6 @@
 package zvr.zvrGUI.skins.base 
 {
+	import zvr.zvrGUI.core.IZvrComponent;
 	import zvr.zvrGUI.core.ZvrComponent;
 		/**
 	 * @author	Michał Zwieruho "Zvir"
@@ -10,10 +11,10 @@ package zvr.zvrGUI.skins.base
 	public class ZvrProperty 
 	{
 		
-		public var component:ZvrComponent;
+		public var component:IZvrComponent;
 		public var property:String;
 		
-		public function ZvrProperty(component:ZvrComponent, property:String) 
+		public function ZvrProperty(component:IZvrComponent, property:String)
 		{
 			this.component = component;
 			this.property = property;

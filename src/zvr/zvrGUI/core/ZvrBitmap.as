@@ -22,17 +22,17 @@ package zvr.zvrGUI.core
 			minWidth = 0;
 		}
 		
-		public function get bitmap():BitmapData
+		public function get bitmapData():BitmapData
 		{
 			return getStyle(ZvrStyles.BITMAP);
 		}
 		
-		public function get body():Bitmap
+		public function get bitmap():Bitmap
 		{
 			return ZvrBitmapSkin(_skin).bitmap;
 		}
 		
-		public function set bitmap(value:BitmapData):void 
+		public function set bitmapData(value:BitmapData):void
 		{
 			setStyle(ZvrStyles.BITMAP, value);
 		}

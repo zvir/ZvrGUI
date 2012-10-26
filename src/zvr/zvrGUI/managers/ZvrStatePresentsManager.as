@@ -1,6 +1,8 @@
 package zvr.zvrGUI.managers 
 {
 	import flash.display.DisplayObjectContainer;
+
+	import zvr.zvrGUI.core.IZvrComponent;
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.events.ZvrComponentEvent;
 	import zvr.zvrGUI.events.ZvrStateChangeEvent;
@@ -19,11 +21,10 @@ package zvr.zvrGUI.managers
 		private var _excludeIn:Array = new Array();
 		private var _includeInLayout:Object;
 		private var _present:Boolean = true;
-		private var _component:ZvrComponent;
-		private var _parent:DisplayObjectContainer;
+		private var _component:IZvrComponent;
 		private var _visibleSetter:Function;
 		
-		public function ZvrStatePresentsManager(component:ZvrComponent, visibleSetter:Function) 
+		public function ZvrStatePresentsManager(component:IZvrComponent, visibleSetter:Function)
 		{
 			_visibleSetter = visibleSetter;
 			_component = component;
@@ -36,7 +37,7 @@ package zvr.zvrGUI.managers
 			_component.owner.addEventListener(ZvrStateChangeEvent.CHANGE, ownerStateChange);
 			_component.addEventListener(ZvrComponentEvent.REMOVED, componentRemoved);
 			_component.removeEventListener(ZvrComponentEvent.ADDED, componentAdded);
-			_parent = _component.parent;
+
 			update();
 		}
 		

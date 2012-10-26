@@ -9,6 +9,7 @@ package zvr.zvrGUI.behaviors
 	import flash.ui.Multitouch;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
+	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.core.ZvrScroller;
 	import zvr.zvrGUI.core.ZvrStates;
 	import zvr.zvrGUI.events.ZvrStateChangeEvent;
@@ -84,8 +85,8 @@ package zvr.zvrGUI.behaviors
 			
 			_cancelScrolItv = setTimeout(cancelScroll, 100);
 			
-			_startClick.x = component.mouseX;
-			_startClick.y = component.mouseY;
+			_startClick.x = ZvrComponent(component).mouseX;
+			_startClick.y = ZvrComponent(component).mouseY;
 			_lastPosition = _startClick.clone();
 		}
 		
@@ -122,7 +123,7 @@ package zvr.zvrGUI.behaviors
 		
 		private function mouseMove(e:Event):void 
 		{
-			_currentPosition = new Point(component.mouseX, component.mouseY);
+			_currentPosition = new Point(ZvrComponent(component).mouseX, ZvrComponent(component).mouseY);
 			
 			if (Point.distance(_startClick, _currentPosition) > 4 && _cancelScrolItv > 0)
 			{
@@ -177,29 +178,29 @@ package zvr.zvrGUI.behaviors
 		
 			if (Multitouch.supportsTouchEvents)
 			{
-				component.stage.addEventListener(TouchEvent.TOUCH_MOVE, mouseMove);
-				component.stage.addEventListener(TouchEvent.TOUCH_END, mouseUp);
+				ZvrComponent(component).stage.addEventListener(TouchEvent.TOUCH_MOVE, mouseMove);
+				ZvrComponent(component).stage.addEventListener(TouchEvent.TOUCH_END, mouseUp);
 			}
 			else
 			{
-				component.stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
-				component.stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+				ZvrComponent(component).stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				ZvrComponent(component).stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			}
 		}
 		
 		private function removeEventListeners():void
 		{
-			if (!component.stage) return;
+			if (!component.onStage) return;
 			
 			if (Multitouch.supportsTouchEvents)
 			{
-				component.stage.removeEventListener(TouchEvent.TOUCH_MOVE, mouseMove);
-				component.stage.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
+				ZvrComponent(component).stage.removeEventListener(TouchEvent.TOUCH_MOVE, mouseMove);
+				ZvrComponent(component).stage.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
 			}
 			else
 			{
-				component.stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
-				component.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
+				ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
 				
 			}
 		}

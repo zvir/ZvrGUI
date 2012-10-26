@@ -7,6 +7,7 @@ package zvr.zvrGUI.behaviors
 	import flash.events.TouchEvent;
 	import flash.ui.Keyboard;
 	import flash.ui.Multitouch;
+	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.core.ZvrStates;
 	
 	/**
@@ -25,22 +26,22 @@ package zvr.zvrGUI.behaviors
 		
 		override protected function enable():void
 		{
-			component.focusRect = false;
+			ZvrComponent(component).focusRect = false;
 			
 			if (Multitouch.supportsTouchEvents)
 			{
-				component.addEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
-				component.addEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
+				ZvrComponent(component).addEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
+				ZvrComponent(component).addEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
 			}
 			else
 			{
-				component.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				component.addEventListener(MouseEvent.ROLL_OVER, mouseOver);
+				ZvrComponent(component).addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+				ZvrComponent(component).addEventListener(MouseEvent.ROLL_OVER, mouseOver);
 			}
 			
 			
 			
-			component.buttonMode = true;
+			ZvrComponent(component).buttonMode = true;
 		}
 		
 		private function mouseOver(e:Event):void 
@@ -49,13 +50,13 @@ package zvr.zvrGUI.behaviors
 			
 			if (Multitouch.supportsTouchEvents)
 			{
-				component.addEventListener(TouchEvent.TOUCH_ROLL_OUT, mouseOut);
-				component.removeEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
+				ZvrComponent(component).addEventListener(TouchEvent.TOUCH_ROLL_OUT, mouseOut);
+				ZvrComponent(component).removeEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
 			}
 			else
 			{
-				component.addEventListener(MouseEvent.ROLL_OUT, mouseOut);
-				component.removeEventListener(MouseEvent.ROLL_OVER, mouseOver);
+				ZvrComponent(component).addEventListener(MouseEvent.ROLL_OUT, mouseOut);
+				ZvrComponent(component).removeEventListener(MouseEvent.ROLL_OVER, mouseOver);
 			}
 			
 			component.manageStates(ZvrStates.OVER, ZvrStates.NORMAL);	
@@ -67,13 +68,13 @@ package zvr.zvrGUI.behaviors
 			//tr("mouseOut");
 			if (Multitouch.supportsTouchEvents)
 			{
-				component.removeEventListener(TouchEvent.TOUCH_ROLL_OUT, mouseOut);
-				component.addEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
+				ZvrComponent(component).removeEventListener(TouchEvent.TOUCH_ROLL_OUT, mouseOut);
+				ZvrComponent(component).addEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
 			}
 			else
 			{
-				component.removeEventListener(MouseEvent.ROLL_OUT, mouseOut);
-				component.addEventListener(MouseEvent.ROLL_OVER, mouseOver);
+				ZvrComponent(component).removeEventListener(MouseEvent.ROLL_OUT, mouseOut);
+				ZvrComponent(component).addEventListener(MouseEvent.ROLL_OVER, mouseOver);
 			}
 			component.manageStates(ZvrStates.NORMAL, ZvrStates.OVER);	
 		}
@@ -82,13 +83,13 @@ package zvr.zvrGUI.behaviors
 		{
 			tr(e.type, this);if (Multitouch.supportsTouchEvents)
 			{
-				component.removeEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
-				component.stage.addEventListener(TouchEvent.TOUCH_END, mouseUp);
+				ZvrComponent(component).removeEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
+				ZvrComponent(component).stage.addEventListener(TouchEvent.TOUCH_END, mouseUp);
 			}
 			else
 			{
-				component.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				component.stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+				ZvrComponent(component).removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+				ZvrComponent(component).stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			}
 			
 			component.addState(ZvrStates.DOWN);	
@@ -99,48 +100,48 @@ package zvr.zvrGUI.behaviors
 			//tr("mouseUp");
 			if (Multitouch.supportsTouchEvents)
 			{
-				component.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
-				component.addEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
-				component.stage.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
+				ZvrComponent(component).removeEventListener(TouchEvent.TOUCH_END, mouseUp);
+				ZvrComponent(component).addEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
+				ZvrComponent(component).stage.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
 			}
 			else
 			{
-				component.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
-				component.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				component.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
+				ZvrComponent(component).removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
+				ZvrComponent(component).addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+				ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			}
 			
 			component.removeState(ZvrStates.DOWN);	
-			if (component.stage.focus != component) component.stage.focus = component;
+			if (ZvrComponent(component).stage.focus != component) ZvrComponent(component).stage.focus = ZvrComponent(component);
 		}
 		
 		override protected function disable():void
 		{
 			if (Multitouch.supportsTouchEvents)
 			{
-				component.removeEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
-				component.removeEventListener(TouchEvent.TOUCH_ROLL_OUT, mouseOut);
-				component.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
-				component.removeEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
+				ZvrComponent(component).removeEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
+				ZvrComponent(component).removeEventListener(TouchEvent.TOUCH_ROLL_OUT, mouseOut);
+				ZvrComponent(component).removeEventListener(TouchEvent.TOUCH_END, mouseUp);
+				ZvrComponent(component).removeEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
 			}
 			else
 			{
-				component.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				component.removeEventListener(MouseEvent.ROLL_OUT, mouseOut);
-				component.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
-				component.removeEventListener(MouseEvent.ROLL_OVER, mouseOver);
+				ZvrComponent(component).removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+				ZvrComponent(component).removeEventListener(MouseEvent.ROLL_OUT, mouseOut);
+				ZvrComponent(component).removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
+				ZvrComponent(component).removeEventListener(MouseEvent.ROLL_OVER, mouseOver);
 			}
 			
-			if (component.stage) component.stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDown);
-			component.buttonMode = false;
+			if (component.onStage) ZvrComponent(component).stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+			ZvrComponent(component).buttonMode = false;
 		}
 		
 		private function keyDown(e:KeyboardEvent):void 
 		{
 			if (e.keyCode == Keyboard.SPACE || e.keyCode == Keyboard.ENTER)
 			{
-				component.stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDown);
-				component.stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
+				ZvrComponent(component).stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+				ZvrComponent(component).stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
 				component.manageStates(ZvrStates.DOWN, ZvrStates.NORMAL);
 			}
 		}
@@ -149,8 +150,8 @@ package zvr.zvrGUI.behaviors
 		{
 			if (e.keyCode == Keyboard.SPACE || e.keyCode == Keyboard.ENTER)
 			{
-				component.stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyUp);
-				if (component.stage && component.stage.focus == component) component.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+				ZvrComponent(component).stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyUp);
+				if (component.onStage && ZvrComponent(component).stage.focus == component) ZvrComponent(component).stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 				component.manageStates(ZvrStates.NORMAL, ZvrStates.DOWN);
 			}
 		}

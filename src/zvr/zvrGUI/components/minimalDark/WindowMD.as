@@ -11,6 +11,7 @@ package zvr.zvrGUI.components.minimalDark
 	import zvr.zvrGUI.core.IZvrInteractive;
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.core.ZvrContainer;
+	import zvr.zvrGUI.core.ZvrContainer;
 	import zvr.zvrGUI.core.ZvrGroup;
 	import zvr.zvrGUI.core.ZvrStates;
 	import zvr.zvrGUI.core.ZvrWindow;
@@ -189,7 +190,7 @@ package zvr.zvrGUI.components.minimalDark
 		
 		override protected function closed():void 
 		{
-			if (owner) owner.removeChild(this);
+			if (owner) ZvrContainer(owner).removeChild(this);
 		}
 		
 	}

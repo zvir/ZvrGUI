@@ -35,7 +35,7 @@ package zvr.zvrGUI.components.minimalDark
 			
 			//label.text = "WTF"
 			
-			icon.bitmap = iconBitmap;
+			icon.bitmapData = iconBitmap;
 			icon.delegateStates = this;
 			icon.setStyle(ZvrStyles.COLOR_ALPHA, 1);
 			addChild(icon);

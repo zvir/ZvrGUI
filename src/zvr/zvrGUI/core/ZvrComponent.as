@@ -1,11 +1,13 @@
 package zvr.zvrGUI.core
 {
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import zvr.zvrGUI.behaviors.ZvrComponentBehaviors;
+	import zvr.zvrGUI.core.custom.IZvrComponentBody;
 	import zvr.zvrGUI.core.ZvrContainer;
 	import zvr.zvrGUI.events.ZvrComponentEvent;
 	import zvr.zvrGUI.events.ZvrStyleChangeEvent;
@@ -28,7 +30,7 @@ package zvr.zvrGUI.core
 	[Event(name="styleChange",type="zvr.zvrGUI.events.ZvrStyleChangeEvent")]
 	[Event(name="stateChange",type="zvr.zvrGUI.events.ZvrStateChangeEvent")]
 	
-	public class ZvrComponent extends Sprite
+	public class ZvrComponent extends Sprite implements IZvrComponent
 	{
 		
 		//protected var _debug:ZvrDebugComponent;
@@ -61,7 +63,7 @@ package zvr.zvrGUI.core
 		
 		private var _skinUpdateSize:Function;
 		
-		private var _owner:ZvrContainer;
+		private var _owner:IZvrContainer;
 		
 		private var _explicit:ZvrExplicitBounds = new ZvrExplicitBounds();
 		private var _skinCreate:Function;
@@ -87,9 +89,9 @@ package zvr.zvrGUI.core
 			_skinCreate();
 			
 			if (_skin.body)
-				super.addChild(_skin.body);
+				super.addChild(_skin.body as DisplayObject);
 			if (_skin.shell)
-				super.addChild(_skin.shell);
+				super.addChild(_skin.shell as DisplayObject);
 				
 			if (!_skin is ZvrSkin)
 				throw new Error("Error, class for sikin is not ZvrSkin");
@@ -447,7 +449,7 @@ package zvr.zvrGUI.core
 			_dispatchEvent(ZvrComponentEvent.ADDED);
 		}
 		
-		public function addToContainer(container:ZvrContainer):void
+		public function addToContainer(container:IZvrContainer):void
 		{
 			_owner = container;
 			validateBounds();
@@ -456,14 +458,14 @@ package zvr.zvrGUI.core
 			_dispatchEvent(ZvrComponentEvent.ADDED);
 		}
 		
-		public function removeFromContainer(container:ZvrContainer):void
+		public function removeFromContainer(container:IZvrContainer):void
 		{
 			if (_owner != container)
 				throw new Error("Cointaier isn't components owner");
 			
 			if (parent) 
 			{
-				container.removeChild(this);
+				ZvrContainer(container).removeChild(this);
 				return;
 			}
 				
@@ -871,7 +873,7 @@ package zvr.zvrGUI.core
 			return _skin.getStyle(styleName);
 		}
 		
-		public function get owner():ZvrContainer
+		public function get owner():IZvrContainer
 		{
 			return _owner;
 		}
@@ -921,7 +923,7 @@ package zvr.zvrGUI.core
 			_presents.includeIn = value;
 		}
 		
-		public function set exlcudeIn(value:*):void
+		public function set excludeIn(value:*):void
 		{
 			_presents.exlcudeIn = value;
 		}
@@ -941,12 +943,12 @@ package zvr.zvrGUI.core
 			return _presents.present;
 		}
 		
-		public function set delegateStates(component:ZvrComponent):void
+		public function set delegateStates(component:IZvrComponent):void
 		{
 			_states.delegateState = component;
 		}
 		
-		public function get delegateStates():ZvrComponent
+		public function get delegateStates():IZvrComponent
 		{
 			return _states.delegateState;
 		}
@@ -1145,6 +1147,17 @@ package zvr.zvrGUI.core
 			return new Point(super.x, super.y);
 		}
 		
+		/* INTERFACE zvr.zvrGUI.core.IZvrComponent */
+		
+		public function get body():IZvrComponentBody 
+		{
+			return null;
+		}
+
+		public function get onStage():Boolean
+		{
+			return Boolean(stage);
+		}
 	}
 }
 

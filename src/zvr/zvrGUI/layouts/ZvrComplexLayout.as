@@ -1,12 +1,10 @@
 package zvr.zvrGUI.layouts 
 {
 	import flash.geom.Rectangle;
-	import zvr.zvrGUI.core.ZvrAutoSize;
-	import zvr.zvrGUI.core.ZvrBitmap;
-	import zvr.zvrGUI.core.ZvrComponent;
-	import zvr.zvrGUI.core.ZvrContainer;
-	import zvr.zvrGUI.events.ZvrComponentEvent;
-	import zvr.zvrGUI.events.ZvrContainerEvent;
+
+	import zvr.zvrGUI.core.IZvrComponent;
+	import zvr.zvrGUI.core.IZvrContainer;
+
 	/**
 	 * ...
 	 * @author Zvir
@@ -24,7 +22,7 @@ package zvr.zvrGUI.layouts
 		
 		private var _pixelSharp:Boolean = false;
 		
-		public function ZvrComplexLayout(cointainer:ZvrContainer, computeContentBounds:Function, registration:Function, contentAreaIndependent:Function) 
+		public function ZvrComplexLayout(cointainer:IZvrContainer, computeContentBounds:Function, registration:Function, contentAreaIndependent:Function)
 		{
 			super(cointainer, computeContentBounds, registration, contentAreaIndependent);
 		}
@@ -66,7 +64,7 @@ package zvr.zvrGUI.layouts
 			
 			for (var i:int = 0; i < elementes.length; i++) 
 			{
-				var comp:ZvrComponent = elementes[i];
+				var comp:IZvrComponent = elementes[i];
 				
 				if (_alignment == ZvrAlignment.HORIZONTAL)
 				{
@@ -139,7 +137,7 @@ package zvr.zvrGUI.layouts
 			
 			for (var i:int = 0; i < elementes.length; i++) 
 			{
-				var comp:ZvrComponent = elementes[i];
+				var comp:IZvrComponent = elementes[i];
 				comp.x = x + w + (isNaN(comp.left) ? 0 : comp.left);
 				comp.y = 0;
 				x = comp.x;
@@ -155,7 +153,7 @@ package zvr.zvrGUI.layouts
 			
 			for (var i:int = 0; i < elementes.length; i++) 
 			{
-				var comp:ZvrComponent = elementes[i];
+				var comp:IZvrComponent = elementes[i];
 				comp.y = y + h + (isNaN(comp.top) ? 0 : comp.top);
 				comp.x = 0;
 				y = comp.y;

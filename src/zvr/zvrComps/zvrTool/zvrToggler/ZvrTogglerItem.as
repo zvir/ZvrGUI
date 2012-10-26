@@ -9,6 +9,8 @@ package zvr.zvrComps.zvrTool.zvrToggler
 	import utils.string.remove;
 	import zvr.zvrGUI.behaviors.ZvrSelectable;
 	import zvr.zvrGUI.components.minimalDark.ToggleButtonMD;
+	import zvr.zvrGUI.core.ZvrContainer;
+
 	/**
 	 * ...
 	 * @author Zvir
@@ -38,7 +40,7 @@ package zvr.zvrComps.zvrTool.zvrToggler
 		{
 			toggler.remove(_name);
 			
-			_button.owner.removeChild(_button);
+			ZvrContainer(_button.owner).removeChild(_button);
 			
 			_function = null;
 			_object = null;

@@ -9,6 +9,8 @@ package zvr.zvrGUI.behaviors
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Multitouch;
+
+	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.core.ZvrExplicitBounds;
 	import zvr.zvrGUI.events.ZvrDragBehaviorEvent;
 	
@@ -118,7 +120,7 @@ package zvr.zvrGUI.behaviors
 		
 		public function startDrag(target:DisplayObject):void
 		{
-			_clickPoint = new Point(component.mouseX, component.mouseY);
+			_clickPoint = new Point(ZvrComponent(component).mouseX, ZvrComponent(component).mouseY);
 			
 			target.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 			
@@ -176,17 +178,17 @@ package zvr.zvrGUI.behaviors
 		
 		private function mouseUp(e:Event):void 
 		{
-			if (component.stage)
+			if (component.onStage)
 			{
 				if (Multitouch.supportsTouchEvents)
 				{
-					component.stage.removeEventListener(TouchEvent.TOUCH_MOVE, mouseMove);
-					component.stage.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
+					ZvrComponent(component).stage.removeEventListener(TouchEvent.TOUCH_MOVE, mouseMove);
+					ZvrComponent(component).stage.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
 				}
 				else
 				{
-					component.stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
-					component.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
+					ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+					ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
 				}
 			}
 			var d:Boolean = _dragging;
@@ -196,8 +198,8 @@ package zvr.zvrGUI.behaviors
 		
 		private function mouseMove(e:Event):void 
 		{
-			var x:Number = component.parent.mouseX - _clickPoint.x;
-			var y:Number = component.parent.mouseY - _clickPoint.y;
+			var x:Number = ZvrComponent(component).parent.mouseX - _clickPoint.x;
+			var y:Number = ZvrComponent(component).parent.mouseY - _clickPoint.y;
 			
 			if (_limit) 
 			{
@@ -212,7 +214,7 @@ package zvr.zvrGUI.behaviors
 			
 			var delta:Point = new Point(x - oldX, y - oldY);
 			
-			var event:ZvrDragBehaviorEvent = _dispatchEvent(ZvrDragBehaviorEvent.DRAGING, delta, true);
+			var event:ZvrDragBehaviorEvent = _dispatchEvent(ZvrDragBehaviorEvent.DRAGGING, delta, true);
 			if (event.isDefaultPrevented()) 
 			{
 				if (event.delta.x == x - oldX && event.delta.y == y - oldY)
@@ -226,7 +228,7 @@ package zvr.zvrGUI.behaviors
 			if (component.explicit.y != ZvrExplicitBounds.Y) component.y = component.bounds.y;
 			if (component.explicit.width != ZvrExplicitBounds.WIDTH) component.width = component.bounds.width;
 			if (component.explicit.height != ZvrExplicitBounds.HEIGHT) component.height = component.bounds.height;
-			
+
 			component.enterMassChangeMode();
 			
 			if (_horizontal) 
@@ -238,7 +240,7 @@ package zvr.zvrGUI.behaviors
 			{	
 				component.y = component.bounds.y + delta.y;
 			}
-			
+
 			component.exitMassChangeMode();
 			
 			delta = new Point(component.x - oldX, component.y - oldY);

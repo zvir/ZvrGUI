@@ -2,6 +2,8 @@ package zvr.zvrGUI.events
 {
 	import flash.events.Event;
 	import flash.geom.Point;
+
+	import zvr.zvrGUI.core.IZvrComponent;
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.utils.Counter;
 	
@@ -25,17 +27,17 @@ package zvr.zvrGUI.events
 		
 		//public static const :String = "";
 		
-		private var _component:ZvrComponent;
+		private var _component:IZvrComponent;
 		private var _delta:Point;
 		
-		public function ZvrComponentEvent(type:String, component:ZvrComponent, delta:Point = null, bubbles:Boolean = false, cancelable:Boolean = false)
+		public function ZvrComponentEvent(type:String, component:IZvrComponent, delta:Point = null, bubbles:Boolean = false, cancelable:Boolean = false)
 		{ 
 			super(type, bubbles, cancelable);
 			_delta = delta;
 			_component = component;
 		} 
 		
-		public function get component():ZvrComponent {	return _component;	}
+		public function get component():IZvrComponent {	return _component;	}
 		
 		public function get delta():Point 
 		{

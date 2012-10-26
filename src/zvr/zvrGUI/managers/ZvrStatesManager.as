@@ -1,6 +1,6 @@
 package zvr.zvrGUI.managers 
 {
-	import zvr.zvrGUI.core.ZvrComponent;
+	import zvr.zvrGUI.core.IZvrComponent;
 	import zvr.zvrGUI.events.ZvrStateChangeEvent;
 		/**
 	 * @author	Michał Zwieruho "Zvir"
@@ -11,14 +11,14 @@ package zvr.zvrGUI.managers
 	public class ZvrStatesManager 
 	{
 		
-		private var _component:ZvrComponent;
+		private var _component:IZvrComponent;
 		
 		private var _states:/*String*/Array = new Array();
 		private var _currentStates:/*String*/Array = new Array();
-		private var _delegateState:ZvrComponent;
+		private var _delegateState:IZvrComponent;
 		private var _combineWithDelegateStates:Boolean = false;
 		
-		public function ZvrStatesManager(component:ZvrComponent) 
+		public function ZvrStatesManager(component:IZvrComponent)
 		{
 			_component = component;
 		}
@@ -171,7 +171,7 @@ package zvr.zvrGUI.managers
 			_component.dispatchEvent(new ZvrStateChangeEvent(ZvrStateChangeEvent.CHANGE, _component, null, null, _currentStates));
 		}
 		
-		public function set delegateState(value:ZvrComponent):void 
+		public function set delegateState(value:IZvrComponent):void
 		{
 			if (_delegateState)	_delegateState.removeEventListener(ZvrStateChangeEvent.CHANGE, delegateStateChange);
 			_delegateState = value;
@@ -182,7 +182,7 @@ package zvr.zvrGUI.managers
 			}
 		}
 		
-		public function get delegateState():ZvrComponent 
+		public function get delegateState():IZvrComponent
 		{
 			return _delegateState;
 		}

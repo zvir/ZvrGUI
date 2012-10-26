@@ -3,6 +3,7 @@ package zvr.zvrGUI.events
 	import flash.events.Event;
 	import flash.geom.Point;
 	import zvr.zvrGUI.behaviors.ZvrResizable;
+	import zvr.zvrGUI.core.IZvrComponent;
 	import zvr.zvrGUI.core.ZvrComponent;
 	
 	/**
@@ -20,10 +21,10 @@ package zvr.zvrGUI.events
 		public static const STOP_RESIZE 	:String = "startResize";
 		
 		private var _behavior:ZvrResizable;
-		private var _component:ZvrComponent;
+		private var _component:IZvrComponent;
 		private var _delta:Point;
 		
-		public function ZvrResizeBehaviorEvent(type:String, behavior:ZvrResizable, component:ZvrComponent, delta:Point = null, bubbles:Boolean=false, cancelable:Boolean=false) 
+		public function ZvrResizeBehaviorEvent(type:String, behavior:ZvrResizable, component:IZvrComponent, delta:Point = null, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 
 			super(type, bubbles, cancelable);
 			_delta = delta;
@@ -46,7 +47,7 @@ package zvr.zvrGUI.events
 			return _behavior;
 		}
 		
-		public function get component():ZvrComponent 
+		public function get component():IZvrComponent 
 		{
 			return _component;
 		}

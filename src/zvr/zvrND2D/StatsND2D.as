@@ -126,8 +126,6 @@ package zvr.zvrND2D {
 			sliderTex = Texture2D.textureFromBitmapData(new BitmapData(64, 8, false, 0xffffff));
 			sliderTex.textureOptions = TextureOption.QUALITY_LOW;
 			
-			
-			
 			_bg = new Sprite2D(tex);
 			_slider1 = new Sprite2D(sliderTex);
 			_slider3 = new Sprite2D(sliderTex);
@@ -138,7 +136,6 @@ package zvr.zvrND2D {
 			_tSlider3 = new Sprite2D(sliderTex);
 			_tSlider4 = new Sprite2D(sliderTex);
 			_tSlider5 = new Sprite2D(sliderTex);
-			
 			
 			_text = FontTextureGenerator.texture(FontTextureGenerator.commonChar1, MDFonts.Mono0755, 8, ColorsMD.c2, 6, 13, 50);
 			

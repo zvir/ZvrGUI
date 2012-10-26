@@ -1,6 +1,10 @@
 package zvr.zvrGUI.events 
 {
 	import flash.events.Event;
+
+	import zvr.zvrGUI.core.IZvrComponent;
+
+	import zvr.zvrGUI.core.IZvrContainer;
 	import zvr.zvrGUI.core.ZvrContainer;
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.utils.Counter;
@@ -19,10 +23,10 @@ package zvr.zvrGUI.events
 		public static const CONTENT_SIZE_CHANGE		:String = "cotntentSizeChanged";
 		public static const CONTENT_POSITION_CHANGE	:String = "contentPositionChanged";
 		
-		private var _cointainer:ZvrContainer;
-		private var _element:ZvrComponent;
+		private var _cointainer:IZvrContainer;
+		private var _element:IZvrComponent;
 		
-		public function ZvrContainerEvent(type:String, cointainer:ZvrContainer, element:ZvrComponent, bubbles:Boolean=false, cancelable:Boolean=false) 
+		public function ZvrContainerEvent(type:String, cointainer:IZvrContainer, element:IZvrComponent, bubbles:Boolean=false, cancelable:Boolean=false)
 		{ 
 			
 			super(type, bubbles, cancelable);
@@ -41,12 +45,12 @@ package zvr.zvrGUI.events
 			return formatToString("ZvrContainerEvent", "type", "bubbles", "cancelable", "eventPhase"); 
 		}
 		
-		public function get cointainer():ZvrContainer 
+		public function get cointainer():IZvrContainer
 		{
 			return _cointainer;
 		}
 		
-		public function get element():ZvrComponent 
+		public function get element():IZvrComponent
 		{
 			return _element;
 		}

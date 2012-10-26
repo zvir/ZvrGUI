@@ -81,7 +81,7 @@ package zvr.zvrGUI.components.minimalDark
 		
 		private function updateScroll():void
 		{
-			var scrollingProp:Object = body.scrollingProperties;
+			var scrollingProp:Object = skinBody.scrollingProperties;
 			
 			if (!_scroll) return;
 			
@@ -107,32 +107,32 @@ package zvr.zvrGUI.components.minimalDark
 		
 		public function setTextFormat(format:TextFormat, beginIndex:int=-1, endIndex:int=-1):void
 		{
-			body.setTextFormat(format, beginIndex, endIndex);
+			skinBody.setTextFormat(format, beginIndex, endIndex);
 		}
 		
 		private function scrollVPositionChanged(e:ZvrScrollEvent):void 
 		{
-			body.updateVScrolling(e.scroll.position);
+			skinBody.updateVScrolling(e.scroll.position);
 		}
 		
 		private function scrollHPositionChanged(e:ZvrScrollEvent):void 
 		{
-			body.updateHScrolling(e.scroll.position);
+			skinBody.updateHScrolling(e.scroll.position);
 		}
 		
-		private function get body():TextAreaMDSkin
+		private function get skinBody():TextAreaMDSkin
 		{
 			return TextAreaMDSkin(_skin);
 		}
 		
 		public function get wrap():Boolean 
 		{
-			return body.wrap;
+			return skinBody.wrap;
 		}
 		
 		public function set wrap(value:Boolean):void 
 		{
-			body.wrap = value;
+			skinBody.wrap = value;
 			if (_scroll) _scroll.horizontalScrollPolicy = value ? ZvrScrollPolicy.OFF : ZvrScrollPolicy.AUTO;
 		}
 		

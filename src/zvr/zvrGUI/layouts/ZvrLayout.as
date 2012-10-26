@@ -1,6 +1,9 @@
 package zvr.zvrGUI.layouts 
 {
 	import flash.geom.Rectangle;
+
+	import zvr.zvrGUI.core.IZvrComponent;
+	import zvr.zvrGUI.core.IZvrContainer;
 	import zvr.zvrGUI.core.ZvrAutoSize;
 	import zvr.zvrGUI.core.ZvrContainer;
 	import zvr.zvrGUI.core.ZvrComponent;
@@ -32,7 +35,7 @@ package zvr.zvrGUI.layouts
 	
 	public class ZvrLayout 
 	{
-		private var _container:ZvrContainer;
+		private var _container:IZvrContainer;
 		private var _computeContentBounds:Function;
 		private var _contentRectangle:Rectangle = new Rectangle();
 		private var _contentAreaRectangle:Rectangle = new Rectangle();
@@ -42,7 +45,7 @@ package zvr.zvrGUI.layouts
 		private var _contentWidthAreaIndependent:Object;
 		private var _contentAreaIndependent:Function;
 		
-		public function ZvrLayout(container:ZvrContainer, computeContentBounds:Function, registration:Function, contentAreaIndependent:Function) 
+		public function ZvrLayout(container:IZvrContainer, computeContentBounds:Function, registration:Function, contentAreaIndependent:Function)
 		{
 			_contentAreaIndependent = contentAreaIndependent;
 			_container = container;
@@ -84,7 +87,7 @@ package zvr.zvrGUI.layouts
 			_container = null;
 		}
 		
-		protected function get elementes():Vector.<ZvrComponent>
+		protected function get elementes():Vector.<IZvrComponent>
 		{
 			return _container.presentElements;
 		}
@@ -137,7 +140,7 @@ package zvr.zvrGUI.layouts
 		{
 			for (var i:int = 0; i < elementes.length; i++) 
 			{
-				var comp:ZvrComponent = elementes[i];
+				var comp:IZvrComponent = elementes[i];
 				comp.enterMassChangeMode();
 			}
 		}
@@ -146,7 +149,7 @@ package zvr.zvrGUI.layouts
 		{
 			for (var i:int = 0; i < elementes.length; i++) 
 			{
-				var comp:ZvrComponent = elementes[i];
+				var comp:IZvrComponent = elementes[i];
 				comp.exitMassChangeMode();
 			}
 		}

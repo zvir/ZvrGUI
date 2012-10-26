@@ -67,18 +67,18 @@ package zvr.zvrGUI.components.minimalDark
 			_areaDragBehavior = new ZvrDragable();
 			_areaBar.behaviors.addBehavior(_areaDragBehavior);
 			_areaDragBehavior.horizontal = false;
-			_areaDragBehavior.addEventListener(ZvrDragBehaviorEvent.DRAGING, areaDraging);
+			_areaDragBehavior.addEventListener(ZvrDragBehaviorEvent.DRAGGING, areaDraging);
 			_areaDragBehavior.addHandler(_areaButton.skin.body as Sprite);
 			
 			_areaBottomDragBehavior = new ZvrDragable();
 			_areaScaleBottom.behaviors.addBehavior(_areaBottomDragBehavior);
 			_areaBottomDragBehavior.horizontal = false;
-			_areaBottomDragBehavior.addEventListener(ZvrDragBehaviorEvent.DRAGING, areaScaleBottomDraging);
+			_areaBottomDragBehavior.addEventListener(ZvrDragBehaviorEvent.DRAGGING, areaScaleBottomDraging);
 			
 			_areaTopDragBehavior = new ZvrDragable();
 			_areaScaleTop.behaviors.addBehavior(_areaTopDragBehavior);
 			_areaTopDragBehavior.horizontal = false;
-			_areaTopDragBehavior.addEventListener(ZvrDragBehaviorEvent.DRAGING, areaScaleTopDraging);
+			_areaTopDragBehavior.addEventListener(ZvrDragBehaviorEvent.DRAGGING, areaScaleTopDraging);
 			
 			addChild(_backgroundButton);
 			addChild(_lessButton);

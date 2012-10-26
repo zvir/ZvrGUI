@@ -2,6 +2,8 @@ package zvr.zvrGUI.behaviors
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+
+	import zvr.zvrGUI.core.IZvrComponent;
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.skins.base.ZvrSkin;
 		/**
@@ -15,7 +17,7 @@ package zvr.zvrGUI.behaviors
 		
 		private var _enabled:Boolean = false;
 		private var _name:String = "ZvrBehaviorName";	
-		private var _component:ZvrComponent
+		private var _component:IZvrComponent;
 		
 		protected var _stageSensitive:Boolean = false;
 		
@@ -70,17 +72,18 @@ package zvr.zvrGUI.behaviors
 			return _name;
 		}
 		
-		public function get component():ZvrComponent 
+		public function get component():ZvrComponent
 		{
-			return _component;
+			return ZvrComponent(_component);
 		}
 		
-		public function set component(value:ZvrComponent):void 
+		public function set component(value:ZvrComponent):void
 		{
 			_component = value;
+
 			if (_stageSensitive) 
 			{
-				if (_component.stage)
+				if (_component.onStage)
 				{
 					addedToStage(null);
 				}

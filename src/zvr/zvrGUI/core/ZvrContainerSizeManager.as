@@ -6,10 +6,9 @@ package zvr.zvrGUI.core
 	 */
 	public class ZvrContainerSizeManager 
 	{
-		private var _container:ZvrContainer;
-		
-		
-		public function ZvrContainerSizeManager(container:ZvrContainer) 
+		private var _container:IZvrContainer;
+
+		public function ZvrContainerSizeManager(container:IZvrContainer)
 		{
 			_container = container;
 			

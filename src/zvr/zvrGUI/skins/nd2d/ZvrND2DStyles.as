@@ -8,6 +8,10 @@ package zvr.zvrGUI.skins.nd2d
 	{
 		
 		public static const BACKGROUND:String = "background";
+		public static const TEXTURE:String = "texture";
+		
+		
+		
 	}
 
 }

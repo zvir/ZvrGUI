@@ -362,12 +362,12 @@ package zvr.zvrGUI.core.custom
 			if (i != -1)
 				_presentElements.splice(i, 1);
 				
-			updateContainer();
-
 			element.removeFrom(_contents);
 
+			updateContainer();
+			
 			dispatchEvent(new ZvrContainerEvent(ZvrContainerEvent.ELEMENT_REMOVED, this, element));
-
+			
 			return element;
 		}
 		

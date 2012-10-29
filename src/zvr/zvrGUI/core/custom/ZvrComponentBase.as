@@ -461,13 +461,13 @@ package zvr.zvrGUI.core.custom
 		public function addTo(to:Object):void
 		{
 			to.addChild(_body);
-			_dispatchEvent(ZvrComponentEvent.ADDED);
+			//_dispatchEvent(ZvrComponentEvent.ADDED);
 		}
 
 		public function removeFrom(from:Object):void
 		{
-			from.removeChild(this);
-			_dispatchEvent(ZvrComponentEvent.REMOVED)
+			from.removeChild(_body);
+			//_dispatchEvent(ZvrComponentEvent.REMOVED)
 		}
 
 		public function addToContainer(container:IZvrContainer):void
@@ -485,12 +485,12 @@ package zvr.zvrGUI.core.custom
 			if (_owner != container)
 				throw new Error("Cointaier isn't components owner");
 			
-			if (_owner) 
+			/*if (_owner) 
 			{
 				ZvrContainerBase(container).removeChild(null);
 				return;
-			}
-				
+			}*/
+			
 			_owner.removeEventListener(ZvrComponentEvent.RESIZE, ownerResize);
 			_owner.removeEventListener(ZvrComponentEvent.PRESENTS_CHANGE, ownerPresentsChange);
 			_dispatchEvent(ZvrComponentEvent.REMOVED);

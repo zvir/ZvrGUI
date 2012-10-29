@@ -176,9 +176,8 @@ package zvr.zvrTools
 			p1.y -= p2.y;
 		}
 		
-		static public function cicleCenterFrom3Points(p1:ZvrPnt, p2:ZvrPnt, p3:ZvrPnt):ZvrPnt
+		static public function cicleCenterFrom3Points(p:ZvrPnt, p1:ZvrPnt, p2:ZvrPnt, p3:ZvrPnt):ZvrPnt
 		{
-			var cc:ZvrPnt
 			
 			var s:Number = 0.5 * ((p2.x - p3.x) * (p1.x - p3.x) - (p2.y - p3.y) * (p3.y - p1.y));
 			var sUnder:Number = (p1.x - p2.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p1.x - p3.x);
@@ -186,11 +185,11 @@ package zvr.zvrTools
 			if(sUnder != 0)
 			{
 				s = s / sUnder;
-				cc = new ZvrPnt();
-				cc.x = 0.5 * (p1.x + p2.x) + s * (p2.y - p1.y);
-				cc.y = 0.5 * (p1.y + p2.y) + s * (p1.x - p2.x);
+				p.x = 0.5 * (p1.x + p2.x) + s * (p2.y - p1.y);
+				p.y = 0.5 * (p1.y + p2.y) + s * (p1.x - p2.x);
+				return p;
 			}
-			return cc;
+			return p;
 		}
 		
 		static public function lineIntersection(line1Point1:ZvrPnt, line1Point2:ZvrPnt, line2Point1:ZvrPnt, line2Point2:ZvrPnt, secondLineIsSegment:Boolean = false):ZvrPnt

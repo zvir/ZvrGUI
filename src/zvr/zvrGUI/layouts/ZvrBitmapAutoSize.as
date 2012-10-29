@@ -11,6 +11,7 @@ package zvr.zvrGUI.layouts
 		public static const NO_SCALE_TO_MAUAL:String = "maualNoScale";
 		public static const KEEP_RATIO_INSIDE:String = "inside";
 		public static const KEEP_RATIO_OUTSIDE:String = "outside";
+		public static const KEEP_RATIO_OUTSIDE_CLIP:String = "outsideClip";
 		
 	}
 

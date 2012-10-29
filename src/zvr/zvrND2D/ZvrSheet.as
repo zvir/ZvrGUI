@@ -1,6 +1,8 @@
 package zvr.zvrND2D 
 {
+	import de.nulldesign.nd2d.materials.texture.ASpriteSheetBase;
 	import de.nulldesign.nd2d.materials.texture.SpriteSheet;
+	import de.nulldesign.nd2d.materials.texture.SpriteSheetAnimation;
 	import de.nulldesign.nd2d.materials.texture.Texture2D;
 	/**
 	 * ...
@@ -25,6 +27,20 @@ package zvr.zvrND2D
 		{
 			//trace("totalFrames", value);
 			_totalFrames = value;
+		}
+		
+		override public function clone():ASpriteSheetBase 
+		{
+			var s:ZvrSheet = new ZvrSheet(_sheetWidth, _sheetHeight, _spriteWidth, _spriteHeight, fps, spritesPackedWithoutSpace);
+
+			for(var name:String in animationMap) {
+				var anim:SpriteSheetAnimation = animationMap[name];
+				s.addAnimation(name, anim.frames.concat(), anim.loop);
+			}
+
+			s.frame = frame;
+			s.totalFrames = _totalFrames;
+			return s;
 		}
 		
 	}

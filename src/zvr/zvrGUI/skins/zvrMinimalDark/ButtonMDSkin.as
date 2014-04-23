@@ -192,9 +192,9 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 		
 		private function enterFrame(e:Event):void 
 		{
-			_matrix.tx += 0.5;
+			/*_matrix.tx += 1;
 			if (_matrix.tx % 4 == 0) _matrix.tx = 0;
-			drawBackground();
+			drawBackground();*/
 		}
 		
 		private function get spriteBody():Sprite

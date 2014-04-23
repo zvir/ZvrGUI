@@ -7,7 +7,7 @@ package zvr.zvrGUI.core
 	import zvr.zvrGUI.managers.ZvrPopupManager;
 	import zvr.zvrGUI.managers.ZvrSnapManager;
 	import zvr.zvrGUI.skins.base.ZvrSkin;
-	import zvr.zvrKeyboard.ZvrKeyboard;
+	//import zvr.zvrKeyboard.ZvrKeyboard;
 		/**
 	 * @author	Michał Zwieruho "Zvir"
 	 * @www	www.zvir.pl, www.celavra.pl
@@ -65,7 +65,7 @@ package zvr.zvrGUI.core
 		
 		protected function addedToStage(e:Event):void 
 		{
-			ZvrKeyboard.init(stage);
+			//ZvrKeyboard.init(stage);
 			
 			if (parent != stage)
 			{
@@ -81,6 +81,7 @@ package zvr.zvrGUI.core
 		
 		protected function removedFromStage(e:Event):void 
 		{
+			
 			removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 			addEventListener(Event.ADDED_TO_STAGE, addedToStage);
 			stage.removeEventListener(Event.RESIZE, stageResize);
@@ -88,6 +89,8 @@ package zvr.zvrGUI.core
 		
 		protected function stageResize(e:Event):void 
 		{
+			trace("stageResize", super.x, super.y, stage.stageWidth, stage.stageHeight);
+			
 			x = 0;
 			y = 0;
 			
@@ -108,6 +111,11 @@ package zvr.zvrGUI.core
 		override public function get presentElements():Vector.<IZvrComponent>
 		{
 			return _windowsLayer.presentElements;
+		}
+		
+		override public function get childrenPadding():ZvrContentPadding 
+		{
+			return _windowsLayer.childrenPadding;
 		}
 		
 		public function get snaping():ZvrSnapManager 

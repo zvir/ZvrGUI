@@ -1,6 +1,6 @@
 package zvr.zvrInitializer
 {
-	import com.blackmoon.theFew.airFight.view.GameDisplayContainer;
+	import com.blackmoon.theFew.airFight.view.AirFightDisplayContainer;
 	import flash.events.EventDispatcher;
 	import flash.utils.getTimer;
 	/**

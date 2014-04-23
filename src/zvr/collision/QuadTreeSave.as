@@ -30,7 +30,7 @@
 package zvr.collision 
 {
 
-	import com.blackmoon.theFew.airFight.view.GameDisplayContainer;
+	import com.blackmoon.theFew.airFight.view.AirFightDisplayContainer;
 	import zvr.collision.QuadTreeObj;
 	
 	import flash.system.System;	
@@ -529,7 +529,7 @@ package zvr.collision
 						
 						node.tree = this;
 						
-						GameDisplayContainer.world.setQuad(node);
+						AirFightDisplayContainer.world.setQuad(node);
 						
 						_nodes[int((offset + 1) + (y * levelEdgeSize + x))] = node;
 					}

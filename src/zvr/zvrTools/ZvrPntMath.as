@@ -16,7 +16,7 @@ package zvr.zvrTools
 			
 			if (p2 == null)
 			{
-				angle = Math.atan2(p1.x, p1.y) * RADIANS_TO_DEGREES;
+				angle = Math.atan2(p1.x, -p1.y) * RADIANS_TO_DEGREES;
 			}
 			else
 			{
@@ -57,10 +57,11 @@ package zvr.zvrTools
 			return Math.abs(a * d - c * b) / Math.sqrt(c * c + d * d);
 		}
 		
-		public static function setBetween(p:ZvrPnt, p1:ZvrPnt, p2:ZvrPnt, between:Number):void
+		public static function setBetween(p:ZvrPnt, p1:ZvrPnt, p2:ZvrPnt, between:Number):ZvrPnt
 		{
 			p.x = p1.x + between * (p2.x - p1.x);
 			p.y = p1.y + between * (p2.y - p1.y);
+			return p;
 		}
 		
 		public static function length(p:ZvrPnt):Number
@@ -138,6 +139,13 @@ package zvr.zvrTools
 			angle *= DEGREES_TO_RADIANS;
 			p.x += radius * Math.cos(angle);
 			p.y += radius * Math.sin(angle);
+		}
+		
+		public static function setPolar(p:ZvrPnt, radius:Number, angle:Number):void
+		{
+			angle *= DEGREES_TO_RADIANS;
+			p.x = radius * Math.cos(angle);
+			p.y = radius * Math.sin(angle);
 		}
 		
 		public static function getPolar(radius:Number, angle:Number):ZvrPnt
@@ -238,6 +246,26 @@ package zvr.zvrTools
 		public static function equal(p1:ZvrPnt, p2:ZvrPnt):Boolean
 		{
 			return p1.x == p2.x && p1.y == p2.y;
+		}
+		
+		static public function divideSegmentByLenghth(p1:ZvrPnt, p2:ZvrPnt, number:Number):Array 
+		{
+			var d:Number = distance(p1, p2);
+			if (d == 0) return [p1];
+			var angle:Number =  Math.atan2(p2.x - p1.x, -1 * (p2.y - p1.y));
+			var np:int = d / number;
+			var px:Number = number * Math.cos(angle + 1.57079632679489);
+			var py:Number = number * Math.sin(angle + 1.57079632679489);
+			var r:Array = [];
+			var p:ZvrPnt = new ZvrPnt(p2.x, p2.y);
+			for (var i:int = 0; i < np; i++) 
+			{
+				r.push(p);
+				p.x += px;
+				p.y += py;
+				p = new ZvrPnt(p.x, p.y);
+			}
+			return r;
 		}
 	}
 

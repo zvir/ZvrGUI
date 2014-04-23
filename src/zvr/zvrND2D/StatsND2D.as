@@ -56,7 +56,18 @@ package zvr.zvrND2D {
 	public class StatsND2D extends Node2D {
 		
 		
-		public static var instance:StatsND2D;
+		private static var _instance:StatsND2D;
+		
+		/*static public function get instance():StatsND2D 
+		{
+			if (!_instance) _instance = new StatsND2D();
+			return _instance;
+		}*/
+		
+		static public function set instance(value:StatsND2D):void 
+		{
+			_instance = value;
+		}
 		
 		[Embed(source = "../../../assets/statsND2D.png")]
 		private static const Bmp:Class;
@@ -140,11 +151,14 @@ package zvr.zvrND2D {
 			_text = FontTextureGenerator.texture(FontTextureGenerator.commonChar1, MDFonts.Mono0755, 8, ColorsMD.c2, 6, 13, 50);
 			
             addEventListener(Event.ADDED_TO_STAGE, init, false, 0, true);
+			
+			//scrollRect = new Rectangle(100, 100, 256, 120);
         }
 
-		override public function dispose(l:String):void 
+		override public function dispose():void 
 		{
-			super.dispose(l);
+			super.dispose();
+			//if (instance == this) instance = null;
 			_bg = null;
 			_slider1 = null;
 			_slider3 = null;

@@ -13,10 +13,17 @@ package zvr.zvrND2D
 		
 		public var kernings:Object = new Object();
 		
+		public var xadvances:Object = [];
+		//public var fontOffsets:Object = [];
+		public var lineHeight:Number = 0;
+		
 		public var paddingLeft:Number = 0;
 		public var paddingTop:Number = 0;
 		public var paddingRight:Number = 0;
 		public var paddingBotton:Number = 0;
+		public var fontOffsets:Object = [];
+		
+		public var fontSize:Number;
 		
 		public function FNTSpriteSheet(sheetWidth:Number, sheetHeight:Number, fnt:XML = null) 
 		{
@@ -27,6 +34,8 @@ package zvr.zvrND2D
 			
 			if (!fnt) return;
 			
+			//trace(fnt.info.@face, fnt.info.@size);
+			
 			var padding:String = fnt.info.@padding;
 			var paddings:Array = padding.split(",");
 			
@@ -34,6 +43,10 @@ package zvr.zvrND2D
 			paddingRight   = paddings[1];
 			paddingBotton  = paddings[2];
 			paddingLeft    = paddings[3];
+			
+			lineHeight = fnt.common.@lineHeight;
+			
+			//trace("lineHeight", lineHeight);
 			
 			for each (var kerning:XML in fnt.kernings.kerning)
 			{
@@ -62,8 +75,10 @@ package zvr.zvrND2D
 				var xoffset:Number = char.@xoffset;
 				var yoffset:Number = char.@yoffset;
 				
-				xoffset = xoffset * 0.5;// - width * 0.5;
-				yoffset = yoffset * 0.5;// - height * 0.5;
+				var xadvance:Number = char.@xadvance;
+				
+				//xoffset = xoffset * 0.5;// - width * 0.5;
+				//yoffset = yoffset * 0.5;// - height * 0.5;
 				
 				//xoffset = 0;
 				//yoffset = 0;
@@ -74,10 +89,24 @@ package zvr.zvrND2D
 				_spriteWidth = width > _spriteWidth ? width : _spriteWidth;
 				
 				frames.push(new Rectangle(x, y, width, height));
-				offsets.push(new Point(xoffset, yoffset));
+				
+				//offsets.push(new Point(xoffset, yoffset));
+				offsets.push(new Point(0, 0));
+				
+				fontOffsets[id] = new Point(xoffset, yoffset);
+				
+				sourceSizes.push(new Point(width, height));
+				xadvances[id] = xadvance;
 				
 				frameNameToIndex[id.toString()] = frames.length-1;
 			}
+			
+			if (xadvances.length == 0)
+			{
+				trace("!");
+			}
+			
+			fontSize = Math.abs(fnt.info.@size);
 			
 			uvRects = new Vector.<Rectangle>(frames.length, true);
 			frame = 0;
@@ -89,9 +118,14 @@ package zvr.zvrND2D
 			
 			s.frames = frames;
 			s.offsets = offsets;
+			s.sourceSizes = sourceSizes;
+			s.xadvances = xadvances;
+			s.fontOffsets = fontOffsets;
 			s.frameNameToIndex = frameNameToIndex;
 			s.uvRects = uvRects;
 			s.frame = frame;
+			s.lineHeight = lineHeight;
+			s.fontSize = fontSize;
 			
 			s.paddingTop     = paddingTop    ;
 			s.paddingRight   = paddingRight  ;
@@ -100,6 +134,7 @@ package zvr.zvrND2D
 			
 			return s;
 		}
+		
 	}
 
 }

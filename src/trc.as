@@ -42,17 +42,17 @@ package
 		if (sender is ZvrItemRenderer) return null;
 		
 		var id			:int 		= Tracer.notifyCounter;
-		var key			:String 	= key;
+		var k			:String 	= key;
 		var senderType	:String		= getName(getClass(sender));
 		var senderName	:String 	= sender.hasOwnProperty("name") ? sender.name : "";
 		var time		:int 		= getTimer();
 		var timeDelta	:int		= time - Tracer.notifyLastTime;
-		var message		:String 	= message;
+		var msg			:String 	= message;
 		var values		:Array		= args;
 		
 		
 		
-		var m:ZvrTraceMessage = Tracer.trc(id, key, senderType, senderName, time, timeDelta, message, values);
+		var m:ZvrTraceMessage = Tracer.trc(id, k, senderType, senderName, time, timeDelta, msg, values);
 
 		//trace(m);
 		

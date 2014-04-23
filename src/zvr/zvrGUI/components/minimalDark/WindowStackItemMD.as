@@ -20,6 +20,7 @@ package zvr.zvrGUI.components.minimalDark
 		
 		public function WindowStackItemMD() 
 		{
+			super();
 			
 			title = new WindowTitleMD();
 			title.delegateStates = this;

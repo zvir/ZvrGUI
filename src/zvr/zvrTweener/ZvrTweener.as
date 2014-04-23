@@ -3,6 +3,7 @@ package zvr.zvrTweener
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
+	import flash.utils.getTimer;
 	
 	/**
 	 * ...
@@ -15,12 +16,27 @@ package zvr.zvrTweener
 		
 		private static const scopes:Dictionary = new Dictionary();
 		
-		public static function to(scope:Object, property:Object, fade:Number = 0.1, maxSpeed:Number = 100):void
+		private static const tweens:Vector.<ZvrTween> = new Vector.<ZvrTween>();
+		
+		private static var lastUpdate:Number = getTimer();
+		
+		private static function initSprite():Sprite
 		{
-			getTween(scope, property, fade, maxSpeed);
+			var s:Sprite = new Sprite();
+			s.addEventListener(Event.ENTER_FRAME, enterFrame);
+			return s;
+		}
+		
+		private static var sprite:Sprite = initSprite();
+		
+		
+		
+		public static function to(scope:Object, property:Object):ZvrTweenManager
+		{
+			return getTween(scope, property).setter;
 		}
 	
-		private static function getTween(scope:Object, property:Object, fade:Number = 0.1, maxSpeed:Number = 100):ZvrTween
+		private static function getTween(scope:Object, property:Object):ZvrTween
 		{
 			
 			var propertyName:String;
@@ -46,27 +62,42 @@ package zvr.zvrTweener
 			
 			if (!tween)
 			{
-				tween = new ZvrTween(scope, property, fade, maxSpeed);
+				tween = new ZvrTween(scope, property);
+				tweens.push(tween);
 				scopes[scope][propertyName] = tween;
 			}
 			else
 			{
-				tween.updateProperty(property, fade, maxSpeed);
+				tween.updateProperty(property);
 			}
 			
 			return tween;
 			
 		}
 		
+		
+		
 		static internal function disposeTween(zvrTween:ZvrTween):void 
 		{
-			scopes[zvrTween.scope][zvrTween.property] == null;
-			delete scopes[zvrTween.scope][zvrTween.property];
-			
-			//trace("disposeTween");
+			scopes[zvrTween.scope][zvrTween.propertyName] == null;
+			delete scopes[zvrTween.scope][zvrTween.propertyName];
+			tweens.splice(tweens.indexOf(zvrTween), 1);
+			trace("disposeTween");
 			
 		}
 		
+		static private function enterFrame(e:Event):void 
+		{
+			var c:Number = getTimer();
+			var el:Number = c - lastUpdate;
+			
+			lastUpdate = c;
+			
+			for (var i:int = 0; i < tweens.length; i++) 
+			{
+				tweens[i].update(el);
+			}
+		}
 	}
 
 }

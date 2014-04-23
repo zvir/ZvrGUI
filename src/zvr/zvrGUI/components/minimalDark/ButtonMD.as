@@ -31,6 +31,9 @@ package zvr.zvrGUI.components.minimalDark
 	
 	public class ButtonMD extends ZvrButton 
 	{
+		
+		protected var _data:Object;
+		
 		private var _label:LabelMD = new LabelMD();
 		private var _icon:ZvrBitmap = new ZvrBitmap();
 		
@@ -102,7 +105,8 @@ package zvr.zvrGUI.components.minimalDark
 		
 		override public function setLayout(layout:Class):void 
 		{
-			throw new Error("Cannot change button layout");
+			super.setLayout(layout);
+			//throw new Error("Cannot change button layout");
 		}
 		
 		public function get label():LabelMD 
@@ -118,6 +122,16 @@ package zvr.zvrGUI.components.minimalDark
 		public function get icon():ZvrBitmap 
 		{
 			return _icon;
+		}
+		
+		public function get data():Object 
+		{
+			return _data;
+		}
+		
+		public function set data(value:Object):void 
+		{
+			_data = value;
 		}
 		
 	}

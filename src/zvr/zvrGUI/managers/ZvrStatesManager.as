@@ -133,6 +133,19 @@ package zvr.zvrGUI.managers
 			return (__currentStates.indexOf(state) != -1);
 		}
 		
+		public function dispose():void 
+		{
+			if (_delegateState)
+			{
+				_delegateState.removeEventListener(ZvrStateChangeEvent.CHANGE, delegateStateChange);
+			}
+			
+			_component = null;
+			_states = null;
+			_currentStates = null;
+			_delegateState = null;
+		}
+		
 		private function get __currentStates():Array
 		{
 			if (!_delegateState) return _currentStates;

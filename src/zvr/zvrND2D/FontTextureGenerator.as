@@ -51,7 +51,7 @@ package zvr.zvrND2D
 			
 			textField.width = nw;
 			
-			trace(nw, nh);
+			//trace(nw, nh);
 			
 			var bd:BitmapData = new BitmapData(nw, nh, true, 0x00000000);
 			

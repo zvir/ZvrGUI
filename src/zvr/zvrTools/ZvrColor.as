@@ -1,7 +1,12 @@
 package zvr.zvrTools
 {
+	import com.adobe.crypto.MD5;
+	import com.adobe.crypto.SHA256;
 	import flash.display.BitmapData;
 	import flash.filters.ColorMatrixFilter;
+	import utils.color.getColor;
+	import utils.color.HSLtoRGB;
+	import utils.color.HSVtoRGB;
 	
 	/**
 	 * ...
@@ -212,6 +217,29 @@ package zvr.zvrTools
 				h += 360;
 			}
 			return [h, s, v];
+		}
+		
+		static public function getColorFromString(s:String):uint 
+		{
+			
+			s = SHA256.hashToBase64(s);
+			
+			var v:int;
+			
+			for (var i:int = 0; i < s.length; i++) 
+			{
+				v += s.charCodeAt(i);
+			}
+
+			v = v % 360;
+			
+			var o:Object = HSLtoRGB(v, 0.5, 1);
+			
+			var c:uint = getColor(o.r*255, o.g*255, o.b*255);
+			
+
+			return c;
+			
 		}
 		
 	}

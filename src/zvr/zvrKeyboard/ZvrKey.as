@@ -22,7 +22,7 @@ package zvr.zvrKeyboard
 			registration(this, setPressed);
 		}
 		
-		private function setPressed(value:Boolean):void 
+		private function setPressed(value:Boolean):int 
 		{
 			var c:Boolean = value && !_pressed
 			
@@ -30,13 +30,20 @@ package zvr.zvrKeyboard
 			
 			if (c) {
 				callPressed();
+				return 1;
 			}
 			else if (_pressed)
 			{
 				callPressing();
+				return 2;
 			}
 			if (!_pressed)
+			{
 				callReleased();
+				return 3;
+			}
+
+			return 0;
 		}
 		
 		public function get code():int 

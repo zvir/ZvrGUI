@@ -12,6 +12,9 @@ package zvr.zvrGUI.skins.base
 		public var beginIndex:int = -1; 
 		public var endIndex:int = -1;
 		public var textFormat:TextFormat;
+		
+		public function ZvrTextFormatStyle()
+		
 	}
 
 }

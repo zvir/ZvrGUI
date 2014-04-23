@@ -261,10 +261,15 @@ package zvr.zvrGUI.core
 			}
 			else
 			{
+				if (_step != 0)
+				{
+					value = Math.round(value / _step) * _step;
+				}
 				
 				d = value - _position;
 				
 				_position = value;
+				
 				_rangeBegin = _position;
 				_rangeEnd = _position;
 				
@@ -340,7 +345,7 @@ package zvr.zvrGUI.core
 			
 			trace("min				:", min);
 			trace("max				:", max);
-			trace("range				:", range);
+			//trace("range				:", range);
 			trace("positionDelta			:", positionDelta);
 			trace("rangeBegin			:", rangeBegin);
 			trace("rangeEnd			:", rangeEnd);

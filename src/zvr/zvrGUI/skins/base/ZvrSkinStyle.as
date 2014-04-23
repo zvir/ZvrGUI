@@ -170,7 +170,7 @@ package zvr.zvrGUI.skins.base
 			
 			for (var i:int = 0; i < states.length; i++) 
 			{
-				if (_states.indexOf(states[i] == -1) )_states.push(states[i]);
+				if (_states.indexOf(states[i]) == -1) _states.push(states[i]);
 			}
 			
 		}
@@ -187,6 +187,24 @@ package zvr.zvrGUI.skins.base
 				if (_states.indexOf(states[i]) != -1) return true;
 			}
 			return false;
+		}
+		
+		public function dispose():void 
+		{
+			styleName = null;
+			getter = null;
+			setter = null;
+			
+			_states = null;
+			
+			for (var name:String in _statesValues) 
+			{
+				_statesValues[name] = null;
+				delete _statesValues[name];
+			}
+			
+			_statesValues = null;
+			_defaultValue = null;
 		}
 		
 		public function get statesValues():Dictionary 

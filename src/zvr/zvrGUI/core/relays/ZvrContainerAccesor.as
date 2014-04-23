@@ -32,6 +32,16 @@ package zvr.zvrGUI.core.relays
 			_superSetter("mouseChildren", enable);
 		}
 		
+		public function get mouseEnabled():Boolean
+		{
+			return _superGetter("mouseEnabled");
+		}
+		
+		public function set mouseEnabled(enable:Boolean):void
+		{
+			_superSetter("mouseEnabled", enable);
+		}
+		
 		public function get numChildren():int
 		{
 			return _superGetter("numChildren");

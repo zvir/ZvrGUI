@@ -117,6 +117,21 @@ package zvr.zvrGUI.skins.base
 			return _styles[styleName].toString();
 		}
 		
+		public function dispose():void 
+		{
+			for (var name:String in _styles) 
+			{
+				var skinStyle:ZvrSkinStyle = _styles[name];
+				skinStyle.dispose();
+				_styles[name] = null;
+				delete _styles[name];
+			}
+			
+			_styles = null;
+			_skin = null;
+			_component = null;
+		}
+		
 		private function get componentState():String
 		{
 			var a:Array = _component.currentStates.splice(0).sort();

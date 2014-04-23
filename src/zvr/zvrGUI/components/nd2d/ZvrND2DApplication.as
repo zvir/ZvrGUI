@@ -10,7 +10,7 @@ package zvr.zvrGUI.components.nd2d
 	public class ZvrND2DApplication extends ZvrND2DContainer
 	{
 		
-		private var _pixelSharp:Boolean;
+		//private var _pixelSharp:Boolean;
 		
 		public function ZvrND2DApplication() 
 		{
@@ -50,18 +50,12 @@ package zvr.zvrGUI.components.nd2d
 			width = pixelSharp ? int(node.stage.stageWidth * 0.5) * 2 : node.stage.stageWidth;
 			height = pixelSharp ? int(node.stage.stageHeight * 0.5) * 2 : node.stage.stageHeight;
 		}
-		
-		public function get pixelSharp():Boolean 
+
+		override public function set pixelSharp(value:Boolean):void 
 		{
-			return _pixelSharp;
-		}
-		
-		public function set pixelSharp(value:Boolean):void 
-		{
-			_pixelSharp = value;
+			super.pixelSharp = value;
 			node.stage && stageResize(null);
 		}
-		
 	}
 
 }

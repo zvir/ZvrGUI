@@ -14,5 +14,12 @@ package zvr.zvrGUI.skins.base
 		public function ZvrFlashBitmapSkin()
 		{
 		}
+		
+		/* INTERFACE zvr.zvrGUI.skins.base.IZvrSkinLayer */
+		
+		public function dispose():void 
+		{
+			
+		}
 	}
 }

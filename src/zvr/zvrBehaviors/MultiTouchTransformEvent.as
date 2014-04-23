@@ -20,6 +20,8 @@ package zvr.zvrBehaviors
 		private var _centerX:Number;
 		private var _centerY:Number;
 		
+		
+		
 		public function MultiTouchTransformEvent(type:String, rotationDelta:Number = 0, centerX:Number = 0, centerY:Number = 0, xPositinDelta:Number = 0, yPositinDelta:Number = 0,  scaleDelta:Number = 0, bubbles:Boolean = false, cancelable:Boolean = false) 
 		{ 
 			super(type, bubbles, cancelable);

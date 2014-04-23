@@ -37,19 +37,18 @@ package zvr.zvrGUI.core.custom
 		
 		protected var _contentWidth:Number = 0;
 		protected var _contentHeight:Number = 0;
+		
 		protected var _elements:Vector.<IZvrComponent> = new Vector.<IZvrComponent>;
 		private var _presentElements:Vector.<IZvrComponent> = new Vector.<IZvrComponent>;
-		private var _test:Sprite = new Sprite();
+		
 		private var _layout:ZvrLayout;
 		private var _updateLayout:Function;
 
 		private var _contents:IZvrComponentBody;
 
-		protected var _mask:Sprite = new Sprite();
-
-		private var _contentPadding:ZvrContentPadding;
+		protected var _contentPadding:ZvrContentPadding;
 		private var _sizeManager:ZvrContainerSizeManager;
-		private var _maskingEnabled:Boolean = true;
+		protected var _maskingEnabled:Boolean = true;
 		
 		private var _contentHeightAreaIndependent:Boolean;
 		private var _contentWidthAreaIndependent:Boolean;
@@ -82,6 +81,33 @@ package zvr.zvrGUI.core.custom
 			
 		}
 		
+		override public function dispose():void 
+		{
+			
+			for (var i:int = _elements.length -1; i >= 0; i--) 
+			{
+				var e:IZvrComponent = _elements[i];
+				e.dispose();
+			}
+			
+			_elements.length = 0;
+			_elements = null;
+			_presentElements.length = 0;
+			_presentElements = null;
+			
+			_sizeManager.dispose();
+			_sizeManager = null;
+			_contentPadding.dispose();
+			_contentPadding = null;
+			_contents.dispose();
+			_contents = null;
+			if (_layout) _layout.destroy();
+			_layout = null;
+			_updateLayout = null;
+			
+			super.dispose();
+		}
+		
 		override protected function setUpDebug():void
 		{
 			//_base.setChildIndex(_debug, _base.numChildren - 1);
@@ -95,8 +121,7 @@ package zvr.zvrGUI.core.custom
 		 * Capture of elements chanege
 		 * 
 		*/
-		
-		private function resized(e:ZvrComponentEvent):void
+		private function resized(e:ZvrComponentEvent):void 
 		{
 			if (massChangeMode) return;
 			updateLayout();
@@ -134,7 +159,12 @@ package zvr.zvrGUI.core.custom
 			{
 				updateSize();
 			}
+			
 			updateContentSize();
+
+			validateBounds(); //TODO is this nessesery ?
+			
+			
 			updateMask();
 		}
 		
@@ -148,7 +178,15 @@ package zvr.zvrGUI.core.custom
 			var i:int = _presentElements.indexOf(component);
 			
 			if (component.present && i < 0)
-				_presentElements.splice(getElementIndex(component), 0, component );
+			{
+				_presentElements.length = 0;
+				
+				for (var j:int = 0; j < _elements.length; j++) 
+				{
+					if (_elements[j].present) _presentElements.push(_elements[j]);
+				}
+				//_presentElements.splice(getElementIndex(component), 0, component );
+			}
 				
 			if (!component.present && i >= 0)
 				_presentElements.splice(i, 1);
@@ -263,9 +301,7 @@ package zvr.zvrGUI.core.custom
 		
 		protected function updateMask():void
 		{
-			_mask.graphics.clear();
-			_mask.graphics.beginFill(0x00FF00, 0.1);
-			_mask.graphics.drawRect(_contentPadding.left, _contentPadding.top, bounds.width - _contentPadding.right - _contentPadding.left, bounds.height - _contentPadding.bottom - _contentPadding.top);
+			
 		}
 		
 		
@@ -371,6 +407,11 @@ package zvr.zvrGUI.core.custom
 			return element;
 		}
 		
+		public function hasElement(v:Object):Boolean
+		{
+			return _elements.indexOf(v as IZvrComponent) > -1;
+		}
+		
 		public function getNumElements():int
 		{
 			return _elements.length;
@@ -399,9 +440,11 @@ package zvr.zvrGUI.core.custom
 		{
 			if (x == _contents.x - _contentPadding.left && y == _contents.y - _contentPadding.right)
 				return;
-				
+			
 			_contents.x = x + _contentPadding.left;
 			_contents.y = y + _contentPadding.top;
+			
+			updateMask();
 			
 			dispatchEvent(new ZvrContainerEvent(ZvrContainerEvent.CONTENT_POSITION_CHANGE, this, null));
 		}
@@ -536,16 +579,15 @@ package zvr.zvrGUI.core.custom
 			
 			_maskingEnabled = value;
 			
-			if (_maskingEnabled)
+			/*if (_maskingEnabled)
 			{
-				//_contents.mask = _mask;
-				_mask.visible = true;
+				bo
 			}
 			else
 			{
 				//_contents.mask = null;
 				_mask.visible = false;
-			}
+			}*/
 		}
 		
 		public function get contentHeightAreaIndependent():Boolean 
@@ -560,12 +602,12 @@ package zvr.zvrGUI.core.custom
 
 		public function addComponent(child:IZvrComponent):IZvrComponent
 		{
-			return null;
+			return addChild(child) as IZvrComponent;
 		}
 
 		public function removeComponent(child:IZvrComponent):IZvrComponent
 		{
-			return null;
+			return removeChild(child) as IZvrComponent;
 		}
 
 		public function addSkinLayer(skinLayer:IZvrSkinLayer):void

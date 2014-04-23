@@ -47,11 +47,6 @@ package zvr.zvrGUI.core
 			
 			_contents = new ZvrDisabledContainer(panelSkin);
 			
-			/*_contents.contentPadding.top = 10;
-			_contents.contentPadding.left = 10;
-			_contents.contentPadding.right = 10;
-			_contents.contentPadding.bottom = 10;*/
-			
 			_container.addChild(_verticalScroll);
 			_container.addChild(_horizontalScroll);
 			_container.addChild(_contents);
@@ -119,12 +114,12 @@ package zvr.zvrGUI.core
 		
 		private function resized(e:ZvrComponentEvent):void 
 		{	
-			if (!_customScroll)
-			{
-				updateScrollsPosition();
-				updateAreaAndMax();
-				scrollPositionChanged(null);
-			}
+			if (_customScroll) return;
+
+			updateScrollsPosition();
+			updateAreaAndMax();
+			scrollPositionChanged(null);
+			
 			updateScrollsState();
 		}
 		
@@ -196,6 +191,8 @@ package zvr.zvrGUI.core
 		
 		private function updateScrollPolicy(scroll:ZvrScroll, policy:String):void
 		{
+			if (_customScroll) return;
+			
 			switch (policy) 
 			{
 				case ZvrScrollPolicy.ON: scroll.enabled = true;	break;
@@ -205,6 +202,7 @@ package zvr.zvrGUI.core
 		
 		public function updateScrollsState():void
 		{
+			if (_customScroll) return;
 			
 			if (_horizontalScrollPolicy == ZvrScrollPolicy.AUTO)
 			{

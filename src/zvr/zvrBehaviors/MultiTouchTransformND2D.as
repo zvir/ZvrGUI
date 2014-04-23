@@ -81,6 +81,8 @@ package zvr.zvrBehaviors
 			}
 			
 			_stage.removeEventListener(Event.ENTER_FRAME, enterFrame);
+			
+			
 		}
 		
 		override protected function begin():void 

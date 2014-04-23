@@ -76,7 +76,9 @@ package zvr.zvrGUI.core.custom
 		private var _massChangeBounds:Rectangle = null;
 
 		protected var _body:IZvrComponentBody;
-
+		
+		private var _pixelSharp:Boolean;
+		
 		public function ZvrComponentBase(skinClass:Class, bodyClass:Class)
 		{
 			//_debug = new ZvrDebugComponent(this, setUpDebug);
@@ -157,7 +159,7 @@ package zvr.zvrGUI.core.custom
 			
 			if (_explicit.x == ZvrExplicitBounds.HORIZONTAL_CENTER && _owner)
 			{
-				return isNaN(_horizontalCenter) ? 0 : (_owner.contentAreaWidth * 0.5 - _bounds.width * 0.5) + _horizontalCenter;
+				return isNaN(_horizontalCenter) ? 0 : (_owner.contentAreaWidth * 0.5 - bounds.width * 0.5) + _horizontalCenter;
 			}
 			
 			switch (_explicit.x)
@@ -184,7 +186,7 @@ package zvr.zvrGUI.core.custom
 			
 			if (_explicit.y == ZvrExplicitBounds.VERTICAL_CENTER && _owner)
 			{
-				return isNaN(_verticalCenter) ? 0 : (_owner.contentAreaHeight * 0.5 - _bounds.height * 0.5) + _verticalCenter;
+				return isNaN(_verticalCenter) ? 0 : (_owner.contentAreaHeight * 0.5 - bounds.height * 0.5) + _verticalCenter;
 			}
 			
 			switch (_explicit.y)
@@ -273,7 +275,7 @@ package zvr.zvrGUI.core.custom
 		
 		}
 		
-		private function ownerResize(e:ZvrComponentEvent):void
+		protected function ownerResize(e:ZvrComponentEvent):void
 		{
 			var b:Point = new Point(_bounds.width, _bounds.height);
 			var p:Point = _bounds.topLeft.clone();
@@ -394,8 +396,16 @@ package zvr.zvrGUI.core.custom
 		
 		protected function setSuperPosition(x:Number, y:Number):void
 		{	
-			_body.x = x;
-			_body.y = y;
+			if (_pixelSharp)
+			{
+				_body.x = Math.round(x);
+				_body.y = Math.round(y);
+			}
+			else
+			{
+				_body.x = x;
+				_body.y = y;
+			}
 		}
 		
 		// PROTECTED
@@ -1178,6 +1188,50 @@ package zvr.zvrGUI.core.custom
 		{
 			return _body;
 		}
+		
+		public function get pixelSharp():Boolean 
+		{
+			return _pixelSharp;
+		}
+		
+		public function set pixelSharp(value:Boolean):void 
+		{
+			_pixelSharp = value;
+			updatePosition();
+		}
+		
+		public function dispose():void
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, addedToStage);
+			removeEventListener(Event.ADDED_TO_STAGE, addedToStage);
+			
+			if (_owner)
+			{
+				_owner.removeEventListener(ZvrComponentEvent.RESIZE, ownerResize);
+				_owner.removeEventListener(ZvrComponentEvent.PRESENTS_CHANGE, ownerPresentsChange);
+			}
+			
+			if (_skin) _skin.dispose();
+			if (_behaviors) _behaviors.dispose();
+			if (_states) _states.dispose();
+			if (_presents) _presents.dispose();
+			
+			_rect = null;
+			_bounds = null;
+			_skin = null;
+			_behaviors = null;
+			_states = null;
+			_presents = null;
+			_skinUpdateSize = null;
+			_owner = null;
+			_explicit = null;
+			_skinCreate = null;
+			_massChangeBounds = null;
+			_body = null;
+			
+			trace("disposed", this);
+		}
+		
 	}
 }
 

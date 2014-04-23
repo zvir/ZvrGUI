@@ -35,7 +35,7 @@ package zvr.zvrGUI.layouts
 	
 	public class ZvrLayout 
 	{
-		private var _container:IZvrContainer;
+		protected var _container:IZvrContainer;
 		private var _computeContentBounds:Function;
 		private var _contentRectangle:Rectangle = new Rectangle();
 		private var _contentAreaRectangle:Rectangle = new Rectangle();
@@ -128,8 +128,8 @@ package zvr.zvrGUI.layouts
 					_contentAreaRectangle.height = _container.contentAreaHeight;
 				break;
 				case ZvrAutoSize.CONTENT_HEIGHT:
-					_contentAreaRectangle.width = contentRect.width;
-					_contentAreaRectangle.height = _container.contentAreaWidth;
+					_contentAreaRectangle.width = _container.contentAreaWidth;
+					_contentAreaRectangle.height = contentRect.height;
 				break;
 			}
 			

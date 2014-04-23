@@ -54,8 +54,6 @@ package zvr.zvrGUI.events
 			return formatToString("zvrComponentEvent", "type", "bubbles", "cancelable", "eventPhase"); 
 		}
 		
-		
-		
 	}
 	
 }

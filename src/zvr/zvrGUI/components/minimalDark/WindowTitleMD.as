@@ -49,7 +49,7 @@ package zvr.zvrGUI.components.minimalDark
 			titleLabel.delegateStates = this;
 			titleLabel.labelAutoSize = false;
 			titleLabel.height = 15;
-			titleLabel.right = 10;
+			titleLabel.right = 20;
 			titleLabel.left = 0;
 			titleLabel.cutLabel = true;
 			addChild(titleLabel);

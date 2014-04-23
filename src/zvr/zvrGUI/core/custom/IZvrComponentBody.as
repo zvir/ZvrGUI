@@ -8,22 +8,14 @@
 package zvr.zvrGUI.core.custom
 {
 	import flash.display.Stage;
+	import flash.events.IEventDispatcher;
+	import zvr.zvrGUI.core.IZvrDisplayObject;
 
-	public interface IZvrComponentBody
+	public interface IZvrComponentBody extends IZvrDisplayObject
 	{
-
 		function addElement(element:Object):Object;
 		function removeElement(element:Object):Object;
-
-		function set x(value:Number):void;
-		function set y(value:Number):void;
-
-		function get x():Number;
-		function get y():Number;
 		
-		function set visible(v:Boolean):void
-		
-		function get stage():Stage;
-		
+		function dispose():void;
 	}
 }

@@ -4,14 +4,15 @@ package zvr.zvrGUI.core
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
-	import mx.collections.ArrayCollection;
+	/*import mx.collections.ArrayCollection;
 	import mx.events.CollectionEvent;
-	import mx.events.CollectionEventKind;
+	import mx.events.CollectionEventKind;*/
 	import zvr.zvrGUI.events.ZvrComponentEvent;
 	import zvr.zvrGUI.events.ZvrDataContainerEvent;
 	import zvr.zvrGUI.layouts.data.ZvrDataLayout;
 	import zvr.zvrGUI.managers.ZvrDataItemsManager;
-		/**
+	
+	/**
 	 * @author	Michał Zwieruho "Zvir"
 	 * @www	www.zvir.pl, www.celavra.pl
 	 * @email	michal@zvir.pl
@@ -33,11 +34,10 @@ package zvr.zvrGUI.core
 	[Event (name = "item_rollOver",    		type = "zvr.zvrGUI.events.ZvrDataContainerEvent")]
 	
 	
-	
 	public class ZvrDataContainer extends ZvrContainer 
 	{
 		
-		private var _dataProvider:ArrayCollection;
+		/*private var _dataProvider:ArrayCollection;*/
 		private var _virtualContent:ZvrDataVirtualContent = new ZvrDataVirtualContent();
 		private var _itemsManager:ZvrDataItemsManager;
 		private var _layout:ZvrDataLayout;
@@ -73,30 +73,30 @@ package zvr.zvrGUI.core
 		
 		private function updateAllItems():void
 		{
-			if (!_dataProvider) return;
+			//if (!_dataProvider) return;
 			_layout.updateItemsBounds();
 		}
-		
+		/*
 		private function addEventListenersToDataProvider():void
 		{
 			_dataProvider.addEventListener(CollectionEvent.COLLECTION_CHANGE, dataProviderChange);
 		}
-		
+		*//*
 		private function removeEventListenersFromDataProvider():void
 		{
 			_dataProvider.removeEventListener(CollectionEvent.COLLECTION_CHANGE, dataProviderChange);
 		}
-		
+		*/
 		private function get virtualBounds():Rectangle
 		{
 			return new Rectangle(_virtualBoundsPosition.x, _virtualBoundsPosition.y, bounds.width, bounds.height);
 		}
-		
+		/*
 		public function get dataProvider():ArrayCollection 
 		{
 			return _dataProvider;
-		}
-		
+		}*/
+		/*
 		public function set dataProvider(value:ArrayCollection):void 
 		{
 			if (_dataProvider) removeEventListenersFromDataProvider();
@@ -110,7 +110,7 @@ package zvr.zvrGUI.core
 				addEventListenersToDataProvider();
 			}
 		}
-		
+		*/
 		public function set itemRendererClass(value:Class):void 
 		{
 			_itemsManager.itemRendererClass = value;
@@ -127,7 +127,7 @@ package zvr.zvrGUI.core
 		{
 			return _layout;
 		}
-		
+		/*
 		private function dataProviderChange(e:CollectionEvent):void 
 		{
 			
@@ -144,7 +144,7 @@ package zvr.zvrGUI.core
 				case CollectionEventKind.UPDATE: break;
 			}
 		}
-		
+		*/
 		private function itemAdded(changeIndex:int):void
 		{
 			_layout.updateItemsBounds(changeIndex);

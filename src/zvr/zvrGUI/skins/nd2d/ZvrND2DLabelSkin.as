@@ -28,6 +28,19 @@ package zvr.zvrGUI.skins.nd2d
 			registerStyle(ZvrND2DFNTStyle.FONT_SPRITESHEET, setFntSpriteSheet);
 			registerStyle(ZvrND2DFNTStyle.FONT_COLOR, setFontColor);
 			registerStyle(ZvrND2DFNTStyle.FONT_SPACING, setFontSpacing);
+			registerStyle(ZvrND2DFNTStyle.FONT_LINE_HEIGHT, setLineHeight);
+			registerStyle(ZvrND2DFNTStyle.FONT_ALIGN, setAlign);
+			registerStyle(ZvrND2DFNTStyle.FONT_SIZE, setFontSize);
+		}
+		
+		private function setLineHeight():void 
+		{
+			fnt.lineHeight = getStyle(ZvrND2DFNTStyle.FONT_LINE_HEIGHT);
+		}
+		
+		private function setAlign():void 
+		{
+			fnt.align = getStyle(ZvrND2DFNTStyle.FONT_ALIGN);
 		}
 		
 		private function setFontSpacing():void 
@@ -60,6 +73,11 @@ package zvr.zvrGUI.skins.nd2d
 		private function change(e:Event):void 
 		{
 			updateComponentSize(fnt.width, fnt.height);
+		}
+		
+		private function setFontSize():void 
+		{
+			fnt.fontSize = getStyle(ZvrND2DFNTStyle.FONT_SIZE);
 		}
 		
 	}

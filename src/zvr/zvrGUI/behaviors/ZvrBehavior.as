@@ -72,12 +72,12 @@ package zvr.zvrGUI.behaviors
 			return _name;
 		}
 		
-		public function get component():ZvrComponent
+		public function get component():IZvrComponent
 		{
-			return ZvrComponent(_component);
+			return IZvrComponent(_component);
 		}
 		
-		public function set component(value:ZvrComponent):void
+		public function set component(value:IZvrComponent):void
 		{
 			_component = value;
 

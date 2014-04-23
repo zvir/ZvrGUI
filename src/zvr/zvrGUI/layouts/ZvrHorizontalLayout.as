@@ -14,6 +14,8 @@ package zvr.zvrGUI.layouts
 		
 		private var _gap:Number = 10;
 		
+		
+		
 		public function ZvrHorizontalLayout(container:IZvrContainer, computeContentBounds:Function, registration:Function, contentAreaIndependent:Function)
 		{
 			super(container, computeContentBounds, registration, contentAreaIndependent);
@@ -44,6 +46,7 @@ package zvr.zvrGUI.layouts
 			_gap = value;
 			update();
 		}
+		
 	}
 
 }

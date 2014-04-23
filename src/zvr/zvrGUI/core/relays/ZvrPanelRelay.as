@@ -1,4 +1,4 @@
-﻿﻿package zvr.zvrGUI.core.relays
+package zvr.zvrGUI.core.relays
 {
 	import flash.display.DisplayObject;
 	import flash.geom.Point;
@@ -10,6 +10,7 @@
 	 * ...
 	 * @author Zvir
 	 */
+	
 	public class ZvrPanelRelay extends ZvrContainer
 	{
 		
@@ -218,7 +219,7 @@
 			}
 		}
 		
-		/*override public function removeChildren(beginIndex:int = 0, endIndex:int = 2147483647):void
+		override public function removeChildren(beginIndex:int = 0, endIndex:int = 2147483647):void
 		{
 			if (_contents)
 			{
@@ -228,7 +229,7 @@
 			{
 				return super.removeChildren(beginIndex, endIndex);
 			}
-		}*/
+		}
 		
 		override public function setChildIndex(child:DisplayObject, index:int):void
 		{
@@ -353,6 +354,18 @@
 			else
 			{
 				return super.childrenPadding;
+			}
+		}
+		
+		override public function removeAllChildren():void 
+		{
+			if (_contents)
+			{
+				return _contents.removeAllChildren();
+			}
+			else
+			{
+				return super.removeAllChildren();
 			}
 		}
 		

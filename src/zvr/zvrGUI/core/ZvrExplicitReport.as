@@ -21,6 +21,11 @@ package zvr.zvrGUI.core
 			return "x:" + x + " y:" + y + " width:" + width + " height:" + height + " right:" + right + " bottom:" + bottom;
 		}
 		
+		public function ZvrExplicitReport()
+		{
+			
+		}
+		
 	}
 
 }

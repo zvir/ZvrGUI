@@ -33,8 +33,24 @@ package zvr.zvrTools
 		
 		static public function smoothTrans(a:Number, b:Number, c:Number):Number
 		{
-			var d:Number = a - (a - b) * c;
-			return d;
+			return a - (a - b) * c;
+		}
+		
+		static public function smoothTransStep(from:Number, to:Number, smooth:Number, step:Number, limit:Number = 0.0001):Number
+		{
+			if (Math.abs(from - to) < limit) return to;
+			return step == 1 ? from - (from  - to ) * smooth : from - (from  - to ) * smoothIn(smooth, step);
+			
+			//var r:Number = step == 1 ? from - (from  - to ) * smooth : from - (from  - to ) * smoothIn(smooth, step);
+			
+			//return Math.round(r * limit) / (1/limit);
+		}
+		
+		static public function smoothIn(smooth:Number, step:Number):Number
+		{
+			if (smooth == 0) return 0;
+			smooth = 1 - smooth;
+			return 1 - (((((1 - Math.pow(smooth, step + 1)) / (1 - smooth))) - (((1 - Math.pow(smooth, step)) / (1 - smooth)))));
 		}
 		
 		static public function linearTrans(value:Number, to:Number, maxStep:Number):Number
@@ -222,6 +238,89 @@ package zvr.zvrTools
 		public static function logx(val:Number, base:Number = 10):Number
 		{
 			return Math.log(val) / Math.log(base);
+		}
+		
+		public static function gcd(a:int, b:int):int
+		{
+			// Euclidean algorithm
+			var t:int;
+			while (b != 0){
+				t = b;
+				b = a % b;
+				a = t;
+			}
+			return a;
+		}
+
+		public static function lcm(a:int, b:int):int
+		{
+			return (a * b / gcd(a, b));
+		}
+
+		public static function lcmm(args:Array):int
+		{
+			// Recursively iterate through pairs of arguments
+			// i.e. lcm(args[0], lcm(args[1], lcm(args[2], args[3])))
+
+			if(args.length == 2){
+				return lcm(args[0], args[1]);
+			} else {
+				var arg0:int = args[0];
+				args.shift();
+				return lcm(arg0, lcmm(args));
+			}
+		}
+		
+		public static function roundCommonFracrion(v1:int, v2:int):Array
+		{
+			
+			if (v1 == 0 && v2 == 1) return [0, 0]; 
+			if (v1 == 0) return [0, 1];
+			if (v2 == 0) return [1, 0];
+			
+			var a:Array = getFracrion(v1, v2);
+			
+			while ((a[0] < 1 || a[0] >= 10) && (a[1] < 1 || a[1] >= 10))
+			{
+				var vr1:int = a[0] / 2;
+				var vr2:int = a[1] / 2;
+				
+				a = getFracrion(vr1, vr2);
+				
+			}
+			
+			if ((a[0] >= 10 && a[1] < 10))
+			{
+				a[0] = Math.round(a[0] / a[1]);
+				a[1] = 1;
+			}
+			
+			if ((a[1] >= 10 && a[0] < 10))
+			{
+				a[1] = Math.round(a[1] / a[0]);
+				a[0] = 1;
+			}
+			
+			if (isNaN(a[0]))
+			{
+				//trace("NAN ERROR 1");
+				a[0] = 0;
+			}
+			
+			if (isNaN(a[1]))
+			{
+				//trace("NAN ERROR 2");
+				a[1] = 0;
+			}
+			
+			return a;
+		}
+		
+		private static function getFracrion(v1:int, v2:int):Array
+		{
+			var v:Number = v1 / v2;
+			v = lcm(v1, v2);
+			return [v / v2, v / v1];
 		}
 	}
 }

@@ -1,7 +1,7 @@
 package zvr.zvrComps.zvrTool.zvrTracer 
 {
 	import flash.events.Event;
-	import mx.collections.ArrayCollection;
+	//import mx.collections.ArrayCollection;
 
 	import zvr.zvrGUI.components.minimalDark.DataContainerMD;
 	import zvr.zvrGUI.components.minimalDark.ItemRendererMD;
@@ -19,7 +19,7 @@ package zvr.zvrComps.zvrTool.zvrTracer
 	public class ZvrTracer extends WindowMD
 	{
 		private var _data:ZvrTracerData;
-		private var _dataProvider:ArrayCollection;
+		//private var _dataProvider:ArrayCollection;
 		private var _numStatus:LabelMD = new LabelMD();
 		
 		private var _messagesToAdd:Array = new Array();
@@ -32,11 +32,11 @@ package zvr.zvrComps.zvrTool.zvrTracer
 			_data.percentWidth = 100;
 			_data.percentHeight = 100;
 			_data.setLayout(ZvrDataVerticalLayout);
-			_dataProvider = new ArrayCollection();
+			//_dataProvider = new ArrayCollection();
 			//_data.getLayout().variableItemsSize = true;
 			addChild(_data);
 			_data.scroll = panel.scroller;
-			_data.dataProvider = _dataProvider;
+			//_data.dataProvider = _dataProvider;
 			
 			minWidth = 350;
 			
@@ -63,9 +63,9 @@ package zvr.zvrComps.zvrTool.zvrTracer
 				
 				for (var i:int = 0; i < _messagesToAdd.length; i++) 
 				{
-					_dataProvider.addItem(_messagesToAdd[i]);
+					/*_dataProvider.addItem(_messagesToAdd[i]);*/
 				}
-				_numStatus.text = String(_dataProvider.length);
+				/*_numStatus.text = String(_dataProvider.length);*/
 				_messagesToAdd.length = 0;
 			}
 			

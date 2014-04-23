@@ -99,6 +99,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 		{
 			var tf:TextFormat = _textField.getTextFormat();
 			tf.align = getStyle(ZvrStyles.LABEL_ALIGN);
+			_textField.defaultTextFormat = tf;
 			_textField.setTextFormat(tf);
 		}
 		
@@ -131,6 +132,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 		private function drawBck():void
 		{
 			return;
+			_textField.border = true;
 			var sp:Sprite = _body as Sprite;
 			sp.graphics.clear();
 			sp.graphics.beginFill(0x137D1C, 0.7);

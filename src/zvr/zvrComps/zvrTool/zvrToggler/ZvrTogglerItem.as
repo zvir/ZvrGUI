@@ -38,6 +38,9 @@ package zvr.zvrComps.zvrTool.zvrToggler
 		
 		public function remove():void
 		{
+			
+			if (!toggler) return;
+			
 			toggler.remove(_name);
 			
 			ZvrContainer(_button.owner).removeChild(_button);

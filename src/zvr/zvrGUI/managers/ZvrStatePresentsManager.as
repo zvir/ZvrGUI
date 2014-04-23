@@ -1,11 +1,9 @@
 package zvr.zvrGUI.managers 
 {
-	import flash.display.DisplayObjectContainer;
-
 	import zvr.zvrGUI.core.IZvrComponent;
-	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.events.ZvrComponentEvent;
 	import zvr.zvrGUI.events.ZvrStateChangeEvent;
+
 		/**
 	 * @author	Michał Zwieruho "Zvir"
 	 * @www	www.zvir.pl, www.celavra.pl
@@ -19,23 +17,47 @@ package zvr.zvrGUI.managers
 		
 		private var _includeIn:Array = new Array();
 		private var _excludeIn:Array = new Array();
+		
 		private var _includeInLayout:Object;
+		
 		private var _present:Boolean = true;
+		
 		private var _component:IZvrComponent;
+		
 		private var _visibleSetter:Function;
 		
 		public function ZvrStatePresentsManager(component:IZvrComponent, visibleSetter:Function)
 		{
 			_visibleSetter = visibleSetter;
 			_component = component;
-			_component.addEventListener(ZvrComponentEvent.ADDED, componentAdded);
+			_component.addEventListener(ZvrComponentEvent.ADDED, componentAdded, false, 0, true);
+		}
+		
+		public function dispose():void 
+		{
+			if (_component)
+			{
+				_component.removeEventListener(ZvrComponentEvent.ADDED, componentAdded);
+				_component.removeEventListener(ZvrComponentEvent.REMOVED, componentRemoved);
+				
+				if (_component.owner)
+				{
+					_component.owner.removeEventListener(ZvrStateChangeEvent.CHANGE, ownerStateChange);
+				}
+			}
+			
+			_includeIn = null;
+			_excludeIn = null;
+			_includeInLayout = null;
+			_component = null;
+			_visibleSetter = null;
 		}
 		
 		private function componentAdded(e:ZvrComponentEvent):void 
 		{
 			if (!_component.owner) return;
 			_component.owner.addEventListener(ZvrStateChangeEvent.CHANGE, ownerStateChange);
-			_component.addEventListener(ZvrComponentEvent.REMOVED, componentRemoved);
+			_component.addEventListener(ZvrComponentEvent.REMOVED, componentRemoved, false, 0, true);
 			_component.removeEventListener(ZvrComponentEvent.ADDED, componentAdded);
 
 			update();
@@ -44,7 +66,7 @@ package zvr.zvrGUI.managers
 		private function componentRemoved(e:ZvrComponentEvent):void 
 		{
 			_component.owner.removeEventListener(ZvrStateChangeEvent.CHANGE, ownerStateChange);
-			_component.addEventListener(ZvrComponentEvent.ADDED, componentAdded);
+			_component.addEventListener(ZvrComponentEvent.ADDED, componentAdded, false, 0, true);
 		}
 		
 		private function ownerStateChange(e:ZvrStateChangeEvent):void 
@@ -136,7 +158,7 @@ package zvr.zvrGUI.managers
 		
 		public function get includeInLayout():Object 
 		{
-			return _includeInLayout;
+			return _includeInLayout == TRUE ? true : false;
 		}
 		
 		public function set includeInLayout(value:Object):void 
@@ -157,7 +179,7 @@ package zvr.zvrGUI.managers
 		
 		public function get present():Boolean 
 		{
-			if (_includeInLayout)
+			if (_includeInLayout != null)
 			{
 				if (_includeInLayout == TRUE) return true;
 				if (_includeInLayout == FALSE) return false;

@@ -20,6 +20,7 @@ package zvr.zvrBehaviors
 
 	public class MultiTouchTransformND2D_PE extends MultiTouchTransformProcessor
 	{
+		public var pointsLimit:int;
 		
 		private var _handler:Node2D;
 		private var _stage:Stage;
@@ -137,6 +138,7 @@ package zvr.zvrBehaviors
 			//tr("m", _stage.mouseX, _stage.mouseY);
 			
 			//var sp:Point = Node2D(e.currentTarget).localToGlobal(new Point(e.localX, e.localY));
+			
 			addPoint(0, _stage.mouseX, _stage.mouseY);
 		}
 		

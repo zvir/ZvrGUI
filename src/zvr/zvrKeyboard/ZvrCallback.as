@@ -23,9 +23,12 @@ package zvr.zvrKeyboard
 			return this;
 		}
 		
-		public function call():void
+		public function call(... rest):void
 		{
-			_callback.apply( null, _args );
+			var a:Array;
+			if (rest && rest.length > 0) a = rest.concat(_args); else a = _args;
+			
+			_callback.apply( null, a );
 		}
 		
 		public function destroy():void

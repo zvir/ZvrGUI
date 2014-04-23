@@ -73,6 +73,8 @@ package zvr.zvrGUI.core
 		private var _massChangeMode:Boolean = false;
 		private var _massChangeBounds:Rectangle = null;
 		
+		private var _roundPosition:Boolean;
+		
 		public function ZvrComponent(skinClass:Class)
 		{
 			//_debug = new ZvrDebugComponent(this, setUpDebug);
@@ -298,6 +300,12 @@ package zvr.zvrGUI.core
 			
 			b.x = xPosition;
 			b.y = yPosition;
+			
+			if (_roundPosition)
+			{
+				b.x = int(b.x);
+				b.y = int(b.y);
+			}
 			
 			b.height = validateHeight(heightDimention);
 			b.width = validateWidth(widthDimention);
@@ -988,6 +996,12 @@ package zvr.zvrGUI.core
 		private function setVisible(value:Boolean):void
 		{
 			super.visible = value;
+			
+			if (value)
+			{
+				_dispatchEvent(ZvrComponentEvent.RESIZE);
+			}
+			
 		}
 		
 		public function set layoutPositionX(x:Number):void
@@ -1149,6 +1163,13 @@ package zvr.zvrGUI.core
 		
 		/* INTERFACE zvr.zvrGUI.core.IZvrComponent */
 		
+		public function dispose():void 
+		{
+			
+		}
+		
+		/* INTERFACE zvr.zvrGUI.core.IZvrComponent */
+		
 		public function get body():IZvrComponentBody 
 		{
 			return null;
@@ -1157,6 +1178,17 @@ package zvr.zvrGUI.core
 		public function get onStage():Boolean
 		{
 			return Boolean(stage);
+		}
+		
+		public function get roundPosition():Boolean 
+		{
+			return _roundPosition;
+		}
+		
+		public function set roundPosition(value:Boolean):void 
+		{
+			_roundPosition = value;
+			validateBounds();
 		}
 	}
 }

@@ -24,6 +24,16 @@
 			super(skin, bodyClass);
 		}
 		
+		override public function dispose():void 
+		{
+			super.dispose();
+			
+			_base.dispose();
+			_base = null;
+			_contents = null;
+			
+		}
+		
 		private function superMethod(method:String, ... args):*
 		{
 			var f:Function = super[method];
@@ -47,7 +57,12 @@
 
 		override public function removeChild(element:Object):Object
 		{
-			return _contents.addElement(element);
+			return _contents.removeElement(element);
+		}
+		
+		protected function get contents():IZvrComponentBody 
+		{
+			return _contents;
 		}
 
 		

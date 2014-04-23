@@ -14,6 +14,11 @@ package zvr.zvrGUI.core
 			
 		}
 		
+		public function dispose():void 
+		{
+			_container = null;
+		}
+		
 	}
 
 }

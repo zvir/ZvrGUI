@@ -20,7 +20,11 @@ package zvr.zvrGUI.layouts
 		private var _horizontalAlign:String = ZvrHorizontalAlignment.LEFT;
 		private var _alignment:String = ZvrAlignment.HORIZONTAL;
 		
+		private var _disrtibution:String = ZvrLayoutDistribution.ITEM;
+		
 		private var _pixelSharp:Boolean = false;
+		
+		
 		
 		public function ZvrComplexLayout(cointainer:IZvrContainer, computeContentBounds:Function, registration:Function, contentAreaIndependent:Function)
 		{
@@ -85,9 +89,16 @@ package zvr.zvrGUI.layouts
 					{
 						comp.y += getPos(containerBounds.height / 2 - comp.bounds.height / 2);
 					}
+					else if (_verticalAlign == ZvrVerticalAlignment.TOP)
+					{
+						comp.y -= getPos(comp.independentBounds.top);
+					}
+					else if (_verticalAlign == ZvrVerticalAlignment.BOTTOM)
+					{
+						comp.y += getPos(containerBounds.height - comp.independentBounds.height);
+					}
 				}
-				
-				if (_alignment == ZvrAlignment.VERTICAL)
+				else if (_alignment == ZvrAlignment.VERTICAL)
 				{
 					
 					if (_horizontalAlign == ZvrHorizontalAlignment.CENTER)
@@ -112,7 +123,7 @@ package zvr.zvrGUI.layouts
 					
 					if (_verticalAlign == ZvrVerticalAlignment.TOP)
 					{
-						//comp.y += getPos(m);
+						//comp.y += getPos(comp.independentBounds.top);
 					}
 					
 					if (_verticalAlign == ZvrVerticalAlignment.BOTTOM)
@@ -127,7 +138,7 @@ package zvr.zvrGUI.layouts
 		
 		private function getPos(v:Number):Number
 		{
-			return _pixelSharp ? int(v) : v;
+			return _pixelSharp ? Math.round(v) : v;
 		}
 		
 		private function horizontalAlignment():void
@@ -135,15 +146,60 @@ package zvr.zvrGUI.layouts
 			var x:Number = 0;
 			var w:Number = 0;
 			
-			for (var i:int = 0; i < elementes.length; i++) 
+			if (_disrtibution == ZvrLayoutDistribution.ITEM)
 			{
-				var comp:IZvrComponent = elementes[i];
-				comp.x = x + w + (isNaN(comp.left) ? 0 : comp.left);
-				comp.y = 0;
-				x = comp.x;
-				w = comp.independentBounds.width + _gap + (isNaN(comp.right) ? 0 : comp.right);
+				for (var i:int = 0; i < elementes.length; i++) 
+				{
+					var comp:IZvrComponent = elementes[i];
+					comp.x = x + w + (isNaN(comp.left) ? 0 : comp.left);
+					comp.y = 0;
+					x = comp.x;
+					w = comp.independentBounds.width + _gap + (isNaN(comp.right) ? 0 : comp.right);
+				}
+				
 			}
+			else if (_disrtibution == ZvrLayoutDistribution.EAVEN)
+			{
+				
+				var r:Rectangle = getContentAreaRectangle(new Rectangle());
+				
+				var space:Number = (r.width - _gap * (elementes.length - 1)) / elementes.length;
 			
+				for (i = 0; i < elementes.length; i++) 
+				{
+					comp = elementes[i];
+					comp.x = i * space + (i != 0 ? _gap*i : 0) + (isNaN(comp.left) ? 0 : comp.left);
+					comp.width = space - (isNaN(comp.right) ? 0 : comp.right) - (isNaN(comp.left) ? 0 : comp.left);
+				}
+			}
+			else if (_disrtibution == ZvrLayoutDistribution.PERCENT)
+			{
+				
+				var percentSum:Number = 0;
+				
+				for (i = 0; i < elementes.length; i++) 
+				{
+					comp = elementes[i];
+					percentSum += isNaN(comp.percentWidth) ? 100 : comp.percentWidth;
+				}
+				
+				r = getContentAreaRectangle(new Rectangle());
+				
+				space = (r.width - _gap * (elementes.length - 1));
+				
+				var lastX:Number = 0;
+				
+				
+				for (i = 0; i < elementes.length; i++) 
+				{
+					comp = elementes[i];
+					comp.x = lastX; //i * space + (i != 0 ? _gap*i : 0) + (isNaN(comp.left) ? 0 : comp.left);
+					comp.width = space * comp.percentWidth / percentSum; // (isNaN(comp.right) ? 0 : comp.right) - (isNaN(comp.left) ? 0 : comp.left);
+					
+					lastX = comp.x + comp.width + _gap;
+					
+				}
+			}
 		}
 		
 		private function verticalAlignment():void
@@ -158,6 +214,7 @@ package zvr.zvrGUI.layouts
 				comp.x = 0;
 				y = comp.y;
 				h = comp.independentBounds.height + _gap + (isNaN(comp.bottom) ? 0 : comp.bottom);
+			
 			}
 		}
 		
@@ -206,6 +263,7 @@ package zvr.zvrGUI.layouts
 		public function set gap(value:Number):void 
 		{
 			_gap = value;
+			update();
 		}
 		
 		public function get pixelSharp():Boolean 
@@ -217,6 +275,17 @@ package zvr.zvrGUI.layouts
 		{
 			_pixelSharp = value;
 			update();
+		}
+
+		public function set disrtibution(value:String):void 
+		{
+			_disrtibution = value;
+			update();
+		}
+		
+		public function get disrtibution():String 
+		{
+			return _disrtibution;
 		}
 		
 	}

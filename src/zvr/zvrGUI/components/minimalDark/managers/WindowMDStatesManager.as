@@ -104,6 +104,9 @@ package zvr.zvrGUI.components.minimalDark.managers
 		
 		private function maximilize():void
 		{
+			
+			_window.resetComponent();
+			
 			_window.top = 0;
 			_window.left = 0;
 			_window.right = 0;

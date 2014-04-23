@@ -8,7 +8,7 @@
 package zvr.collision 
 {
 
-	import com.blackmoon.theFew.airFight.view.GameDisplayContainer;
+	import com.blackmoon.theFew.airFight.view.AirFightDisplayContainer;
 	import com.tests.QuadTreeTest;
 	import zvr.collision.QuadTreeObj;
 	

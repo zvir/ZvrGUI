@@ -30,6 +30,13 @@ package zvr.zvrGUI.core.custom
 		{
 			return _superFunction("removeChild", child);
 		}
+		
+		public function dispose():void 
+		{
+			_superFunction = null;
+			_superGetter = null;
+			_superSetter = null;
+		}
 
 	}
 

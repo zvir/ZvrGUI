@@ -37,7 +37,7 @@ package zvr.zvrGUI.core
 				selectedIndex = _selectedIndex;
 			}
 			
-			wch(this, "views", _views.length);
+			//wch(this, "views", _views.length);
 			return child;
 			
 		}
@@ -53,7 +53,7 @@ package zvr.zvrGUI.core
 			
 			_dispachEvent(ZvrViewStackEvent.VIEW_REMOVED, child as ZvrComponent);
 			
-			wch(this, "views", _views.length);
+			//wch(this, "views", _views.length);
 			
 			return child;
 		}
@@ -79,7 +79,7 @@ package zvr.zvrGUI.core
 			
 			_dispachEvent(ZvrViewStackEvent.CURRENT_VIEW_CHANGED, _currentView);
 			
-			wch(this, "selectedIndex", selectedIndex);
+			//wch(this, "selectedIndex", selectedIndex);
 			
 		}
 		

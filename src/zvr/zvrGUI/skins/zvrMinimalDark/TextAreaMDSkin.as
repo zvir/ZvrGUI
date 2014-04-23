@@ -2,6 +2,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 {
 	import flash.display.Sprite;
 	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import zvr.zvrGUI.components.minimalDark.TextAreaMD;
 	import zvr.zvrGUI.core.ZvrComponent;
@@ -46,7 +47,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			Sprite(_body).addChild(_textField);
 			
 			_blend = new Sprite();
-			Sprite(_body).addChild(_blend);
+			//Sprite(_body).addChild(_blend);
 			
 		}
 		
@@ -99,6 +100,10 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			_textField.setTextFormat(format, beginIndex, endIndex);
 		}
 		
+		public function resetTextFormat():void
+		{
+			_textField.setTextFormat(_textField.defaultTextFormat);
+		}
 		
 		public function get scrollingProperties():Object
 		{
@@ -109,6 +114,17 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 				rangeH		:_textField.width,
 				textHeight	:_textField.textHeight
 			}
+		}
+		
+		public function get editable():Boolean 
+		{
+			return _textField.type == TextFieldType.INPUT;
+		}
+		
+		public function set editable(value:Boolean):void 
+		{
+			_textField.type = value ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
+			_textField.selectable = true;
 		}
 		
 	}

@@ -1,6 +1,7 @@
 package zvr.zvrComps.zvrTool.zvrTracy 
 {
 	import flash.utils.getTimer;
+	import zvr.zvrComps.zvrTool.ZvrToolLanHost;
 		/**
 	 * @author	Michał Zwieruho "Zvir"
 	 * @www	www.zvir.pl, www.celavra.pl
@@ -9,8 +10,12 @@ package zvr.zvrComps.zvrTool.zvrTracy
 	
 	public class Tracy 
 	{
+		
 		public static var tracy:ZvrTracy;
+		
 		private static var _counter:uint = 0;
+		
+		public static var lanHost:ZvrToolLanHost;
 		
 		public static function addTrace(args:Array):void
 		{
@@ -30,6 +35,9 @@ package zvr.zvrComps.zvrTool.zvrTracy
 			}
 			
 			tracy && tracy.addTrace(_counter, s);
+			
+			lanHost && lanHost.sendTR(_counter, s);
+			
 			_counter++;
 		}
 	}

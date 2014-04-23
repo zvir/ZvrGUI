@@ -4,6 +4,7 @@ package zvr.zvrTools
 	import fl.motion.MatrixTransformer;
 	import flash.geom.Matrix;
 	import flash.geom.Matrix3D;
+	import flash.geom.Vector3D;
 		
 
 	/**
@@ -46,6 +47,22 @@ package zvr.zvrTools
 			if (child.parent) child.parent.removeChild(child);
 			parent.addChild(child);
 			child.localMatrix = childMatrix;
+		}
+		
+		static public function mutliTransfrom(displayObject:Node2D, tx:Number, ty:Number, px:Number, py:Number, dr:Number, sd:Number):void 
+		{
+			if (displayObject.invalidateMatrix) displayObject.updateLocalMatrix();
+			
+			var m3d:Matrix3D = displayObject.localModelMatrix;
+			
+			m3d.appendTranslation( - px, -py, 0);
+			m3d.appendScale( sd, sd, 1);
+			m3d.appendRotation(dr, Vector3D.Z_AXIS);
+			m3d.appendTranslation(px + tx, py + ty, 0);
+			displayObject.myMatrixChanged = true;
+			
+			displayObject.updateTransformationFromMatrix();
+			
 		}
 		
 

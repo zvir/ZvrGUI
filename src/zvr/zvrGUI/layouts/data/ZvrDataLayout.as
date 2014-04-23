@@ -2,7 +2,7 @@ package zvr.zvrGUI.layouts.data
 {
 	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
-	import mx.collections.ArrayCollection;
+	//import mx.collections.ArrayCollection;
 	import zvr.zvrGUI.core.ZvrDataContainer;
 	import zvr.zvrGUI.core.ZvrDataVirtualContent;
 	import zvr.zvrGUI.core.ZvrItemRenderer;

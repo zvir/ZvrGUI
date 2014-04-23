@@ -17,7 +17,7 @@ package zvr.zvrGUI.core
 	[Event(name ="scrollStateChange",	type = "zvr.zvrGUI.events.ZvrScrollEvent")]
 	
 	
-	public class ZvrScroll extends ZvrContainer
+	public class ZvrScroll extends ZvrContainer implements IZvrScroll
 	{
 		
 		public static const MAX	:String = "max";

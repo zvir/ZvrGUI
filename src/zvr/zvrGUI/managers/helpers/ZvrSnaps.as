@@ -10,6 +10,12 @@ package zvr.zvrGUI.managers.helpers
 		public var bottom:ZvrSnapGuide;
 		public var left:ZvrSnapGuide;
 		public var right:ZvrSnapGuide;
+	
+		
+		public function ZvrSnaps()
+		{
+			
+		}
 		
 	}
 

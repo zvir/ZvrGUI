@@ -6,6 +6,7 @@ package zvr.zvrComps.zvrTool
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.UncaughtErrorEvent;
+	import flash.net.registerClassAlias;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
 	import zvr.zvrTools.ZvrDevice;
@@ -64,6 +65,9 @@ package zvr.zvrComps.zvrTool
 		private var _w:Number;
 		
 		public var menu:ZvrToolMenu;
+		
+		public var hostLan:ZvrToolLanHost;
+		public var clientLan:ZvrToolLanClient;
 		
 		
 		public function ZvrTool() 
@@ -161,8 +165,19 @@ package zvr.zvrComps.zvrTool
 			
 			
 			//addChild(new TouchMouseMD());
+			registerClassAlias("ZvrToolLANMessage", ZvrToolLANMessage);
 			
-			
+		}
+		
+		public function enableLanHost():void
+		{
+			hostLan = new ZvrToolLanHost();
+			Tracy.lanHost = hostLan;
+		}
+		
+		public function enableLanClient():void
+		{
+			clientLan = new ZvrToolLanClient();
 		}
 		
 		private function toggleButtonClick(e:MouseEvent):void 

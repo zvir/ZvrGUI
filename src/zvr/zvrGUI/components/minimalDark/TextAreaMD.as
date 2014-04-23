@@ -1,5 +1,7 @@
 package zvr.zvrGUI.components.minimalDark 
 {
+	import flash.events.Event;
+	import flash.events.TextEvent;
 	import flash.text.TextFormat;
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.core.ZvrLabel;
@@ -30,7 +32,7 @@ package zvr.zvrGUI.components.minimalDark
 			super(TextAreaMDSkin);
 			
 			addEventListener(ZvrComponentEvent.RESIZE, resized);
-			
+			skinBody.textField.addEventListener(Event.CHANGE, textChange);
 		}
 		
 		private function resized(e:ZvrComponentEvent):void 
@@ -70,13 +72,13 @@ package zvr.zvrGUI.components.minimalDark
 		override public function set text(value:String):void 
 		{
 			super.text = value;
-			updateScroll();
+			//updateScroll();
 		}
 		
 		override public function appendText(value:String):void 
 		{
 			super.appendText(value);
-			updateScroll();
+			//updateScroll();
 		}
 		
 		private function updateScroll():void
@@ -101,13 +103,21 @@ package zvr.zvrGUI.components.minimalDark
 				_scroll.horizontalScroll.step = 10;
 			}
 			
-			_scroll.updateScrollsState();
+			_scroll.horizontalScroll.enabled = _scroll.horizontalScroll.percentageRange < 1;
+			_scroll.verticalScroll.enabled = _scroll.verticalScroll.percentageRange < 1;
+			
+			//_scroll.updateScrollsState();
 			
 		}
 		
 		public function setTextFormat(format:TextFormat, beginIndex:int=-1, endIndex:int=-1):void
 		{
 			skinBody.setTextFormat(format, beginIndex, endIndex);
+		}
+		
+		public function resetTextFormat():void
+		{
+			skinBody.resetTextFormat();
 		}
 		
 		private function scrollVPositionChanged(e:ZvrScrollEvent):void 
@@ -118,6 +128,22 @@ package zvr.zvrGUI.components.minimalDark
 		private function scrollHPositionChanged(e:ZvrScrollEvent):void 
 		{
 			skinBody.updateHScrolling(e.scroll.position);
+		}
+		
+		private function textChange(e:Event):void 
+		{
+			_text = skinBody.textField.text;
+			updateScroll();
+		}
+		
+		public function get editable():Boolean 
+		{
+			return skinBody.editable;
+		}
+		
+		public function set editable(value:Boolean):void 
+		{
+			skinBody.editable = value;
 		}
 		
 		private function get skinBody():TextAreaMDSkin

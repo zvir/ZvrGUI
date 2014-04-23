@@ -1,10 +1,14 @@
 package zvr.zvrGUI.skins.nd2d 
 {
+	import de.nulldesign.nd2d.display.Node2D;
 	import de.nulldesign.nd2d.display.Sprite2D;
 	import de.nulldesign.nd2d.materials.Sprite2DMaterial;
+	import de.nulldesign.nd2d.materials.texture.ASpriteSheetBase;
 	import de.nulldesign.nd2d.materials.texture.Texture2D;
 	import de.nulldesign.nd2d.utils.TextureHelper;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	import zvr.zvrGUI.components.nd2d.ZvrND2DComponent;
 	import zvr.zvrGUI.core.IZvrComponent;
 	import zvr.zvrGUI.layouts.ZvrBitmapAutoSize;
 	import zvr.zvrGUI.skins.base.IZvrSkinLayer;
@@ -33,6 +37,8 @@ package zvr.zvrGUI.skins.nd2d
 		override protected function registerStyles():void 
 		{
 			registerStyle(ZvrND2DStyles.TEXTURE, updateTexture);
+			registerStyle(ZvrND2DStyles.SHEET, updateTexture);
+			registerStyle(ZvrND2DStyles.FRAME, updateSpriteSheetFrame);
 			registerStyle(ZvrStyles.AUTO_SIZE, updateTextureSize);
 		}
 		
@@ -58,7 +64,7 @@ package zvr.zvrGUI.skins.nd2d
 			{
 				if (!sprite.texture)
 				{
-					sprite.setMaterial(new Sprite2DBitmapMaterial());
+					sprite.setMaterial(new Sprite2DMaterial());
 					sprite.setTexture(t);
 				}
 				else
@@ -67,8 +73,27 @@ package zvr.zvrGUI.skins.nd2d
 				}
 			}
 			
+			var sp:ASpriteSheetBase = getStyle(ZvrND2DStyles.SHEET);
+			
+			if (sp)
+			{
+				sprite.setSpriteSheet(sp);
+			}
+			
 			updateTextureSize();
 			
+		}
+		
+		private function updateSpriteSheetFrame():void 
+		{
+			var f:String = getStyle(ZvrND2DStyles.FRAME);
+			
+			if (f)
+			{
+				sprite.setFrameByName(f);
+			}
+			
+			updateTextureSize();
 		}
 		
 		private function updateTextureSize():void 
@@ -89,7 +114,7 @@ package zvr.zvrGUI.skins.nd2d
 				sprite.x = sprite.width * 0.5;
 				sprite.y = sprite.height * 0.5;
 				
-				updateComponentSize(texture.bitmapWidth, texture.bitmapHeight);
+				updateComponentSize(0, 0);
 			}
 			else if (a == ZvrBitmapAutoSize.NO_SCALE_TO_MAUAL)
 			{
@@ -110,20 +135,6 @@ package zvr.zvrGUI.skins.nd2d
 			{
 				var br:Number = texture.bitmapWidth / texture.bitmapHeight;
 				var vr:Number = componentWidth / componentHeight;
-				
-				/*dimensions = TextureHelper.getTextureDimensionsFromSize(texture.bitmapWidth, texture.bitmapHeight);
-				
-				Sprite2DBitmapMaterial(sprite.material).customWidth = NaN;
-				Sprite2DBitmapMaterial(sprite.material).customHeight = NaN;
-				
-				sprite.material.uvScaleY = 1;
-				sprite.material.uvScaleX = 1;
-				
-				sprite.material.uvOffsetY = 0
-				sprite.material.uvOffsetX = 0;
-				
-				sprite.scaleX = 1;
-				sprite.scaleY = 1;*/
 				
 				if (br < vr)
 				{
@@ -148,8 +159,8 @@ package zvr.zvrGUI.skins.nd2d
 				
 				dimensions = TextureHelper.getTextureDimensionsFromSize(texture.bitmapWidth, texture.bitmapHeight);
 				
-				Sprite2DBitmapMaterial(sprite.material).customWidth = NaN;
-				Sprite2DBitmapMaterial(sprite.material).customHeight = NaN;
+				/*Sprite2DBitmapMaterial(sprite.material).customWidth = NaN;
+				Sprite2DBitmapMaterial(sprite.material).customHeight = NaN;*/
 				
 				sprite.material.uvScaleY = 1;
 				sprite.material.uvScaleX = 1;
@@ -173,11 +184,55 @@ package zvr.zvrGUI.skins.nd2d
 				
 				sprite.x = componentWidth * 0.5;
 				sprite.y = componentHeight * 0.5;
-
+				
+				sprite.scrollRect = null;
 				
 			}
 			else if (a == ZvrBitmapAutoSize.KEEP_RATIO_OUTSIDE_CLIP)
 			{
+				
+				br = texture.bitmapWidth / texture.bitmapHeight;
+				vr = componentWidth / componentHeight;
+				
+				//dimensions = TextureHelper.getTextureDimensionsFromSize(texture.bitmapWidth, texture.bitmapHeight);
+				
+				/*Sprite2DBitmapMaterial(sprite.material).customWidth = NaN;
+				Sprite2DBitmapMaterial(sprite.material).customHeight = NaN;*/
+				
+				sprite.material.uvScaleY = 1;
+				sprite.material.uvScaleX = 1;
+				
+				sprite.material.uvOffsetY = 0
+				sprite.material.uvOffsetX = 0;
+				
+				sprite.scaleX = 1;
+				sprite.scaleY = 1;
+				
+				if (br > vr)
+				{
+					sprite.height = componentHeight;
+					sprite.width = sprite.height * br;
+				}
+				else
+				{
+					sprite.width = componentWidth;
+					sprite.height = sprite.width / br;
+				}
+				
+				sprite.x = componentWidth * 0.5;
+				sprite.y = componentHeight * 0.5;
+				
+				ZvrND2DComponent(_component).node.scrollRect = new Rectangle(0, 0, componentWidth, componentHeight);
+				
+				//sprite.scrollRect = new Rectangle(0, 0, 100 * (1/sprite.scaleX), 100);
+				
+				//trace(1/sprite.scaleX, 100 * sprite.scaleX, (100 * sprite.scaleX) * (1/sprite.scaleX));
+				
+				//dotND2D(sprite, 0, 0, 10, 0xF90000, 1, 10);
+				//dotND2D(sprite, -componentWidth*0.5, -componentHeight*0.5, 10, 0xE4A014, 1, 20);
+				
+				/*
+				
 				dimensions = TextureHelper.getTextureDimensionsFromSize(texture.bitmapWidth, texture.bitmapHeight);
 				
 				br = texture.bitmapWidth / texture.bitmapHeight;
@@ -215,8 +270,29 @@ package zvr.zvrGUI.skins.nd2d
 				
 				sprite.x = componentWidth * 0.5;
 				sprite.y = componentHeight * 0.5;
+				
+				*/
 			}
 			
+		}
+		
+		override protected function updateComponentSize(width:Number, height:Number):void 
+		{
+			var w:Number;
+			var h:Number;
+			
+			if (sprite && sprite.spriteSheet)
+			{
+				w = sprite.spriteSheet.spriteWidth;
+				h = sprite.spriteSheet.spriteHeight;
+			}
+			if (sprite && !sprite.spriteSheet)
+			{
+				w = texture.bitmapWidth
+				h = texture.bitmapHeight
+			}
+			
+			super.updateComponentSize(w, h);
 		}
 		
 		public function get texture():Texture2D

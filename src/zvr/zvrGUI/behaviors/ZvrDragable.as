@@ -2,7 +2,6 @@ package zvr.zvrGUI.behaviors
 {
 	import flash.display.DisplayObject;
 	import flash.display.InteractiveObject;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
@@ -13,7 +12,7 @@ package zvr.zvrGUI.behaviors
 	import zvr.zvrGUI.core.ZvrComponent;
 	import zvr.zvrGUI.core.ZvrExplicitBounds;
 	import zvr.zvrGUI.events.ZvrDragBehaviorEvent;
-	
+
 	/**
 	 * @author	Michał Zwieruho "Zvir"
 	 * @www	www.zvir.pl, www.celavra.pl
@@ -25,7 +24,7 @@ package zvr.zvrGUI.behaviors
 	[Event(name = "startDrag",			type = "zvr.zvrGUI.events.ZvrDragBehaviorEvent")]
 	[Event(name = "stopDrag",			type = "zvr.zvrGUI.events.ZvrDragBehaviorEvent")]
 	 
-	public class ZvrDragable extends ZvrBehavior
+	public class ZvrDragable extends ZvrBehavior implements IZvrDragable
 	{
 		
 		public static const NAME:String = "Dragable";
@@ -215,6 +214,7 @@ package zvr.zvrGUI.behaviors
 			var delta:Point = new Point(x - oldX, y - oldY);
 			
 			var event:ZvrDragBehaviorEvent = _dispatchEvent(ZvrDragBehaviorEvent.DRAGGING, delta, true);
+			
 			if (event.isDefaultPrevented()) 
 			{
 				if (event.delta.x == x - oldX && event.delta.y == y - oldY)
@@ -256,7 +256,11 @@ package zvr.zvrGUI.behaviors
 		public function addHandler(handler:InteractiveObject):void
 		{
 			if (_dragHandlers.indexOf(handler) != -1) return;
+			
 			_dragHandlers.push(handler);
+			
+			if (!enabled) return;
+			
 			if (Multitouch.supportsTouchEvents)
 			{
 				handler.addEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
@@ -272,7 +276,11 @@ package zvr.zvrGUI.behaviors
 		{
 			var i:int = _dragHandlers.indexOf(handler);
 			if (i == -1) return;
+			
 			_dragHandlers.splice(i, 1);
+			
+			if (!enabled) return;
+			
 			if (Multitouch.supportsTouchEvents)
 			{
 				handler.removeEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
@@ -283,59 +291,59 @@ package zvr.zvrGUI.behaviors
 			}
 			
 		}
-		
-		public function get vertical():Boolean 
+
+		public function get vertical():Boolean
 		{
 			return _vertical;
 		}
-		
-		public function set vertical(value:Boolean):void 
+
+		public function set vertical(value:Boolean):void
 		{
 			_vertical = value;
 		}
-		
-		public function get horizontal():Boolean 
+
+		public function get horizontal():Boolean
 		{
 			return _horizontal;
 		}
-		
-		public function set horizontal(value:Boolean):void 
+
+		public function set horizontal(value:Boolean):void
 		{
 			_horizontal = value;
 		}
-		
-		public function get limit():Rectangle 
+
+		public function get limit():Rectangle
 		{
 			return _limit;
-			
+
 		}
-		
-		public function set limit(value:Rectangle):void 
+
+		public function set limit(value:Rectangle):void
 		{
 			_limit = value;
 			if (!component) return;
-			
+
 			var x:Number = component.x;
 			var y:Number = component.y;
-			
-			if (_limit) 
+
+			if (_limit)
 			{
 				if (x < _limit.x) x = _limit.x;
 				if (x > _limit.right) x = _limit.right;
 				if (y < _limit.y) y = _limit.y;
 				if (y > _limit.bottom) y = _limit.bottom;
 			}
-			
+
 			if (_horizontal) component.x = x;
 			if (_vertical) component.y = y;
-			
+
 		}
-		
-		public function get dragging():Boolean 
+
+		public function get dragging():Boolean
 		{
 			return _dragging;
 		}
-		
+
 		private function _dispatchEvent(type:String, delta:Point = null, cancelable:Boolean=false):ZvrDragBehaviorEvent
 		{
 			var e:ZvrDragBehaviorEvent = new ZvrDragBehaviorEvent(type, this, component, delta, false, cancelable);

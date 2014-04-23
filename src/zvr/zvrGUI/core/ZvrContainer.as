@@ -30,12 +30,18 @@ package zvr.zvrGUI.core
 		
 		protected var _contentWidth:Number = 0;
 		protected var _contentHeight:Number = 0;
+		
 		protected var _elements:Vector.<IZvrComponent> = new Vector.<IZvrComponent>;
 		private var _presentElements:Vector.<IZvrComponent> = new Vector.<IZvrComponent>;
+		
 		private var _test:Sprite = new Sprite();
+		
 		private var _layout:ZvrLayout;
+		
 		private var _updateLayout:Function;
+		
 		private var _contents:Sprite = new Sprite();
+		
 		protected var _mask:Sprite = new Sprite();	
 		private var _contentPadding:ZvrContentPadding;
 		private var _sizeManager:ZvrContainerSizeManager;
@@ -311,7 +317,7 @@ package zvr.zvrGUI.core
 			
 			dispatchEvent(new ZvrContainerEvent(ZvrContainerEvent.ELEMENT_ADDED, this, element));
 			
-			if (skin.shell)
+			if (skin.shell && _base.numChildren > 0)
 			{
 				_base.setChildIndex(_skin.shell as DisplayObject, _base.numChildren -1);
 			}
@@ -350,6 +356,32 @@ package zvr.zvrGUI.core
 			
 			return child;
 		}
+		
+		public function removeAllChildren():void
+		{
+			var e:Vector.<IZvrComponent> = _elements.concat();
+			
+			_elements.length = 0;
+			_presentElements.length = 0;
+			
+			for (var i:int = 0; i < e.length; i++) 
+			{
+				
+				var c:IZvrComponent = e[i];
+				
+				c.removeEventListener(ZvrComponentEvent.MOVE, elementChanged);
+				c.removeEventListener(ZvrComponentEvent.RESIZE, elementChanged);
+				c.removeEventListener(ZvrComponentEvent.PRESENTS_CHANGE, elementPresentsChange);
+				
+				super.removeChild(c as DisplayObject);
+				
+				c.removeFromContainer(this);
+				dispatchEvent(new ZvrContainerEvent(ZvrContainerEvent.ELEMENT_REMOVED, this, c));
+			}
+			
+			updateContainer();
+		}
+		
 		
 		public function getNumElements():int
 		{
@@ -415,6 +447,20 @@ package zvr.zvrGUI.core
 				if (getQualifiedClassName(layout) == getQualifiedClassName(getClass(_layout))) return;
 				_layout.destroy();
 			}
+			
+			_layout = null;
+			
+			var e:IZvrComponent;
+			
+			for (var i:int = 0; i < _elements.length; i++)
+			{
+				e = _elements[i];
+				e.x = 0;
+				e.y = 0;
+			}
+			
+			if (layout == null) return;
+			
 			_layout = new layout(this, computeContentSize, registerLayout, setContentAreaIndependent);
 			updateLayout();
 		}
@@ -488,7 +534,7 @@ package zvr.zvrGUI.core
 		
 		/**
 		 * Elemets to layout. All elements has includeIn or includeInLayout set to true.
-		 * @return Vector of components that need to be layout.
+		 * @return Vector of components that needed to be layout.
 		 */
 		
 		public function get presentElements():Vector.<IZvrComponent>

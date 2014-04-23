@@ -15,7 +15,8 @@ package
 	{
 		CONFIG::release
 		{
-			throw new Error("TGR");
+			return;
+			//throw new Error("TGR");
 		}
 		
 		return Toggler.addToggler(name);

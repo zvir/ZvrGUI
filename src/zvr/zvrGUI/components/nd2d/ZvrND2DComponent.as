@@ -7,7 +7,7 @@ package zvr.zvrGUI.components.nd2d
 	 * ...
 	 * @author Zvir
 	 */
-	public class ZvrND2DComponent extends ZvrComponentBase
+	public class ZvrND2DComponent extends ZvrComponentBase implements IZvrND2DComponent
 	{
 		
 		public function ZvrND2DComponent(skinClass:Class, bodyClass:Class)

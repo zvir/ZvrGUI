@@ -89,6 +89,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 				sprite.graphics.lineTo(0, 0);
 				
 				sprite.graphics.endFill();
+				
 			}
 			
 		}

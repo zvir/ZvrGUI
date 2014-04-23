@@ -22,7 +22,8 @@ package
 		
 		CONFIG::release
 		{
-			throw new Error("WCH");
+			return null;
+			//throw new Error("WCH");
 		}
 		
 		if (del)

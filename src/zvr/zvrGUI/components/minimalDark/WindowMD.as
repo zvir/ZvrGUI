@@ -47,8 +47,10 @@ package zvr.zvrGUI.components.minimalDark
 		public function WindowMD() 
 		{
 			
+			
 			status = new LabelMD();
 			super(WindowMDSkin);
+			
 			
 			minHeight = 100;
 			minWidth = 100;

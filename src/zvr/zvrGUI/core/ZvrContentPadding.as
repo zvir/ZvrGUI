@@ -18,6 +18,11 @@ package zvr.zvrGUI.core
 			_contentPaddingSetter = contentPaddingSetter;
 		}
 		
+		public function dispose():void 
+		{
+			_contentPaddingSetter = null;
+		}
+		
 		public function get top():Number 
 		{
 			return _top;

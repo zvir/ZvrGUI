@@ -16,6 +16,15 @@ package zvr.zvrGUI.core
 	import zvr.zvrGUI.skins.base.ZvrSkin;
 	import zvr.zvrGUI.skins.base.ZvrSkinStyle;
 
+	
+	[Event(name="move",type="zvr.zvrGUI.events.ZvrComponentEvent")]
+	[Event(name="resize",type="zvr.zvrGUI.events.ZvrComponentEvent")]
+	[Event(name="componentAdded",type="zvr.zvrGUI.events.ZvrComponentEvent")]
+	[Event(name="componentRemoved",type="zvr.zvrGUI.events.ZvrComponentEvent")]
+	[Event(name="presentsChange",type="zvr.zvrGUI.events.ZvrComponentEvent")]
+	[Event(name="styleChange",type="zvr.zvrGUI.events.ZvrStyleChangeEvent")]
+	[Event(name="stateChange",type="zvr.zvrGUI.events.ZvrStateChangeEvent")]
+	
 	public interface IZvrComponent
 	{
 
@@ -153,6 +162,8 @@ package zvr.zvrGUI.core
 		function exitMassChangeMode():void;
 		
 		function get body():IZvrComponentBody;
+		
+		function dispose():void
 		
 	}
 }

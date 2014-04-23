@@ -168,6 +168,7 @@ package zvr.zvrInitializer
 				itemMememory = System.totalMemory - itemMememory;
 				
 				totalMemeory += itemMememory;
+				
 				CONFIG::debug
 				{
 					tr("INITIALIZED:", (current) + "/" + initCount, "(" + (getTimer() - time) + "ms)", Number(itemMememory * 0.000000954).toFixed(3) + " MB, ", item.name || "");

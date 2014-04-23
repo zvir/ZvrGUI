@@ -10,23 +10,23 @@ package zvr.zvrTools
 	 */
 	
 	public class ZvrPnt
-	{
+	{/*
 		CONFIG::debug			
 		public static var counter:int = 0;
-		
+		*/
 		public var x:Number;
 		public var y:Number;
 		
 		public var name:String;
 		
 		public function ZvrPnt(x:Number = 0, y:Number = 0)
-		{
+		{/*
 			CONFIG::debug
 			{
 				counter++;
 				if (counter % 100 == 0) wch("ZvrPnt", "counter", counter);
 			}
-			
+			*/
 			this.x = x;
 			this.y = y;
 			

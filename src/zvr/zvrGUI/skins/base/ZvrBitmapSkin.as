@@ -2,9 +2,10 @@ package zvr.zvrGUI.skins.base
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.Sprite;
 	import zvr.zvrGUI.core.ZvrBitmap;
 	import zvr.zvrGUI.core.ZvrComponent;
-	import fl.motion.Color;
+	//import fl.motion.Color;
 	import zvr.zvrGUI.layouts.ZvrBitmapAutoSize;
 	import zvr.zvrGUI.skins.ZvrStyles;
 	import zvr.zvrTools.ZvrTransform;
@@ -19,7 +20,7 @@ package zvr.zvrGUI.skins.base
 		
 		private var _bitmap:ZvrFlashBitmapSkin = new ZvrFlashBitmapSkin();
 		
-		public function ZvrBitmapSkin(bitmapComponent:ZvrBitmap, registration:Function) 
+		public function ZvrBitmapSkin(bitmapComponent:ZvrComponent, registration:Function) 
 		{
 			super(bitmapComponent, registration);
 		}
@@ -79,7 +80,7 @@ package zvr.zvrGUI.skins.base
 			_component.validateBounds(false);
 		}
 		
-		private function updateBitmapSize():void 
+		protected function updateBitmapSize():void 
 		{
 			
 			var a:String = getStyle(ZvrStyles.AUTO_SIZE);
@@ -88,7 +89,9 @@ package zvr.zvrGUI.skins.base
 			
 			if (a == ZvrBitmapAutoSize.AUTO_TO_NO_SCALE)
 			{
-				updateComponentSize(_bitmap.width, _bitmap.height);
+				updateComponentSize(_bitmap.bitmapData.width, _bitmap.bitmapData.height);
+				_bitmap.width = _bitmap.bitmapData.width;
+				_bitmap.height = _bitmap.bitmapData.height;
 			}
 			else if (a == ZvrBitmapAutoSize.NO_SCALE_TO_MAUAL)
 			{

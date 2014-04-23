@@ -156,6 +156,17 @@ package zvr.zvrKeyboard
 		
 		private static var _presedKeys:/*ZvrKey*/Array = new Array();
 		
+		private static var _releasedCallbacks:Dictionary = new Dictionary();
+		private static var _pressedCallbacks:Dictionary = new Dictionary();
+		private static var _pressingCallbacks:Dictionary = new Dictionary();
+		
+		public static function get capslosck():Boolean { return Keyboard.capsLock;  }
+		
+		static public function get presedKeys():Array/*ZvrKey*/ 
+		{
+			return _presedKeys;
+		}
+		
 		public static function init(stage:Stage):void
 		{
 			if (initialized) return;
@@ -166,7 +177,58 @@ package zvr.zvrKeyboard
 			
 			_stage.addEventListener(FocusEvent.FOCUS_IN, focusIn);
 			_stage.addEventListener(FocusEvent.FOCUS_OUT, focusOut);
+			
+			_stage.addEventListener(Event.DEACTIVATE, deactivated);
+			_stage.addEventListener(Event.ACTIVATE, activated);
+			
+			VERSION::air
+			{
+				_stage.nativeWindow.addEventListener(Event.DEACTIVATE, deactivated);
+			}
 		}
+		
+		public static function setStage(stage:Stage):void
+		{
+			if (_stage)
+			{
+				_stage.removeEventListener(KeyboardEvent.KEY_UP, keyUp);
+				_stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+				      
+				_stage.removeEventListener(FocusEvent.FOCUS_IN, focusIn);
+				_stage.removeEventListener(FocusEvent.FOCUS_OUT, focusOut);
+				
+				
+				_stage.removeEventListener(Event.DEACTIVATE, deactivated);
+				_stage.removeEventListener(Event.ACTIVATE, activated);
+				
+				
+				VERSION::air
+				{
+					_stage.nativeWindow.removeEventListener(Event.DEACTIVATE, deactivated);
+				}
+				
+			}
+			
+			_stage = stage;
+			
+			_stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
+			_stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+			
+			_stage.addEventListener(FocusEvent.FOCUS_IN, focusIn);
+			_stage.addEventListener(FocusEvent.FOCUS_OUT, focusOut);
+			
+			_stage.addEventListener(Event.DEACTIVATE, deactivated);
+			_stage.addEventListener(Event.ACTIVATE, activated);
+			
+			
+			VERSION::air
+			{
+				_stage.nativeWindow.addEventListener(Event.DEACTIVATE, deactivated);
+			}
+		}
+		
+		
+		
 		
 		// Bug in flash - if there was display object with focus in, and it was removed from display list, 
 		// stage does not dispatch key events, focus stays on removed display object.
@@ -196,10 +258,13 @@ package zvr.zvrKeyboard
 			
 			var k:ZvrKey = keys[e.keyCode];
 			
-			if (!k)
+			CONFIG::debug
 			{
-				tr("Keyboad Warning: Unknown key. Code:", e.keyCode);
-				return;
+				if (!k)
+				{
+					tr("Keyboad Warning: Unknown key. Code:", e.keyCode);
+					return;
+				}
 			}
 			
 			var i:int = _presedKeys.indexOf(k);
@@ -207,7 +272,6 @@ package zvr.zvrKeyboard
 			if (i == -1)
 			{
 				_presedKeys.push(k);
-
 			}
 			
 			CONFIG::debug
@@ -258,7 +322,7 @@ package zvr.zvrKeyboard
 				k = new ZvrKey(code, registerKey);
 			}
 			
-			keySetter[k](state);
+			var s:int = keySetter[k](state);
 			
 			if (state)
 			{
@@ -268,6 +332,15 @@ package zvr.zvrKeyboard
 			{
 				validateKeysSequences(k);
 			}
+			
+			switch (s) 
+			{
+				case 1:	callPressed(k); break;
+				case 2:	callPressing(k); break;
+				case 3:	callReleased(k); break;
+				default:
+			}
+			
 			
 		}
 		
@@ -353,6 +426,114 @@ package zvr.zvrKeyboard
 				}
 			}
 			keyShortcuts = valid;
+		}
+		
+		public static function addPressedCallback(callback:Function):ZvrCallback
+		{
+			return addCallBack(_pressedCallbacks, callback);
+		}
+		
+		public static function addReleasedCallback(callback:Function):ZvrCallback
+		{
+			return addCallBack(_releasedCallbacks, callback);
+		}
+		
+		public static function addPressingCallback(callback:Function):ZvrCallback
+		{
+			return addCallBack(_pressingCallbacks, callback);
+		}
+		
+		public static function removePressedCallback(callback:Function):void
+		{
+			removeCallBack(_pressedCallbacks, callback);
+		}
+		
+		public static function removeReleasedCallback(callback:Function):void
+		{
+			removeCallBack(_releasedCallbacks, callback);
+		}
+		
+		public static function removePressingCallback(callback:Function):void
+		{
+			removeCallBack(_pressingCallbacks, callback);
+		}
+		
+		
+		private static function addCallBack(holder:Dictionary, callback:Function):ZvrCallback
+		{
+			if (holder[callback] == undefined)
+			{
+				var cl:ZvrCallback = new ZvrCallback(callback);
+				holder[callback] = cl;
+				return cl;
+			}
+			else
+			{
+				return holder[callback];
+			}
+		}
+		
+		private static function removeCallBack(holder:Dictionary, callback:Function):void
+		{
+			if (holder[callback] != undefined)
+			{
+				holder[callback].destroy();
+				holder[callback] = undefined;
+				delete holder[callback];
+			}
+		}
+		
+		private static function callPressed(key:ZvrKey):void
+		{
+			call(_pressedCallbacks, key);
+		}
+		
+		private static function callReleased(key:ZvrKey):void
+		{
+			call(_releasedCallbacks, key);
+		}
+		
+		private static function callPressing(key:ZvrKey):void
+		{
+			call(_pressingCallbacks, key);
+		}
+		
+		private static function call(holder:Dictionary, key:ZvrKey):void
+		{
+			var a:Array = new Array();
+			for each (var callback:ZvrCallback in holder) 
+			{
+				a.push(callback);
+			}
+			
+			for (var i:int = 0; i < a.length; i++) 
+			{
+				a[i].call(key);
+			}
+			
+		}
+		
+		static private function activated(e:Event):void 
+		{
+			
+		}
+		
+		static private function deactivated(e:Event):void 
+		{
+			while (_presedKeys.length > 0)
+			{
+				var k:ZvrKey = _presedKeys.pop();
+				
+				var s:int = keySetter[k](false);
+				
+				switch (s) 
+				{
+					case 1:	callPressed(k); break;
+					case 2:	callPressing(k); break;
+					case 3:	callReleased(k); break;
+				}
+				
+			}
 		}
 		
 	}

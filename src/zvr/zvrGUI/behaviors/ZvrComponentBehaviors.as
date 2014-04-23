@@ -23,6 +23,18 @@ package zvr.zvrGUI.behaviors
 			_component = component;
 		}
 		
+		public function dispose():void
+		{
+			
+			for (var name:String in _behaviors) 
+			{
+				removeBehavior(_behaviors[name]);
+			}
+			
+			_component = null;
+			_behaviors = null;
+		}
+		
 		public function addBehavior(behavior:ZvrBehavior):void
 		{
 			if (!behavior.isCompatible(_component.skin)) 
@@ -33,7 +45,7 @@ package zvr.zvrGUI.behaviors
 			
 			if (_behaviors[behavior.name]) return;
 			
-			behavior.component = _component as ZvrComponent;
+			behavior.component = _component as IZvrComponent;
 			behavior.enabled = true;
 			_behaviors[behavior.name] = behavior;
 			

@@ -16,6 +16,11 @@ package zvr.zvrComps.zvrTool.zvrWatcher
 		public var name:String;
 		private var _value:*;
 		
+		public function ZvrWatchItem()
+		{
+			
+		}
+		
 		public function get value():* 
 		{
 			return _value;

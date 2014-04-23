@@ -12,7 +12,12 @@ package zvr.zvrGUI.core
 	import zvr.zvrGUI.core.vo.IZvrComponentObject;
 
 	import zvr.zvrGUI.layouts.ZvrLayout;
-
+	
+	[Event(name="elementAdded",type="zvr.zvrGUI.events.ZvrContainerEvent")]
+	[Event(name="elementRemoved",type="zvr.zvrGUI.events.ZvrContainerEvent")]
+	[Event(name="cotntentSizeChanged",type="zvr.zvrGUI.events.ZvrContainerEvent")]
+	[Event(name="contentPositionChanged",type="zvr.zvrGUI.events.ZvrContainerEvent")]
+	
 	public interface IZvrContainer extends IZvrComponentObject
 	{
 

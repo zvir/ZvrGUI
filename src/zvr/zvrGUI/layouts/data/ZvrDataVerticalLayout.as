@@ -4,7 +4,7 @@ package zvr.zvrGUI.layouts.data
 	import flash.utils.getTimer;
 	import zvr.zvrGUI.core.ZvrItemRenderer;
 	import flash.geom.Rectangle;
-	import mx.collections.ArrayCollection;
+	//import mx.collections.ArrayCollection;
 	import zvr.zvrGUI.core.ZvrDataContainer;
 	import zvr.zvrGUI.core.ZvrDataVirtualContent;
 	import zvr.zvrGUI.core.ZvrScroll;
@@ -79,9 +79,11 @@ package zvr.zvrGUI.layouts.data
 		
 		override public function updateItemsBounds(fromIndex:int = 0):void 
 		{
-			if (!_dataContainer.dataProvider) return;
-			var dataProvider:ArrayCollection = _dataContainer.dataProvider;
+			//if (!_dataContainer.dataProvider) return;
+			//var dataProvider:ArrayCollection = _dataContainer.dataProvider;
+			/*
 			if (dataProvider.length == 0) return;
+			
 			if (fromIndex >= dataProvider.length) return;
 			var tester:ZvrItemRenderer = _itemsManager.itemTester;
 			
@@ -149,10 +151,10 @@ package zvr.zvrGUI.layouts.data
 						_updateFromIndex = i;
 						break;
 					}*/
-				}
+				/*}
 			}
-			
-			_dataContainer.removeChild(tester);
+			*/
+			/*_dataContainer.removeChild(tester);*/
 		}
 		
 		private function updateItemsBoundsEnterFrame(e:Event):void 

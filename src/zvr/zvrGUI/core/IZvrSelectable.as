@@ -7,7 +7,7 @@ package zvr.zvrGUI.core
 	 * @author Zvir
 	 */
 	
-	[Event(name = "selectedChange",    type = "ZvrSelectedEvent")]
+	[Event(name = "selectedChange",    type = "zvr.zvrGUI.events.ZvrSelectedEvent")]
 	
 	public interface IZvrSelectable 
 	{

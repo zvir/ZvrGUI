@@ -111,7 +111,11 @@ package zvr.zvrGUI.behaviors
 		public function addHandler(handler:InteractiveObject):void
 		{
 			if (_resizeHandlers.indexOf(handler) != -1) return;
+			
 			_resizeHandlers.push(handler);
+			
+			if (!enabled) return;
+			
 			handler.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 		}
 		
@@ -119,7 +123,11 @@ package zvr.zvrGUI.behaviors
 		{
 			var i:int = _resizeHandlers.indexOf(handler);
 			if (i == -1) return;
+			
 			_resizeHandlers.splice(i, 1);
+			
+			if (!enabled) return;
+			
 			handler.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 		}
 		

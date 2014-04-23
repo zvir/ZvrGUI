@@ -53,7 +53,7 @@ package zvr.zvrGUI.skins.zvrMinimalDarkFonts
 		,fontStyle   ='normal' // normal|italic
 		,fontWeight  = 'normal' // normal|bold
 		,advancedAntiAliasing="false"
-		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E'
+		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E,U+00A1-U+00FF,U+0100-U+01FF,U+0180-U+024F,U+1E00-U+1EFF'
 		,embedAsCFF='false'
 		)]
 		private static const proggy:Class;
@@ -65,7 +65,7 @@ package zvr.zvrGUI.skins.zvrMinimalDarkFonts
 		,fontStyle   ='normal' // normal|italic
 		,fontWeight  = 'normal' // normal|bold
 		,advancedAntiAliasing="false"
-		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E'
+		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E,U+00A1-U+00FF,U+0100-U+01FF,U+0180-U+024F,U+1E00-U+1EFF'
 		,embedAsCFF='false'
 		)]
 		private static const stan0753:Class;
@@ -77,7 +77,7 @@ package zvr.zvrGUI.skins.zvrMinimalDarkFonts
 		,fontStyle   ='normal' // normal|italic
 		,fontWeight  = 'normal' // normal|bold
 		,advancedAntiAliasing="false"
-		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E'
+		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E,U+00A1-U+00FF,U+0100-U+01FF,U+0180-U+024F,U+1E00-U+1EFF'
 		,embedAsCFF='false'
 		)]
 		private static const uni05:Class;
@@ -88,7 +88,7 @@ package zvr.zvrGUI.skins.zvrMinimalDarkFonts
 		,fontStyle   ='normal' // normal|italic
 		,fontWeight  = 'normal' // normal|bold
 		,advancedAntiAliasing="false"
-		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E'
+		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E,U+00A1-U+00FF,U+0100-U+01FF,U+0180-U+024F,U+1E00-U+1EFF'
 		,embedAsCFF='false'
 		)]
 		private static const stan0763:Class;
@@ -99,7 +99,7 @@ package zvr.zvrGUI.skins.zvrMinimalDarkFonts
 		,fontStyle   ='normal' // normal|italic
 		,fontWeight  = 'normal' // normal|bold
 		,advancedAntiAliasing="false"
-		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E'
+		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E,U+00A1-U+00FF,U+0100-U+01FF,U+0180-U+024F,U+1E00-U+1EFF'
 		,embedAsCFF='false'
 		)]
 		private static const mono0755:Class;
@@ -110,7 +110,7 @@ package zvr.zvrGUI.skins.zvrMinimalDarkFonts
 		,fontStyle   ='normal' // normal|italic
 		,fontWeight  = 'normal' // normal|bold
 		,advancedAntiAliasing="false"
-		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E'
+		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E,U+00A1-U+00FF,U+0100-U+01FF,U+0180-U+024F,U+1E00-U+1EFF'
 		,embedAsCFF='false'
 		)]
 		private static const mono0765:Class;
@@ -122,11 +122,56 @@ package zvr.zvrGUI.skins.zvrMinimalDarkFonts
 		,fontStyle   ='normal' // normal|italic
 		,fontWeight  = 'normal' // normal|bold
 		,advancedAntiAliasing="false"
-		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E'
+		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E,U+00A1-U+00FF,U+0100-U+01FF,U+0180-U+024F,U+1E00-U+1EFF'
 		,embedAsCFF='false'
 		)]
 		private static const mneg0555:Class;
 		public static const Mneg0555:String = "mneg0555";
+		
+		
+		[Embed(source='MUNIE___.TTF'
+		,fontFamily  ='munie'
+		,fontStyle   ='normal' // normal|italic
+		,fontWeight  = 'normal' // normal|bold
+		,advancedAntiAliasing="false"
+		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E,U+00A1-U+00FF,U+0100-U+01FF,U+0180-U+024F,U+1E00-U+1EFF'
+		,embedAsCFF='false'
+		)]
+		private static const munie:Class;
+		public static const Munie:String = "munie";
+		
+		
+		[Embed(source='monaco.ttf'
+		,fontFamily  ='monaco'
+		,fontStyle   ='normal' // normal|italic
+		,fontWeight  = 'normal' // normal|bold
+		,advancedAntiAliasing="false"
+		,unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E,U+0020,U+00A1-U+00FF,U+2000-U+206F,U+20A0-U+20CF,U+2100-U+2183,U+0180-U+024F,U+0100-U+01FF'
+		,embedAsCFF='false'
+		)]
+		
+		private static const monaco:Class;
+		public static const Monaco:String = "monaco";
+		
+		private static function getObj():Object
+		{
+			var o:Object = { };
+			
+			o[Proggy] = 	proggy	;
+			o[Stan0753] = 	stan0753	;
+			o[Uni05] = 		uni05	;
+			o[Stan0763] = 	stan0763	;
+			o[Mono0755] = 	mono0755	;
+			o[Mono0765] = 	mono0765	;
+			o[Mneg0555] = 	mneg0555	;
+			o[Munie] = 	munie	;
+			o[Monaco] = 	monaco	;
+			
+			return o;
+			
+		}
+		
+		private static const obj:Object = getObj();
 		
 		
 		public function MDFonts() 
@@ -138,9 +183,23 @@ package zvr.zvrGUI.skins.zvrMinimalDarkFonts
 			Font.registerFont(mono0755);
 			Font.registerFont(mono0765);
 			Font.registerFont(mneg0555);
+			Font.registerFont(munie);
+			Font.registerFont(monaco);
+			
+			
 			
 		}
 		
+		public static function getClass(n:String):Class
+		{
+			return obj[n] as Class;
+		}
 	}
 	
 }
+
+
+
+
+
+

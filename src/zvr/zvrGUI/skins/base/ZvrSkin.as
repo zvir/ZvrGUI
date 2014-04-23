@@ -26,7 +26,6 @@ package zvr.zvrGUI.skins.base
 		protected var _width:Number;
 		protected var _height:Number;
 		
-		
 		public function ZvrSkin(component:IZvrComponent, registration:Function)
 		{
 			_component = component;
@@ -177,6 +176,27 @@ package zvr.zvrGUI.skins.base
 		public function getStylesRegistration(styleName:String):ZvrSkinStyle
 		{
 			return _styles.getStylesRegistration(styleName);
+		}
+		
+		public function dispose():void 
+		{
+			
+			if (_body) _body.dispose();
+			if (_shell) _shell.dispose();
+			
+			_component = null;
+			_body = null;
+			_shell = null;
+			_availbleBehaviors = null;
+			
+			_styles.dispose();
+			_styles = null;
+			
+			_updateComponentSize = null;
+			_updateComponentPosition = null;
+			
+			_getComponentWidth = null;
+			_getComponentHeight = null;
 		}
 
 

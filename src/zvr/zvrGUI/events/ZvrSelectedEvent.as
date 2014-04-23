@@ -1,6 +1,7 @@
 package zvr.zvrGUI.events 
 {
 	import flash.events.Event;
+	import zvr.zvrGUI.core.IZvrComponent;
 	import zvr.zvrGUI.core.ZvrComponent;
 	
 	/**
@@ -9,12 +10,12 @@ package zvr.zvrGUI.events
 	 */
 	public class ZvrSelectedEvent extends Event 
 	{
-		private var _component:ZvrComponent;
+		private var _component:IZvrComponent;
 		private var _selected:Boolean;
 		
 		public static const SELECTED_CHANGE:String = "selectedChange";
 		
-		public function ZvrSelectedEvent(type:String, component:ZvrComponent, selected:Boolean, bubbles:Boolean=false, cancelable:Boolean=false) 
+		public function ZvrSelectedEvent(type:String, component:IZvrComponent, selected:Boolean, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 
 			super(type, bubbles, cancelable);
 			
@@ -32,7 +33,7 @@ package zvr.zvrGUI.events
 			return formatToString("ZvrSelectedEvent", "type", "component", "selected", "bubbles", "cancelable", "eventPhase"); 
 		}
 		
-		public function get component():ZvrComponent 
+		public function get component():IZvrComponent 
 		{
 			return _component;
 		}

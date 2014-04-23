@@ -32,7 +32,7 @@ package zvr.zvrGUI.layouts
 				var comp:IZvrComponent = elementes[i];
 				comp.y = y + h + (isNaN(comp.top) ? 0 : comp.top);
 				y = comp.y;
-				h = comp.bounds.height + gap;
+				h = comp.bounds.height + gap + (isNaN(comp.bottom) ? 0 : comp.bottom);
 			}
 		}
 		

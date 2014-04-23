@@ -1,5 +1,7 @@
 package zvr.zvrTools 
 {
+	import com.adobe.utils.NumberFormatter;
+	import utils.number.format;
 		
 
 	/**
@@ -39,6 +41,31 @@ package zvr.zvrTools
 			
 		}
 		
+		public static function beforeLength(length:int, t:String, symbol:String = " "):String
+		{
+			if (symbol.length == 0) return t;
+			
+			while (t.length < length)
+			{
+				t = symbol + t;
+			}
+			
+			return t;
+			
+		}
+		
+		public static function afterLength(length:int, t:String, symbol:String = " "):String
+		{
+			if (symbol.length == 0) return t;
+			
+			while (t.length < length)
+			{
+				t = t + symbol;
+			}
+			
+			return t;
+			
+		}
 	}
 
 }

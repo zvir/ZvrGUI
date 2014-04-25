@@ -39,6 +39,7 @@ package clv.gui.g2d.components
 			setStyle(TextStyle.LETTER_SPACING	, 0);
 			setStyle(TextStyle.LINE_SPACING		, 0);
 			setStyle(TextStyle.AUTO_SIZE_TO_TEXT, true);
+			setStyle(TextStyle.COLOR, 0xFFFFFF);
 		}
 		
 		override protected function create():void 
@@ -100,10 +101,7 @@ package clv.gui.g2d.components
 		private function setColor():void 
 		{
 			var c:* = getStyle(TextStyle.COLOR);
-			
 			_skinNode.transform.color = uint(c);
-			
-			
 		}
 		
 		private function onTextChanged(s:String):void 

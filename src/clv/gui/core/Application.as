@@ -2,6 +2,7 @@ package clv.gui.core
 {
 	import clv.gui.core.skins.Skin;
 	import clv.gui.core.skins.SkinContainer;
+	import flash.display.Stage;
 	import flash.geom.Rectangle;
 	import org.osflash.signals.Signal;
 	/**
@@ -13,13 +14,17 @@ package clv.gui.core
 		
 		public var updates:int;
 		
-		public var poniner:PointerManager = new PointerManager();
+		public var pointer:PointerManager = new PointerManager();
 		
 		public var pixelSharp:Boolean = true;
+		
+		public var stage:Stage;
 		
 		public function Application(skin:SkinContainer) 
 		{
 			super(skin);
+			
+			pointer = new PointerManager();
 			
 			_app = this;
 		}

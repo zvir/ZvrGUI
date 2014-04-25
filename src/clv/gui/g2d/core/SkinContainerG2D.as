@@ -30,7 +30,6 @@ package clv.gui.g2d.core
 		
 		override protected function create():void 
 		{
-			
 			_cointainerBody = GNodeFactory.createNodeWithComponent(G2DGuiBody) as G2DGuiBody;
 			_componentBody = _cointainerBody;
 			

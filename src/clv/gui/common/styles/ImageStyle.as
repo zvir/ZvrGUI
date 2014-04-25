@@ -8,6 +8,9 @@ package clv.gui.common.styles
 	{
 		static public const CROP:String = "crop";
 		static public const IMAGE:String = "image";
+		static public const ALPHA:String = "alpha";
+		static public const SCALE:String = "scale";
+		static public const SIZE:String = "size";
 		
 	}
 

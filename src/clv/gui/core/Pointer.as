@@ -15,6 +15,9 @@ package clv.gui.core
 		protected var _onWheel		:Signal = new Signal(Pointer);
 		protected var _onDragIn		:Signal = new Signal(Pointer);
 		protected var _onDragOut	:Signal = new Signal(Pointer);
+		protected var _onDrag		:Signal = new Signal(Pointer);
+		protected var _onDragBegin	:Signal = new Signal(Pointer);
+		protected var _onDragEnd	:Signal = new Signal(Pointer);
 		protected var _onRollOver	:Signal = new Signal(Pointer);
 		protected var _onRollOut	:Signal = new Signal(Pointer);
 		protected var _onPoint		:Signal = new Signal(Pointer);
@@ -27,10 +30,24 @@ package clv.gui.core
 		
 		public var down:Boolean;
 		public var over:Boolean;
+		public var drag:Boolean;
 		
 		public var wheel:int;
 		
 		public var pointTimeInterval:int = 300;
+		public var dragTrigerDistance:int = 20;
+		
+		public var lastX:Number;
+		public var lastY:Number;
+		
+		public var downX:Number;
+		public var downY:Number;
+		
+		public var lastGlobalX:Number;
+		public var lastGlobalY:Number;
+		
+		public var globalX:Number;
+		public var globalY:Number;
 		
 		public function Pointer() 
 		{
@@ -85,6 +102,21 @@ package clv.gui.core
 		public function get onPoint():Signal 
 		{
 			return _onPoint;
+		}
+		
+		public function get onDragEnd():Signal 
+		{
+			return _onDragEnd;
+		}
+		
+		public function get onDragBegin():Signal 
+		{
+			return _onDragBegin;
+		}
+		
+		public function get onDrag():Signal 
+		{
+			return _onDrag;
 		}
 		
 	}

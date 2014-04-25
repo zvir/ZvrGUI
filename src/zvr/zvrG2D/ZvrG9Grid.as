@@ -16,6 +16,13 @@ package zvr.zvrG2D
 	{
 		private var _texture:GTexture;
 		public var blendMode:int = GBlendMode.NORMAL;
+		
+		private var _maskRectX1:Number = 0;
+		private var _maskRectY1:Number = 0;
+		private var _maskRectX2:Number = 0;
+		private var _maskRectY2:Number = 0;
+		
+		private var _useMaskRect:Boolean;
 
 		protected var g2d_vertices:Array;
 		protected var g2d_uvs:Array;
@@ -46,7 +53,65 @@ package zvr.zvrG2D
 		private function addPart(uv1x:Number, uv1y:Number, uv2x:Number, uv2y:Number, p1x:Number, p1y:Number, p2x:Number, p2y:Number):void
 		{
 			
-			if (p1x == p2x || p1y == p2y) return;
+			if (useMaskRect)
+			{
+				
+				var r:Number;
+				
+				if (p1x < _maskRectX1) 
+				{
+					uv1x = uv1x + (uv2x - uv1x) * (_maskRectX1 - p1x) / (p2x - p1x);
+					p1x = _maskRectX1;
+				}
+				
+				if (p1x > _maskRectX2) 
+				{
+					return;
+					uv1x = uv1x + (uv2x - uv1x) * (_maskRectX2 - p1x) / (p2x - p1x);
+					p1x = _maskRectX2;
+				}
+				
+				if (p2x < _maskRectX1)
+				{
+					return;
+					uv2x = uv1x + (uv2x - uv1x) * (_maskRectX1 - p1x) / (p2x - p1x);
+					p2x = _maskRectX1;
+				}
+				
+				if (p2x > _maskRectX2) 
+				{
+					uv2x = uv1x + (uv2x - uv1x) * (_maskRectX2 - p1x) / (p2x - p1x);
+					p2x = _maskRectX2;
+				}
+				
+				if (p1y < _maskRectY1)
+				{
+					uv1y = uv1y + (uv2y - uv1y) * (_maskRectY1 - p1y) / (p2y - p1y);
+					p1y = _maskRectY1;
+				}
+				
+				if (p1y > _maskRectY2)
+				{
+					return;
+					uv1y = uv1y + (uv2y - uv1y) * (_maskRectY2 - p1y) / (p2y - p1y);
+					p1y = _maskRectY2;
+				}
+				
+				if (p2y < _maskRectY1)
+				{
+					return;
+					uv2y = uv1y + (uv2y - uv1y) * (_maskRectY1 - p1y) / (p2y - p1y);
+					p2y = _maskRectY1;
+				}
+				
+				if (p2y > _maskRectY2)
+				{
+					uv2y = uv1y + (uv2y - uv1y) * (_maskRectY2 - p1y) / (p2y - p1y);
+					p2y = _maskRectY2;
+				}
+			}
+			
+			if (p1x == p2x || p1y == p2y || p2x < p1x || p2y < p1y) return;
 			
 			g2d_vertices.push
 			(
@@ -212,6 +277,61 @@ package zvr.zvrG2D
 		public function set texture(value:GTexture):void 
 		{
 			_texture = value;
+			_verticesDirty = true;
+		}
+		
+		public function get useMaskRect():Boolean 
+		{
+			return _useMaskRect;
+		}
+		
+		public function set useMaskRect(value:Boolean):void 
+		{
+			_useMaskRect = value;
+			_verticesDirty = true;
+		}
+		
+		public function get maskRectY2():Number 
+		{
+			return _maskRectY2;
+		}
+		
+		public function set maskRectY2(value:Number):void 
+		{
+			_maskRectY2 = value;
+			_verticesDirty = true;
+		}
+		
+		public function get maskRectX2():Number 
+		{
+			return _maskRectX2;
+		}
+		
+		public function set maskRectX2(value:Number):void 
+		{
+			_maskRectX2 = value;
+			_verticesDirty = true;
+		}
+		
+		public function get maskRectY1():Number 
+		{
+			return _maskRectY1;
+		}
+		
+		public function set maskRectY1(value:Number):void 
+		{
+			_maskRectY1 = value;
+			_verticesDirty = true;
+		}
+		
+		public function get maskRectX1():Number 
+		{
+			return _maskRectX1;
+		}
+		
+		public function set maskRectX1(value:Number):void 
+		{
+			_maskRectX1 = value;
 			_verticesDirty = true;
 		}
 	}

@@ -31,8 +31,9 @@ package zvr.zvrTools
 			return cc;
 		}
 		
-		static public function smoothTrans(a:Number, b:Number, c:Number):Number
+		static public function smoothTrans(a:Number, b:Number, c:Number, limit:Number = 0.0001):Number
 		{
+			if (Math.abs(a - b) < limit) return b;
 			return a - (a - b) * c;
 		}
 		

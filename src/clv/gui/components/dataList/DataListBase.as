@@ -1,4 +1,4 @@
-package clv.gui.components 
+package clv.gui.components.dataList 
 {
 	import clv.gui.core.ComponentSignal;
 	import clv.gui.core.Container;
@@ -15,8 +15,10 @@ package clv.gui.components
 		private var _max:int = int.MAX_VALUE;
 		protected var _container:Container;
 		private var _endPosition:Number;
-		
 		protected var _dirty:Boolean;
+		
+		public var itemGetter:IDataItemGetter;
+		public var itemUpdater:IDataItemUpdater;
 		
 		public function DataListBase(container:Container) 
 		{
@@ -41,7 +43,7 @@ package clv.gui.components
 			position = _position + value;
 		}
 		
-		protected function pixelsToPosition(v:Number):Number
+		public function pixelsToPosition(v:Number):Number
 		{
 			return  (!_first) ?  0 : _first.getPercentScrol(v);
 		}
@@ -221,13 +223,22 @@ package clv.gui.components
 		
 		protected function getNewItem():IDataListItem
 		{
-			throw new Error("getNewItem() must be override");
+			if (itemGetter)
+			{
+				return itemGetter.getNewItem();
+			}
+			throw new Error("getNewItem() must be override or itemGetter set. Do not super this method");
 			return null;
 		}
 		
 		protected function updateItem(item:IDataListItem, index:int):void
 		{
-			throw new Error("updateItem() must be override");
+			if (itemUpdater)
+			{
+				itemUpdater.updateItem(item, index);
+				return;
+			}
+			throw new Error("updateItem() must be override or itemUpdater set. Do not super this method");
 		}
 		
 		public function get position():Number 

@@ -2,6 +2,7 @@ package clv.gui.g2d.components
 {
 	import clv.gui.common.styles.ImageStyle;
 	import clv.gui.common.styles.ImageStyleCrop;
+	import clv.gui.common.styles.ImageStyleSize;
 	import clv.gui.core.behaviors.IPointerComponent;
 	import clv.gui.core.Component;
 	import clv.gui.core.Pointer;
@@ -14,13 +15,11 @@ package clv.gui.g2d.components
 	 * ...
 	 * @author Zvir Celavra
 	 */
-	public class SpriteComponent extends Component implements IG2DPointerComponent
+	public class SpriteComponent extends Component
 	{
-		private var spriteSkin:SpriteComponetnSkin;
+		protected var spriteSkin:SpriteComponetnSkin;
 		
-		private var _node:GNode;
-		
-		private var _pointer:Pointer = new Pointer();
+		protected var _node:GNode;
 		
 		public function SpriteComponent() 
 		{
@@ -29,29 +28,24 @@ package clv.gui.g2d.components
 			_node = spriteSkin.skinNode;
 		}
 		
-		public function setCoropFill():void
+		public function setCropFill():void
 		{
 			setStyle(ImageStyle.CROP, ImageStyleCrop.FILL);
 		}
 		
-		public function setCoropNoScale():void
+		public function setCropNoScale():void
 		{
 			setStyle(ImageStyle.CROP, ImageStyleCrop.NO_SCALE);
 		}
 		
-		public function setCoropInside():void
+		public function setCropInside():void
 		{
 			setStyle(ImageStyle.CROP, ImageStyleCrop.INSIDE);
 		}
 		
-		public function setCoropOutside():void
+		public function setCropOutside():void
 		{
 			setStyle(ImageStyle.CROP, ImageStyleCrop.OUTSIDE);
-		}
-		
-		public function get pointer():Pointer 
-		{
-			return _pointer;
 		}
 		
 		public function set texture(t:GTexture):void
@@ -59,9 +53,35 @@ package clv.gui.g2d.components
 			setStyle(ImageStyle.IMAGE, t);
 		}
 		
+		public function setIndependedSize():void
+		{
+			setStyle(ImageStyle.CROP, ImageStyleCrop.NO_SCALE);
+			setStyle(ImageStyle.SIZE, ImageStyleSize.COMPONENT);
+		}
+		
 		public function get node():GNode
 		{
 			return _node;
+		}
+		
+		public function get alpha():Number 
+		{
+			return getStyle(ImageStyle.ALPHA);
+		}
+		
+		public function set alpha(value:Number):void 
+		{
+			setStyle(ImageStyle.ALPHA, value);
+		}
+		
+		public function get scale():Number 
+		{
+			return getStyle(ImageStyle.ALPHA);
+		}
+		
+		public function set scale(value:Number):void 
+		{
+			setStyle(ImageStyle.SCALE, value);
 		}
 		
 	}

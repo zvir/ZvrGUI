@@ -2,6 +2,7 @@ package clv.gui.g2d.components
 {
 	import clv.gui.common.styles.ImageStyle;
 	import clv.gui.common.styles.ImageStyleCrop;
+	import clv.gui.common.styles.ImageStyleSize;
 	import clv.gui.g2d.core.SkinG2D;
 	import clv.gui.g2d.display.G2DGuiBody;
 	import com.genome2d.components.renderables.GSprite;
@@ -19,6 +20,10 @@ package clv.gui.g2d.components
 		
 		private var _maskRect:Rectangle;
 		
+		private var _scale:Number;
+		
+		private var _size:String;
+		
 		public function SpriteComponetnSkin() 
 		{
 			
@@ -28,11 +33,17 @@ package clv.gui.g2d.components
 		{
 			registerStyle(ImageStyle.CROP	, setCrop);
 			registerStyle(ImageStyle.IMAGE	, setImage);
+			registerStyle(ImageStyle.ALPHA	, setApha);
+			registerStyle(ImageStyle.SCALE	, setScale);
+			registerStyle(ImageStyle.SIZE	, setSize);
 		}
 		
 		override protected function setStyles():void 
 		{
 			setStyle(ImageStyle.CROP, ImageStyleCrop.NO_SCALE);
+			setStyle(ImageStyle.ALPHA, 1);
+			setStyle(ImageStyle.SCALE, 1);
+			setStyle(ImageStyle.SIZE, ImageStyleSize.IMAGE);
 		}
 		
 		override protected function create():void 
@@ -48,7 +59,7 @@ package clv.gui.g2d.components
 		{
 			super.preUpdate();
 			
-			if (_crop == ImageStyleCrop.NO_SCALE && _sprite.texture)
+			if (_crop == ImageStyleCrop.NO_SCALE && _size == ImageStyleSize.IMAGE && _sprite.texture)
 			{
 				if (_component.width != _sprite.texture.width) _component.width = _sprite.texture.width;
 				if (_component.height != _sprite.texture.height) _component.height = _sprite.texture.height;
@@ -63,7 +74,14 @@ package clv.gui.g2d.components
 			
 			if (sizeDirty)
 			{
-				if (_crop == ImageStyleCrop.NO_SCALE || _crop == ImageStyleCrop.FILL)
+				if (_crop == ImageStyleCrop.NO_SCALE || _size == ImageStyleSize.COMPONENT)
+				{
+					_skinNode.transform.scaleX = _scale;
+					_skinNode.transform.scaleY = _scale;
+					
+					_sprite.maskRect = null;
+				}
+				else if (_crop == ImageStyleCrop.FILL)
 				{
 					_skinNode.transform.scaleX = _component.bounds.width / _sprite.texture.width;
 					_skinNode.transform.scaleY = _component.bounds.height / _sprite.texture.height;
@@ -107,7 +125,9 @@ package clv.gui.g2d.components
 					_maskRect.width = _component.bounds.width;
 					_maskRect.height = _component.bounds.height;
 					
-					_sprite.maskRect = _maskRect
+					_sprite.maskRect = _maskRect;
+					
+					
 				}
 			}
 			
@@ -125,5 +145,21 @@ package clv.gui.g2d.components
 		{
 			_sprite.texture = getStyle(ImageStyle.IMAGE);
 		}
+		
+		private function setApha():void 
+		{
+			_sprite.node.transform.alpha = getStyle(ImageStyle.ALPHA);
+		}
+		
+		private function setScale():void 
+		{
+			_scale = getStyle(ImageStyle.SCALE);
+		}
+		
+		private function setSize():void 
+		{
+			_size =  getStyle(ImageStyle.SIZE);
+		}
+		
 	}
 }

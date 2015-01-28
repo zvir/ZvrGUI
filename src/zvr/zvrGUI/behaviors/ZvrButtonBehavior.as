@@ -34,16 +34,13 @@ package zvr.zvrGUI.behaviors
 			if (!enabled || !component.onStage) return;
 			ZvrComponent(component).focusRect = false;
 			
-			if (Multitouch.supportsTouchEvents)
-			{
-				component.addEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
-				component.addEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
-			}
-			else
-			{
-				component.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				component.addEventListener(MouseEvent.ROLL_OVER, mouseOver);
-			}
+			
+			component.addEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
+			component.addEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
+		
+			component.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+			component.addEventListener(MouseEvent.ROLL_OVER, mouseOver);
+			
 			
 			
 			component.addEventListener(FocusEvent.FOCUS_IN, focusIn);
@@ -54,32 +51,26 @@ package zvr.zvrGUI.behaviors
 		
 		private function mouseOver(e:Event):void 
 		{
-			if (Multitouch.supportsTouchEvents)
-			{
+			
 				component.addEventListener(TouchEvent.TOUCH_ROLL_OUT, mouseOut);
 				component.removeEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
-			}
-			else
-			{
+			
 				component.addEventListener(MouseEvent.ROLL_OUT, mouseOut);
 				component.removeEventListener(MouseEvent.ROLL_OVER, mouseOver);
-			}
+			
 			
 			component.manageStates(ZvrStates.OVER, ZvrStates.NORMAL);		
 		}
 		
 		private function mouseOut(e:Event):void 
 		{
-			if (Multitouch.supportsTouchEvents)
-			{
+			
 				component.removeEventListener(TouchEvent.TOUCH_ROLL_OUT, mouseOut);
 				component.addEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
-			}
-			else
-			{
+			
 				component.removeEventListener(MouseEvent.ROLL_OUT, mouseOut);
 				component.addEventListener(MouseEvent.ROLL_OVER, mouseOver);
-			}
+			
 			
 			
 			component.manageStates(ZvrStates.NORMAL, ZvrStates.OVER);	
@@ -87,16 +78,13 @@ package zvr.zvrGUI.behaviors
 		
 		private function mouseDown(e:Event):void 
 		{
-			if (Multitouch.supportsTouchEvents)
-			{
+			
 				component.removeEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
 				ZvrComponent(component).stage.addEventListener(TouchEvent.TOUCH_END, mouseUp);
-			}
-			else
-			{
+			
 				component.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 				ZvrComponent(component).stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
-			}
+			
 			
 			
 			component.manageStates(ZvrStates.DOWN, ZvrStates.NORMAL);
@@ -105,18 +93,15 @@ package zvr.zvrGUI.behaviors
 		private function mouseUp(e:Event):void 
 		{
 			// BUG no stage!
-			if (Multitouch.supportsTouchEvents)
-			{
+			
 				component.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
 				component.addEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
 				ZvrComponent(component).stage.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
-			}
-			else
-			{
+			
 				component.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
 				component.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 				ZvrComponent(component).stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
-			}
+			
 			
 			component.manageStates(ZvrStates.NORMAL, ZvrStates.DOWN);			
 			if (ZvrComponent(component).stage.focus != component) ZvrComponent(component).stage.focus = ZvrComponent(component);
@@ -126,20 +111,17 @@ package zvr.zvrGUI.behaviors
 		{
 			if (enabled || !component.onStage) return;
 			
-			if (Multitouch.supportsTouchEvents)
-			{
+			
 				component.removeEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
 				component.removeEventListener(TouchEvent.TOUCH_ROLL_OUT, mouseOut);
 				component.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
 				component.removeEventListener(TouchEvent.TOUCH_ROLL_OVER, mouseOver);
-			}
-			else
-			{
+			
 				component.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 				component.removeEventListener(MouseEvent.ROLL_OUT, mouseOut);
 				component.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
 				component.removeEventListener(MouseEvent.ROLL_OVER, mouseOver);
-			}
+			
 			
 			if (component.skin.body) component.skin.body.removeEventListener(FocusEvent.FOCUS_IN, focusIn);
 

@@ -72,13 +72,13 @@ package zvr.zvrGUI.components.minimalDark
 		override public function set text(value:String):void 
 		{
 			super.text = value;
-			//updateScroll();
+			updateScroll();
 		}
 		
 		override public function appendText(value:String):void 
 		{
 			super.appendText(value);
-			//updateScroll();
+			updateScroll();
 		}
 		
 		private function updateScroll():void
@@ -106,7 +106,7 @@ package zvr.zvrGUI.components.minimalDark
 			_scroll.horizontalScroll.enabled = _scroll.horizontalScroll.percentageRange < 1;
 			_scroll.verticalScroll.enabled = _scroll.verticalScroll.percentageRange < 1;
 			
-			//_scroll.updateScrollsState();
+			_scroll.updateScrollsState();
 			
 		}
 		

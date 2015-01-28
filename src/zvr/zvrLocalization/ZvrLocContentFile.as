@@ -20,7 +20,7 @@ package zvr.zvrLocalization
 			
 		}
 		
-		override internal function save():void 
+		override public function save():void 
 		{
 			
 			var f:File = new File(file.nativePath);

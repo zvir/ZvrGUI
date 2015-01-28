@@ -12,7 +12,7 @@ package zvr.zvrSnd
 	 * @author Zvir
 	 */
 	
-	public class ZvrSnd
+	public class ZvrSnd implements IZvrSnd
 	{
 		private var _volume:Number = 1;
 		private var _mute:Boolean;

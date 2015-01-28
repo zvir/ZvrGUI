@@ -242,6 +242,17 @@ package zvr.zvrTools
 			
 		}
 		
+		static public function getFullColor(n:Number):uint 
+		{
+			
+			n = n * 360;
+			
+			var o:Object = HSLtoRGB(n, 0.5, 1);
+			
+			var c:uint = getColor(o.r*255, o.g*255, o.b*255);
+			return c;
+			
+		}
 	}
 
 }

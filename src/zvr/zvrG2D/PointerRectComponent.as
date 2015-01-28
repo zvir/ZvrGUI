@@ -16,9 +16,9 @@ package zvr.zvrG2D
 	{
 		public var rect:Rectangle;
 		
-		public function PointerRectComponent(p_node:GNode) 
+		public function PointerRectComponent() 
 		{
-			super(p_node);
+			super();
 		}
 		
 		override public function processContextMouseSignal(p_captured:Boolean, p_cameraX:Number, p_cameraY:Number, p_contextSignal:GMouseSignal):Boolean 
@@ -36,6 +36,8 @@ package zvr.zvrG2D
 			
 			var mouseLocalPosition:Point = node.transform.globalToLocal(new Point(p_cameraX, p_cameraY));
 			
+			//trace("1", mouseLocalPosition.x, mouseLocalPosition.y);
+			
 			if (rect.containsPoint(mouseLocalPosition)) 
 			{
 				node.dispatchNodeMouseSignal(p_contextSignal.type, node, mouseLocalPosition.x, mouseLocalPosition.y, p_contextSignal);
@@ -44,7 +46,9 @@ package zvr.zvrG2D
 				{
 					g2d_node.dispatchNodeMouseSignal(GMouseSignalType.MOUSE_OVER, g2d_node, mouseLocalPosition.x, mouseLocalPosition.y, p_contextSignal);
 				}
-
+				
+				//trace("rect.containsPoint");
+				
 				return true;
 				
 			}

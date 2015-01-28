@@ -4,7 +4,7 @@ package zvr.zvrLocalization
 	 * ...
 	 * @author Zvir
 	 */
-	internal class ZvrLocContent 
+	public class ZvrLocContent 
 	{
 		
 		internal var xml:XML;
@@ -14,7 +14,7 @@ package zvr.zvrLocalization
 			
 		}
 		
-		internal function save():void
+		public function save():void
 		{
 			
 		}

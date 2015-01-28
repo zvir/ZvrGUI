@@ -22,7 +22,7 @@ package zvr.zvrBehaviors
 		
 		public function MultiTouchTransform(handler:EventDispatcher, stage:EventDispatcher = null) 
 		{
-			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+			//Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
 			_handler = handler;
 			_stage = stage;

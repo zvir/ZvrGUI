@@ -43,8 +43,8 @@ package zvr
 		{
 			_active = false;
 			
-			ZvrKeyboard.removePressedCallback(keyPressed);
-			ZvrKeyboard.removePressingCallback(keyPressed);
+		/*	ZvrKeyboard.removePressedCallback(keyPressed);
+			ZvrKeyboard.removePressingCallback(keyPressed);*/
 			
 			dispatchEvent(new ZvrVirtualTextfieldEvent(ZvrVirtualTextfieldEvent.ACTIVE_CHANGE, this));
 			

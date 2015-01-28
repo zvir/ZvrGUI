@@ -83,6 +83,7 @@ package zvr.zvrLocalization
 		public function generateEMBEDxml(path:String, pack:String, name:String):void 
 		{
 			_dir = _dir.resolvePath(_dir.nativePath);
+			_dir.createDirectory();
 			
 			var d:File = new File(path);
 			d = d.resolvePath(d.nativePath);
@@ -127,7 +128,7 @@ package zvr.zvrLocalization
 			+"\t}\n"
 			+"}";
 			
-			trace(s);
+			//trace(s);
 			
 			var file:File = new File(path + name + ".as");
 			

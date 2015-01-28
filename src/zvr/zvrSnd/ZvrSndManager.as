@@ -12,8 +12,8 @@ package zvr.zvrSnd
 		
 		public var maxSounds:int = int.MAX_VALUE;
 		
-		private var _sounds:Vector.<ZvrSnd> = new Vector.<ZvrSnd>;
-		public var _quene:Vector.<ZvrSnd> = new Vector.<ZvrSnd>;
+		private var _sounds:Vector.<IZvrSnd> = new Vector.<IZvrSnd>;
+		public var _quene:Vector.<IZvrSnd> = new Vector.<IZvrSnd>;
 		
 		
 		public function ZvrSndManager()
@@ -21,12 +21,12 @@ package zvr.zvrSnd
 			
 		}
 		
-		public function addSound(s:ZvrSnd):void
+		public function addSound(s:IZvrSnd):void
 		{
 			_sounds.push(s);
 		}
 		
-		public function removeSound(s:ZvrSnd):void
+		public function removeSound(s:IZvrSnd):void
 		{
 			_sounds.splice(_sounds.indexOf(s), 1);
 		}

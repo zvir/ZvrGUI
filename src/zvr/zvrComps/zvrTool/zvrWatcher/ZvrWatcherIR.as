@@ -47,15 +47,20 @@ package zvr.zvrComps.zvrTool.zvrWatcher
 			
 			_sender.left = 0;
 			
-			_valueName.right = 180;
+			_valueName.left = 150;
+			
+			_value.left = 240;
+			
 			//_valueName.align = TextFormatAlign.RIGHT;
 			//_valueName.width = 45;
 			
-			
+			/*_value.labelAutoSize = false;
 			_value.width = 140;
 			_value.right = 0;
-			_value.minWidth = 170;
 			_value.height = 15;
+			_value.top = 0;*/
+			//_value.minWidth = 170;
+			//
 			
 			_states.add(ZvrStates.NORMAL);
 			
@@ -66,7 +71,7 @@ package zvr.zvrComps.zvrTool.zvrWatcher
 			_valueName.delegateStates = this;
 			_value.delegateStates = this;
 			
-			_value.labelAutoSize = false;
+			//
 			//_valueName.autoSize = false;
 				
 			_buttonBehavior = new ZvrClickableBehavior();

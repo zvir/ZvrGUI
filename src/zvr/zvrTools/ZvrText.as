@@ -14,27 +14,30 @@ package zvr.zvrTools
 	public class ZvrText
 	{
 		
-		public static function getOrdinalSuffix(nr:int):String
+		public static function getOrdinalSuffix(value:int):String
 		{
-			var t:String = String(nr).substr( -1, 1);
 			
-			if (nr > 20)
+			if (value >= 10 && value <= 20)
+			return 'th';
+
+			switch (value % 10)
 			{
-				switch (t) {
-					case "1": return "st";
-					case "2": return "nd";
-					case "3": return "rd";
-					default:  return "th";
-				}
-			}
-			else
-			{
-				switch (nr) {
-					case 1: return "st";
-					case 2: return "nd";
-					case 3: return "rd";
-					default:  return "th";
-				}
+				case 0:
+				case 4:
+				case 5:
+				case 6:
+				case 7:
+				case 8:
+				case 9:
+					return 'th';
+				case 3:
+					return 'rd';
+				case 2:
+					return 'nd';
+				case 1:
+					return 'st';
+				default:
+					return '';
 			}
 			
 			return "";

@@ -67,6 +67,8 @@ package zvr.zvrTools
 			
 			compilationDate = readCompilationDate();
 			
+			if (!compilationDate) return;
+			
 			var sharedObjectName:String = "CompilationDate";
 			var sharedObject:SharedObject = SharedObject.getLocal(sharedObjectName);
 			var localVersion:int = int(version);

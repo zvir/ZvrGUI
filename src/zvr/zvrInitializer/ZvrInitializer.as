@@ -50,14 +50,17 @@ package zvr.zvrInitializer
 			}
 			time = getTimer();
 			sTime = time;
+			
 			sp.addEventListener(Event.ENTER_FRAME, initEnterFrame);
+			
+			reporting = true;
 			
 			stepTime = getTimer();
 			
-			if (report != null && head)
+			/*if (report != null && head)
 			{
 				report((current + 1) / initCount, head.name || "");
-			}
+			}*/
 		
 		}
 		
@@ -206,9 +209,9 @@ package zvr.zvrInitializer
 		private function makeReport():void
 		{
 			reporting = false;
-			if (report == null || !head || !head.next)
+			if (report == null || !head)
 				return;
-			report((current + 1) / initCount, head.next.name || "");
+			report((current) / initCount, head.name || "");
 		}
 		
 		private function reportError(err:Error):void

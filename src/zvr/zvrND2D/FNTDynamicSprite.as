@@ -27,7 +27,7 @@ package zvr.zvrND2D
 			carret = new Sprite2D();	
 			//addChild(carret);	
 			
-			virt.addEventListener(ZvrVirtualTextfieldEvent.TEXT_CHANGE, textChange);
+			//virt.addEventListener(ZvrVirtualTextfieldEvent.TEXT_CHANGE, textChange);
 			virt.addEventListener(ZvrVirtualTextfieldEvent.CARRET_INDEX_CHAGE, carretChange);
 			virt.addEventListener(ZvrVirtualTextfieldEvent.ACTIVE_CHANGE, activChanged);
 		}
@@ -64,7 +64,6 @@ package zvr.zvrND2D
 
 			var lastSpriteX:Number = virt.carretIndex < 1 ? 0 : virt.carretIndex ;
 			carret.x = lettersX[lastSpriteX] + 1; 
-			
 			carret.y = int(fntSpriteSheet.lineHeight / 2) + 1;
 			
 			if (virt.active && spriteSheet) 

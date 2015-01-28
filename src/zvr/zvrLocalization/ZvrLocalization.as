@@ -169,7 +169,7 @@ package zvr.zvrLocalization
 			
 			var l:XMLList = xml..lang;
 			
-			trace(l);
+			//trace(l);
 			
 			for each (var item:XML in l) 
 			{
@@ -223,7 +223,7 @@ package zvr.zvrLocalization
 						
 						var n:XML = node;
 						
-						trace(n.parent());
+						//trace(n.parent());
 						
 						while (n.parent() != undefined && n.parent().name() != "data")
 						{
@@ -263,75 +263,99 @@ package zvr.zvrLocalization
 			return Boolean(_items[node]);
 		}
 		
+		public function getItemText(node:String):String 
+		{
+			return preapareText(getItem(node).text);
+		}
+		
 		public function getItem(node:String):ZvrLocItem 
 		{
-			var item:ZvrLocItem = _items[node];
 			
-			if (!item)
-			{
-				trace("creating new item!!!!!");
+			var on:String = node;
+			
+			try{
+			
+				var item:ZvrLocItem = _items[node];
 				
-				var path:Array = node.split(".");
-				
-				var name:String = path.shift();
-				
-				var itemName:String = path.pop();
-				
-				for (var i:int = 0; i < _langsTypes.length; i++) 
+				if (!item)
 				{
+					trace("creating new item!!!!!", node);
 					
-					if (_contentTypes[_langsTypes[i]][name] == undefined)
+					var path:Array = node.split(".");
+					
+					var name:String = path.shift();
+					
+					var itemName:String = path.pop();
+					
+					for (var i:int = 0; i < _langsTypes.length; i++) 
 					{
-						var c:ZvrLocContent = manager.getNewLocContent(name, _langsTypes[i]);
-						_contentTypes[_langsTypes[i]][name] = c;
-					}
-					
-					c = _contentTypes[_langsTypes[i]][name];
-					
-					var v:* = c.xml;
-					var x:* = c.xml;
-					
-					for (var j:int = 0; j < path.length; j++) 
-					{
-						x = v[path[j]];
 						
-						if (!x || x == undefined) 
+						if (_contentTypes[_langsTypes[i]] == undefined) _contentTypes[_langsTypes[i]] = { };
+						
+						if (_contentTypes[_langsTypes[i]][name] == undefined)
 						{
-							x = new XML("<" + path[j] + "/>");
-							v.appendChild(x);
+							var c:ZvrLocContent = manager.getNewLocContent(name, _langsTypes[i]);
+							_contentTypes[_langsTypes[i]][name] = c;
 						}
-						v = x;
+						
+						c = _contentTypes[_langsTypes[i]][name];
+						
+						var v:* = c.xml;
+						var x:* = c.xml;
+						
+						for (var j:int = 0; j < path.length; j++) 
+						{
+							x = v[path[j]];
+							
+							if (!x || x == undefined) 
+							{
+								x = new XML("<" + path[j] + "/>");
+								v.appendChild(x);
+							}
+							v = x;
+						}
+						
+						var newXML:XML = new XML("<text name=\"" + itemName + "\" v=\"0\">" + itemName + "</text>");
+						
+						/*trace(v.text.(@name == itemName));
+						trace(v.text.(@name == itemName) == null);
+						trace(v.text.(@name == itemName) == undefined);*/
+						
+						if (v.text.(@name == itemName) == undefined)
+						{
+							v.appendChild(newXML);
+							c.save();
+						}
+						else
+						{
+							newXML = v.text.(@name == itemName)[0];
+						}
+						
+						item = createItem(newXML, c);
+						
 					}
 					
-					var newXML:XML = new XML("<text name=\"" + itemName + "\" v=\"0\">" + itemName + "</text>");
-					
-					//trace(v.text.(@name == itemName));
-					
-					if (v.text.(@name == itemName) == undefined)
+					CONFIG::debug
 					{
-						v.appendChild(newXML);
-						c.save();
+						/*if (_generateClasses)
+						{
+							generatePathsClasses(_generateClassesDir, _generateClassesPack);
+						}*/
+						
+						manager.contentUpdated();
+						
 					}
-					else
-					{
-						newXML = v.text.(@name == itemName)[0];
-					}
-					
-					item = createItem(newXML, c);
-					
 				}
 				
-				CONFIG::debug
-				{
-					/*if (_generateClasses)
-					{
-						generatePathsClasses(_generateClassesDir, _generateClassesPack);
-					}*/
-					
-					manager.contentUpdated();
-					
-				}
 			}
+			catch (err:Error)
+			{
+				err.message += " node: " + on;
+				throw err;
+			}
+			
+			
+			
 			
 			return item;
 		}
@@ -372,6 +396,12 @@ package zvr.zvrLocalization
 		public function setLang(name:String):void
 		{
 			_currentLang = _langsTypes.indexOf(name);
+			
+			if (_currentLang == -1) 
+			{
+				_currentLang = 0;
+				name = _langsTypes[0];
+			}
 			
 			for each (var item:ZvrLocItem in _items) 
 			{
@@ -428,6 +458,11 @@ package zvr.zvrLocalization
 		public function get languageChanged():Signal 
 		{
 			return _languageChanged;
+		}
+		
+		public function get contentTypes():Object 
+		{
+			return _contentTypes;
 		}
 		
 		
@@ -513,7 +548,7 @@ package zvr.zvrLocalization
 				
 			}
 			
-			trace(s);
+			//trace(s);
 			
 			return s;
 			
@@ -540,7 +575,7 @@ package zvr.zvrLocalization
 			var v:Array = varibles.slice();
 			
 			var r:* = v.shift();
-			var s:String = preapareText(s);
+			s = preapareText(s);
 			
 			while (r != undefined)
 			{
@@ -558,7 +593,6 @@ package zvr.zvrLocalization
 				s = s.replace(/\[[^\[]+\]/, r);
 				r = v.shift();
 			}
-			
 			
 			return s;
 		}
@@ -668,6 +702,15 @@ package zvr.zvrLocalization
 			
 			return a;
 			
+		}
+		
+		CONFIG::debug
+		public function updateItem(item:ZvrLocItem, value:String):Boolean
+		{
+			var x:* = item.xml;
+			x.parent().children()[x.childIndex()] = value;
+			item.contentItem.save();
+			return true;
 		}
 		
 	}

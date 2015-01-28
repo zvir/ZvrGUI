@@ -28,6 +28,7 @@ package zvr.zvrGUI.core
 		public function set text(value:String):void 
 		{
 			if (_text == value) return;
+			if (value != "" && value == null) value = "null";
 			enterMassChangeMode();
 			_text = value;
 			_dispatchEvent(ZvrLabelEvent.TEXT_CHANGE, ZvrLabelChangeKind.REPLACE, value);

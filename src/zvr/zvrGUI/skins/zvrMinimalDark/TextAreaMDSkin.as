@@ -96,7 +96,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 		
 		public function setTextFormat(format:TextFormat, beginIndex:int=-1, endIndex:int=-1):void
 		{
-			//if (beginIndex >= _textField.text.length || endIndex >= _textField.text.length) return;
+			if (beginIndex >= _textField.text.length || endIndex >= _textField.text.length) return;
 			_textField.setTextFormat(format, beginIndex, endIndex);
 		}
 		

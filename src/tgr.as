@@ -13,11 +13,11 @@ package
 	
 	public function tgr(name:String):ZvrTogglerItem 
 	{
-		CONFIG::release
+		/*CONFIG::release
 		{
-			return;
+			return null;
 			//throw new Error("TGR");
-		}
+		}*/
 		
 		return Toggler.addToggler(name);
 	}

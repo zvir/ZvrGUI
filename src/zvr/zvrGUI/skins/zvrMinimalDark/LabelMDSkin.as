@@ -2,6 +2,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.TextEvent;
 	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
 	import flash.geom.Rectangle;
@@ -70,8 +71,8 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			Sprite(_body).addChild(_textField);
 			
 			//_body = _textField;
-			
 		}
+
 		
 		private function textInput(e:Event):void 
 		{
@@ -105,6 +106,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 		
 		override protected function updateSize():void 
 		{
+			_textField.y = 0;
 			
 			if (_autoSize && !_multiline) return;
 			
@@ -120,6 +122,15 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			{
 				_textField.width = componentWidth;	
 				_textField.height = componentHeight;
+				
+				if (!_multiline)
+				{
+					_textField.y = componentHeight * 0.5 - _textField.textHeight * 0.5;
+				}
+				else
+				{
+					_textField.y = 0;
+				}
 			}
 			
 			if (_cutLabel) checkLabelCut();

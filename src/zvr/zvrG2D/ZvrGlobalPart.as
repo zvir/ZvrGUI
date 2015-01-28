@@ -6,6 +6,8 @@ package zvr.zvrG2D
 	import com.genome2d.context.GBlendMode;
 	import com.genome2d.context.GContextCamera;
 	import com.genome2d.node.GNode;
+	import com.genome2d.signals.GMouseSignal;
+	import com.genome2d.signals.GMouseSignalType;
 	import com.genome2d.textures.GTexture;
 	import flash.geom.Rectangle;
 	/**
@@ -38,9 +40,9 @@ package zvr.zvrG2D
 		protected var g2d_vertices:Array;
 		protected var g2d_uvs:Array;
 		
-		public function ZvrGlobalPart(p_node:GNode) 
+		public function ZvrGlobalPart() 
 		{
-			super(p_node);
+			super();
 			
 			g2d_vertices = [];
 			g2d_uvs = [];
@@ -112,14 +114,74 @@ package zvr.zvrG2D
 		{
 			if (texture == null || g2d_vertices == null || g2d_uvs == null) return;
 			
+			var transform:GTransform = node.transform;
+			
+			if (_x != transform.g2d_worldX || _y != transform.g2d_worldY)
+			{
+				_x = transform.g2d_worldX;
+				_y = transform.g2d_worldY;
+				
+				_verticesDirty = true;
+			}
+			
 			if (_verticesDirty)
 			{
 				updateVertices();
 				_verticesDirty = false;
 			}
 			
-			var transform:GTransform = node.transform;
+			
 			node.core.getContext().drawPoly(texture, g2d_vertices, g2d_uvs, _globalX, _globalY, 1, 1, 0, transform.g2d_worldRed, transform.g2d_worldGreen, transform.g2d_worldBlue, transform.g2d_worldAlpha, blendMode);
+		}
+		
+		override public function processContextMouseSignal(p_captured:Boolean, p_cameraX:Number, p_cameraY:Number, p_contextSignal:GMouseSignal):Boolean 
+		{
+			
+			if (p_captured && p_contextSignal.type == GMouseSignalType.MOUSE_UP) node.g2d_mouseDownNode = null;
+
+			if (p_captured || texture == null || _width == 0 || _height == 0 || node.transform.g2d_worldScaleX == 0 || node.transform.g2d_worldScaleY == 0)
+			{
+				if (node.g2d_mouseOverNode == node) node.dispatchNodeMouseSignal(GMouseSignalType.MOUSE_OUT, node, 0, 0, p_contextSignal);
+				return false;
+			}
+
+			// Invert translations
+			var tx:Number = p_cameraX - node.transform.g2d_worldX;
+			var ty:Number = p_cameraY - node.transform.g2d_worldY;
+
+			if (node.transform.g2d_worldRotation != 0)
+			{
+				var cos:Number = Math.cos(-node.transform.g2d_worldRotation);
+				var sin:Number = Math.sin(-node.transform.g2d_worldRotation);
+
+				var ox:Number = tx;
+				tx = (tx * cos - ty * sin);
+				ty = (ty * cos + ox * sin);
+			}
+
+			tx /= node.transform.g2d_worldScaleX * _width;
+			ty /= node.transform.g2d_worldScaleY * _height;
+
+			if (tx >= 0 && tx <= 1 && ty >= 0 && ty <= 1)
+			{
+				node.dispatchNodeMouseSignal(p_contextSignal.type, node, tx * _width, ty * _height, p_contextSignal);
+				
+				if (node.g2d_mouseOverNode != node)
+				{
+					node.dispatchNodeMouseSignal(GMouseSignalType.MOUSE_OVER, node, tx * _width, ty * _height, p_contextSignal);
+				}
+
+				return true;
+			} 
+			else 
+			{
+				if (node.g2d_mouseOverNode == node)
+				{
+					node.dispatchNodeMouseSignal(GMouseSignalType.MOUSE_OUT, node, tx * _width, ty * _height, p_contextSignal);
+				}
+			}
+
+			return false;
 		}
 		
 		public function getBounds(p_target:Rectangle = null):Rectangle 
@@ -194,7 +256,7 @@ package zvr.zvrG2D
 			return _y;
 		}
 		
-		public function set y(value:Number):void 
+		/*public function set y(value:Number):void 
 		{
 			_y = value;
 			_verticesDirty = true;
@@ -203,7 +265,7 @@ package zvr.zvrG2D
 		public function get x():Number 
 		{
 			return _x;
-		}
+		}*/
 		
 		public function set x(value:Number):void 
 		{

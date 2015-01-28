@@ -86,6 +86,8 @@ package zvr.zvrKeyboard
 			
 			trace("begin", text, selectionBegin, selectionEnd, requestKeyboard);
 			
+			//requestKeyboard = false;
+			
 			if (_active) 
 			{
 				_textField.text = text;

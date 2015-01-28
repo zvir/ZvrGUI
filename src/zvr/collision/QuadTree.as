@@ -16,7 +16,7 @@ package zvr.collision
 
 	public class QuadTree
 	{
-		public static const k_maxProxies:int               = 1 << 9; //must be power of two
+		public static const k_maxProxies:int               = 1 << 10; //must be power of two
 		public static const k_maxPairs:int                 = k_maxProxies << 3; //must be power of two
 		
 		private var _nodes:Vector.<QuadTreeNode>;

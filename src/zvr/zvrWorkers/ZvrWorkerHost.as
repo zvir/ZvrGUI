@@ -19,7 +19,7 @@ package zvr.zvrWorkers
 		private var commander:MessageChannel;
 		private var orderer:MessageChannel;
 		
-		public function ZvrWorkerHost(local:Class, remote:Class, swf:ByteArray, giveAppPrivileges:Boolean = false) 
+		public function ZvrWorkerHost(local:Class, remote:Class, swf:ByteArray) 
 		{
 			super(local, remote);
 			
@@ -57,14 +57,27 @@ package zvr.zvrWorkers
 			
 			command(d);
 			
-			try
-			{
-				callIncoming(d[0], d[1]);
-			}
+			/*try
+			{*/
+				if (d is Array && d.length == 1 && d[0] == "initialized")
+				{
+					initialized();
+				}
+				else
+				{
+					callIncoming(d[0], d[1]);
+				}
+			/*}
 			catch (err:Error)
 			{
+				throw err;
 				error(err);
-			}
+			}*/
+		}
+		
+		protected function initialized():void 
+		{
+			// TO BE OVERWRITTEN
 		}
 		
 		protected function command(d:*):void

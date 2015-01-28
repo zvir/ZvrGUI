@@ -3,258 +3,314 @@ package zvr.zvrG2D.text
 	import com.genome2d.components.GComponent;
 	import com.genome2d.components.GTransform;
 	import com.genome2d.components.renderables.IRenderable;
-	import com.genome2d.context.GBlendMode;
-	import com.genome2d.context.GContextCamera;
-	import com.genome2d.context.IContext;
+	import com.genome2d.error.GError;
+	import com.genome2d.textures.GCharTexture;
+	import com.genome2d.signals.GMouseSignalType;
 	import com.genome2d.node.GNode;
+	import com.genome2d.node.factory.GNodeFactory;
+	import com.genome2d.signals.GMouseSignal;
 	import com.genome2d.textures.GTexture;
-	import flash.geom.Point;
+	import com.genome2d.textures.GTextureAtlas;
+	import com.genome2d.context.GContextCamera;
+	import com.genome2d.utils.GHAlignType;
+	import com.genome2d.utils.GVAlignType;
 	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
 	import org.osflash.signals.Signal;
-	import zvr.zvrG2D.FNTCaret;
 	import zvr.zvrG2D.G2DFont;
 	import zvr.zvrG2D.G2DFontChar;
-	/**
-	 * ...
-	 * @author Zvir Celavra
+	
+	/*
+	 * 	Genome2D - 2D GPU Framework
+	 * 	http://www.genome2d.com
+	 *
+	 *	Copyright 2011-2014 Peter Stefcek. All rights reserved.
+	 *  Modifided to use G2DFont
+	 *	License:: ./doc/LICENSE.md (https://github.com/pshtif/Genome2D/blob/master/LICENSE.md)
 	 */
+	
+	/**
+		Component used for rendering texture based text
+	**/
 	public class GTextComponent extends GComponent implements IRenderable
 	{
-		public var blendMode:int = GBlendMode.NORMAL;
+		public var blendMode:int = 1;
 		
-		public var processText:Function;
+		public var onTextChanged:Signal = new Signal(String);
 		
-		private static var _lettersTrash:Vector.<GTextLetter> = new Vector.<GTextLetter>();
-		
-		private var  _letters:Vector.<GTextLetter> = new Vector.<GTextLetter>();
-		
-		private var _onTextChanged:Signal = new Signal(String);
-		
-		private var _maxChars:int = int.MAX_VALUE;
-		
-		private var _maxWidth:Number = Number.MAX_VALUE;
-		
-		private var _align:int = 1;
-		private var _letterSpacing:Number = 0;
-		private var _lineSpacing:Number = 0;
 		private var _size:Number;
-		private var _sizeDirty:Boolean;
-		private var _sizeScale:Number = 1;
 		
-		private var _font:G2DFont;
+		private var _scale:Number = 1;
 		
-		private var _width:Number = 0;
-		private var _height:Number = 0;
-		
-		private var _caretChar:int = 124;
-		private var _caretIndex:int = 1;
-		private var _caretBlinkItv:int = 250;
-		
-		private var _caretX:int = 5;
-		private var _caretY:int = 5;
-		
-		private var _caretUV:Array;
-		private var _caretVR:Array;
-		
-		private var _caretPositions:Array = [];
-		private var _carretPositionDirty:Boolean = true;
-		
-		private var _caret:G2DFontChar;
-		private var _showCaret:Boolean;
-		
-		private var _text:String;
+		private var g2d_invalidate:Boolean = false;
+		private var g2d_tracking:Number = 0;
+		private var g2d_lineSpace:Number = 0;
+		private var g2d_vAlign:int = 0;
+		private var g2d_hAlign:int = 0;
+		private var g2d_font:G2DFont;
+		private var g2d_text:String = "";
+		private var g2d_autoSize:Boolean = false;
+		private var g2d_width:Number = 100;
+		private var g2d_height:Number = 100;
+		private var g2d_chars:Vector.<GTextChar>;
+		private var invalidateTextT:int;
 		
 		private var va:Array = [];
 		
-		private var _textDirty:Boolean;
+		private var _invalidateSize:Boolean;
 		
-		private var _carretDirty:Boolean;
-		
-		private var _alginOffset:Number;
-		
-		
-		public function GTextComponent(p_node:GNode) 
+		public function GTextComponent() 
 		{
-			super(p_node);
+			
 		}
 		
-		private function renderText():void
+		public function update():void
+		{
+			if (_invalidateSize) invalidateSize();
+			if (g2d_invalidate) invalidateText();
+		}
+		
+		private function invalidateSize():void 
+		{
+			_invalidateSize = false;
+			_scale = isNaN(_size) ? 1 : _size / g2d_font.size;
+		}
+		
+		public function render(p_camera:GContextCamera, p_useMatrix:Boolean):void
+		{
+			if (g2d_invalidate) invalidateText();
+			
+			if (g2d_font == null) return;
+			if (g2d_text == null) return;
+			
+			var transform:GTransform = node.transform;
+			
+			for (var j:int = 0; j < va.length; j++) 
+			{
+				node.core.getContext().drawPoly(g2d_font.atlas, va[j][0], va[j][1], transform.g2d_worldX, transform.g2d_worldY, transform.g2d_worldScaleX * _scale, transform.g2d_worldScaleY * _scale, transform.g2d_worldRotation, transform.g2d_worldRed, transform.g2d_worldGreen, transform.g2d_worldBlue, transform.g2d_worldAlpha, blendMode);
+			}
+			
+			
+			return;
+			
+			trace("invalidateTextTime", getTimer() - invalidateTextT);
+			
+			var t:int = getTimer();
+			
+			var charCount:int = g2d_chars.length;
+			var cos:Number = 1;
+			var sin:Number = 0;
+			
+			if (g2d_node.transform.g2d_worldRotation != 0)
+			{
+				cos = Math.cos(node.transform.g2d_worldRotation);
+				sin = Math.sin(node.transform.g2d_worldRotation);
+			}
+			
+			for (var i:int = 0; i <  charCount; i++)
+			{
+				var char:GTextChar = g2d_chars[i];
+				if (!char.g2d_visible) break;
+
+				var tx:Number = char.g2d_x * node.transform.g2d_worldScaleX + g2d_node.transform.g2d_worldX;
+				var ty:Number = char.g2d_y * node.transform.g2d_worldScaleY + g2d_node.transform.g2d_worldY;
+				
+				if (g2d_node.transform.g2d_worldRotation != 0)
+				{
+					tx = (char.g2d_x * cos - char.g2d_y * sin) * node.transform.g2d_worldScaleX + g2d_node.transform.g2d_worldX;
+					ty = (char.g2d_y * cos + char.g2d_x * sin) * node.transform.g2d_worldScaleY + g2d_node.transform.g2d_worldY;
+				}
+
+				node.core.getContext().draw(char.g2d_texture.texture, tx, ty, node.transform.g2d_worldScaleX, node.transform.g2d_worldScaleY, node.transform.g2d_worldRotation, node.transform.g2d_worldRed, node.transform.g2d_worldGreen, node.transform.g2d_worldBlue, node.transform.g2d_worldAlpha, 1, null);
+			}
+			
+			//trace("renderTime", getTimer() - t);
+			
+		}
+		
+		private function invalidateText():void
 		{
 			
-			_lettersTrash = _lettersTrash.concat(_letters);
-			_letters.length = 0;
+			invalidateTextT = getTimer();
 			
-			
-			if (!_text || _text.length == 0)
+			if (g2d_font == null) return;
+			if (g2d_text == null) return;
+			if (g2d_chars == null) g2d_chars = new Vector.<GTextChar>();
+
+			if (g2d_autoSize)
 			{
-				abortRender();
-				return;
+				g2d_width = 0;
 			}
 			
-			if (processText != null) _text = processText(_text);
+			var scale:Number = isNaN(_size) ? 1 : _size / g2d_font.size;
 			
-			_width = 0;
-			_height = 0;
-			
-			var c:int;
-			var lineBreak:Boolean;
-			var space:Boolean;
-			var lastSpace:Boolean;
-			
-			var l:GTextLetter;
-			var lastLetter:GTextLetter;
-			
-			var lines:int = 0;
-			var lineY:Number = 0;
-			
-			var spaceWord:Vector.<GTextLetter> = new Vector.<GTextLetter>();
-			var word:Vector.<GTextLetter> = new Vector.<GTextLetter>();
-			var line:Vector.<GTextLetter> = new Vector.<GTextLetter>();
-			var skipLine:Vector.<GTextLetter>;
-			
-			var lineWidth:Number = 0;
-			
-			var scaledMaxWidth:Number = _maxWidth / _sizeScale;
-			
-			for (var i:int = 0; i < _text.length && i < _maxChars; i++) 
-			{
-				c = _text.charCodeAt(i);
-				
-				lastSpace = space;
-				
-				lineBreak = c == 10 || c == 13;
-				space = c == 32 || lineBreak || c == 11 || c == 9 || c == 12;
-				
-				if (lineBreak)
-				{
-					lines++;
-					lineY = lines * _font.lineHeight + _lineSpacing;
-					lastLetter = null;
-					
-					lineWidth = addWordToLine(line, spaceWord, lineWidth);
-					
-					alignLine(line, lineWidth);
-					
-					lineWidth = 0;
-					line.length = 0;
-					
-					spaceWord.length = 0;
-					
-					continue;
-				}
-				
-				l = _lettersTrash.pop();
-				
-				if (!l)
-				{
-					l = new GTextLetter();
-				}
-				
-				//l = new GTextLetter();
-				_letters.push(l);
-				
-				if ((space && !lastSpace))
-				{
-					word.length = 0;
-				}
-				
-				if (!space)
-				{
-					word.push(l);
-				}
-				
+			var offsetX:Number = 0;
+			var offsetY:Number =  0;
+			var char:GTextChar;
+			var texture:G2DFontChar = null;
+			var currentCharCode:int = -1;
+			var previousCharCode:int = -1;
+			var lastChar:int = 0;
 
-				l.char = _font.getChar(c) as G2DFontChar;
-				
-				if (lastLetter)
+			var lines:Vector.<Vector.<GTextChar>> = new Vector.<Vector.<GTextChar>>();
+			var currentLine:Vector.<GTextChar> = new Vector.<GTextChar>();
+			var charIndex:int = 0;
+			var whiteSpaceIndex:int = -1;
+			var i:int = 0;
+			
+			while (i<g2d_text.length) {
+				// New line character
+				if (g2d_text.charCodeAt(i) == 10)
 				{
-					l.x = lastLetter.x + lastLetter.char.xadvance + _font.getKerning(lastLetter.char.char, l.char.char) + _letterSpacing;	
-					l.y = lineY;
-					
-					if (!space && l.x + l.char.xadvance > scaledMaxWidth)
+					if (g2d_autoSize)
 					{
-						
-						lines++;
-						lineY = lines * _font.lineHeight + _lineSpacing;
-						
-						alignLine(line, lineWidth);
-						
-						lineWidth = 0;
-						line.length = 0;
-						
-						
-						var wl:GTextLetter = word[0];
-						
-						wl.x = 0;
-						wl.y = lineY;
-						lastLetter = wl;
-						
-						
-						for (var j:int = 1; j < word.length; j++) 
+						g2d_width = (offsetX>g2d_width) ? offsetX : g2d_width;
+					}
+					previousCharCode = -1;
+					lines.push(currentLine);
+					currentLine = new Vector.<GTextChar>();
+					if (!g2d_autoSize && offsetY + 2 * (g2d_font.lineHeight + g2d_lineSpace) > g2d_height) break;
+					offsetX = 0;
+					offsetY += g2d_font.lineHeight + g2d_lineSpace;
+				}
+				else
+				{
+					currentCharCode = g2d_text.charCodeAt(i);
+					
+					texture = g2d_font.getG2DChar(currentCharCode) as G2DFontChar;
+					
+					if (texture == null) 
+					{
+						++i;
+						continue;// throw new GError("Texture for character "+g2d_text.charAt(i)+" with code "+g2d_text.charCodeAt(i)+" not found!");
+					}
+
+					if (previousCharCode != -1) {
+						offsetX += g2d_font.getKerning(previousCharCode, currentCharCode);
+					}
+
+					if (currentCharCode != 32)
+					{
+						if (charIndex >= g2d_chars.length)
 						{
-							wl = word[j];
-							
-							wl.x = lastLetter.x + lastLetter.char.xadvance + _font.getKerning(lastLetter.char.char, wl.char.char) + _letterSpacing;	
-							wl.y = lineY;
-							lastLetter = wl;
+							char = new GTextChar();
+							g2d_chars.push(char);
 						}
+						else
+						{
+							char = g2d_chars[charIndex];
+						}
+
+						char.g2d_code = currentCharCode;
+						char.g2d_texture = texture;
+						
+						if (!g2d_autoSize && offsetX + texture.width > g2d_width)
+						{
+							lines.push(currentLine);
+							var backtrack:int = i - whiteSpaceIndex - 1;
+							var currentCount:int = currentLine.length;
+							currentLine.splice(currentLine.length-backtrack, backtrack);
+							currentLine = new Vector.<GTextChar>();
+							charIndex -= backtrack;
+							if (backtrack>=currentCount) break;
+							if (!g2d_autoSize && offsetY + 2*(g2d_font.lineHeight + g2d_lineSpace) > g2d_height) break;
+							i = whiteSpaceIndex+1;
+							offsetX = 0;
+							offsetY += g2d_font.lineHeight + g2d_lineSpace;
+							continue;
+						}
+
+						currentLine.push(char);
+						char.g2d_visible = true;
+						char.g2d_x = offsetX;// + texture.xoffset;
+						char.g2d_y = offsetY;// + texture.yoffset;
+						charIndex++;
 						
 					}
+					else
+					{
+						whiteSpaceIndex = i;
+					}
+
+					offsetX += texture.xadvance + g2d_tracking;
+
+					previousCharCode = currentCharCode;
 				}
-				else
-				{
-					l.x = 0;
-					l.y = lineY;
-				}
-				
-				if (!lastSpace && space)
-				{
-					lineWidth = addWordToLine(line, spaceWord, lineWidth);
-					
-					spaceWord.length = 0;
-					spaceWord.push(l);
-				}
-				else
-				{
-					spaceWord.push(l);
-				}
-				
-				l.y = lineY;
-				lastLetter = l;
+				++i;
 			}
+			lines.push(currentLine);
+
+			var charCount:int = g2d_chars.length;
 			
-			lineWidth = addWordToLine(line, spaceWord, lineWidth);
-			alignLine(line, lineWidth);
-			
-			_height = lineY + _font.lineHeight;
-			
-			_height *= _sizeScale;
-			_width *= _sizeScale;
-			
-			if (_maxWidth != Number.MAX_VALUE) 
+			for (i = charIndex; i < charCount; i++)
 			{
-				_alginOffset = _align == 1 ? 0 : _align == 0 ? _maxWidth / 2 : _maxWidth;
+				g2d_chars[i].g2d_visible = false;
 			}
-			else
+
+			if (g2d_autoSize)
 			{
-				_alginOffset = 0;
+				g2d_width = offsetX;
+				g2d_height = offsetY + g2d_font.lineHeight;
+			}
+
+			var bottom:Number = offsetY + g2d_font.lineHeight;
+			offsetY = 0;
+			
+			if (g2d_vAlign == GVAlignType.MIDDLE)
+			{
+				offsetY = (g2d_height - bottom) * .5;
+			}
+			else if (g2d_vAlign == GVAlignType.BOTTOM)
+			{
+				offsetY = g2d_height - bottom;
+			}
+
+			for (i = 0; i < lines.length; i++)
+			{
+				//var currentLine:Vector.<GTextChar> = lines[i];
+				currentLine = lines[i];
+
+				charCount = currentLine.length;
+				if (charCount == 0) continue;
+				offsetX = 0;
+				var last:GTextChar = currentLine[charCount-1];
+				var right:Number = last.g2d_x /*- last.g2d_texture.xoffset*/ + last.g2d_texture.xadvance;
+
+				if (g2d_hAlign == GHAlignType.CENTER) {
+					offsetX = (g2d_width - right) * .5;
+				} else if (g2d_hAlign == GHAlignType.RIGHT) {
+					offsetX = g2d_width - right;
+				}
+
+				for (var j:int = 0; j < charCount; j++ )
+				{
+					char = currentLine[j];
+					char.g2d_x = char.g2d_x + offsetX;
+					char.g2d_y = char.g2d_y + offsetY;
+				}
 			}
 			
+			updatePolys();
+			
+			g2d_invalidate = false;
+			
+			onTextChanged.dispatch(g2d_text);
+		}
+		
+		private function updatePolys():void 
+		{
 			var v:Array = [];
 			var a:Array = [];
 			
 			va.length = 0;
 			va.push([v, a]);
-		
-			_caretPositions.length = 0;
 			
-			_caretPositions.push([_letters[0].x + _alginOffset, _letters[0].y]);
-			
-			var lpx2:Number = _letters[0].x - _letters[0].char.texture.pivotX - int(_letters[0].char.texture.width * 0.5) + _alginOffset;
-			
-			for (var k:int = 0; k < _letters.length; k++) 
+			for (var k:int = 0; k < g2d_chars.length; k++) 
 			{
+				
+				var char:GTextChar = g2d_chars[k];
+				
+				if (!char.g2d_visible) continue;
 				
 				if (v.length > 12 * 599) 
 				{
@@ -263,37 +319,19 @@ package zvr.zvrG2D.text
 					va.push([v, a]);
 				}
 				
-				l = _letters[k];
+				//l = _letters[k];
 				
-				var texture:GTexture = l.char.texture;
+				var texture:GTexture = char.g2d_texture.texture;
 
 				var uv1x:Number = texture.g2d_region.x / texture.g2d_gpuWidth;
 				var uv1y:Number = texture.g2d_region.y / texture.g2d_gpuHeight;
 				var uv2x:Number = (texture.g2d_region.x + texture.g2d_region.width) / texture.g2d_gpuWidth;
 				var uv2y:Number = (texture.g2d_region.y + texture.g2d_region.height) / texture.g2d_gpuHeight;
 				
-				var p1x:Number = l.x - texture.pivotX - texture.width * 0.5 + _alginOffset;
-				var p1y:Number = l.y - texture.pivotY - texture.height * 0.5;
+				var p1x:int = char.g2d_x + texture.pivotX /*- texture.width * 0.5;*/
+				var p1y:int = char.g2d_y + texture.pivotY /*- texture.height * 0.5;*/
 				var p2x:Number = p1x + texture.width;
 				var p2y:Number = p1y + texture.height;
-				
-				_caretPositions.push([l.x + l.char.xadvance + _alginOffset, l.y]);
-				
-				/*if (k  < _letters.length - 1)
-				{
-					var l2:GTextLetter = _letters[k+1];
-					var pn1x:Number = l2.x - l2.char.texture.pivotX - l2.char.texture.width * 0.5 + _alginOffset;
-					
-					var sx:Number = p2x + (pn1x - p2x) / 2;
-					var px:Number = pn1x;
-					
-					
-					
-				}
-				else
-				{
-					_caretPositions.push([p2x, l.y]);
-				}*/
 				
 				v.push
 				(
@@ -319,345 +357,168 @@ package zvr.zvrG2D.text
 				
 			}
 			
-			_onTextChanged.dispatch(_text);
 		}
 		
-		private function abortRender():void 
+		override public function processContextMouseSignal(p_captured:Boolean, p_cameraX:Number, p_cameraY:Number, p_contextSignal:GMouseSignal):Boolean
 		{
-			_width = 0;
-			_height = 0;
-			va.length = 0;
-			_onTextChanged.dispatch(_text);
-		}
-		
-		private function addWordToLine(line:Vector.<GTextLetter>, word:Vector.<GTextLetter>, lineWidth:Number):Number
-		{
-			var l:GTextLetter
-			
-			for (var k:int = 0; k < word.length; k++) 
-			{
-				l = word[k];
-				
-				var c:int = l.char.char;
-				
-				if (!(c == 32 || c == 10 || c == 13 || c == 11 || c == 9 || c == 12))
-				{
-					lineWidth = l.x + l.char.xadvance;
-				}
-				
-				line.push(l);
-			}
-			
-			return lineWidth;
-		}
-		
-		private function alignLine(line:Vector.<GTextLetter>, lineWidth:Number):void 
-		{
-			if (_width < lineWidth) _width = lineWidth;
-			
-			if (_align == 1) return;
-			
-			var l:GTextLetter
+			if (g2d_width == 0 || g2d_height == 0) return false;
 
-			if (_align == 0)
+			if (p_captured)
 			{
-				lineWidth /= 2;
+				if (node.g2d_mouseOverNode == node) node.dispatchNodeMouseSignal(GMouseSignalType.MOUSE_OUT, node, 0, 0, p_contextSignal);
+				return false;
 			}
-						
-			for (var i:int = 0; i < line.length; i++) 
-			{
-				l = line[i];
-				l.x -= lineWidth;
-			}
-			
-		}
-		
-		/*private function print(word:Vector.<GTextLetter>):void
-		{
-			var s:String = "";
-			
-			for (var i:int = 0; i < word.length; i++) 
-			{
-				s += String.fromCharCode(word[i].char.char);
-			}
-			
-		}*/
-		
-		public function update():void
-		{
-			if (_textDirty || _sizeDirty)
-			{
-				updateSize();
-				renderText();
-				_sizeDirty = false;
-				_textDirty = false;
-			}
-		}
-		
-		public function render(p_camera:GContextCamera, p_useMatrix:Boolean):void 
-		{
-			update();
-			
-			var transform:GTransform = node.transform;
-			
-			var cos:Number = Math.cos(transform.g2d_worldRotation);
-			var sin:Number = Math.sin(transform.g2d_worldRotation);
-			
-			var sx:Number = node.transform.g2d_worldScaleX * _sizeScale;
-			var sy:Number = node.transform.g2d_worldScaleY * _sizeScale;
-			
-			var c:IContext = node.core.g2d_context;
-			
-			for (var i:int = 0; i < _letters.length; i++) 
-			{
-				var item:GTextLetter = _letters[i];
-				
-				if (!item.char.texture) continue;
-				
-				var tx:Number = ((item.x + _alginOffset/_sizeScale) * cos - item.y * sin) * node.transform.g2d_worldScaleX * _sizeScale + node.transform.g2d_worldX;
-				var ty:Number = (item.y * cos + (item.x + _alginOffset/_sizeScale) * sin) * node.transform.g2d_worldScaleY * _sizeScale + node.transform.g2d_worldY;
-			
-				
-				c.draw(
-					item.texture,
-					tx,
-					ty, 
-					sx,
-					sy,
-					node.transform.g2d_worldRotation, 
-					node.transform.g2d_worldRed, 
-					node.transform.g2d_worldGreen, 
-					node.transform.g2d_worldBlue, 
-					node.transform.g2d_worldAlpha, 
-					blendMode
-				);
 
-			}
-			
-			/*for (var j:int = 0; j < _caretPositions.length; j++) 
-			{
-				cx = _caretPositions[j][0];
-				cy = _caretPositions[j][1];
-				
-				tx = (cx * cos - cy * sin) * node.transform.g2d_worldScaleX * _sizeScale + node.transform.g2d_worldX;
-				ty = (cy * cos + cx * sin) * node.transform.g2d_worldScaleY * _sizeScale + node.transform.g2d_worldY + _font.lineHeight / 2 * _sizeScale;;
-				
-				c.draw(
-					DotG2DTex.dotTex,
-					tx,
-					ty, 
-					sx/16,
-					sy/2,
-					node.transform.g2d_worldRotation, 
-					node.transform.g2d_worldRed, 
-					node.transform.g2d_worldGreen, 
-					node.transform.g2d_worldBlue, 
-					node.transform.g2d_worldAlpha*0.5, 
-					blendMode
-				);
-			}*/
-			
-			
-			
-			if (_showCaret)
-			{
-				
-				if (int(getTimer() / _caretBlinkItv) % 2 == 0) return
-				
-				if (_carretDirty)
-				{
-					updateCarret();
-					_carretDirty = false;
-				}
-				
-				if (_carretPositionDirty)
-				{
-					//updateCarretPosition();
-					_carretPositionDirty = false;
-				}
-				
-				var cx:Number = _caretPositions[_caretIndex][0];
-				var cy:Number = _caretPositions[_caretIndex][1];
-				
-				tx = (cx * cos - cy * sin) * node.transform.g2d_worldScaleX * _sizeScale + node.transform.g2d_worldX - _caret.texture.width/2 * _sizeScale + _caret.texture.pivotX * _sizeScale;
-				ty = (cy * cos + cx * sin) * node.transform.g2d_worldScaleY * _sizeScale + node.transform.g2d_worldY;
-			
-			//	c.draw(, transform.g2d_worldX, transform.g2d_worldY, sx, sy, transform.g2d_worldRotation, transform.g2d_worldRed, transform.g2d_worldGreen, transform.g2d_worldBlue, transform.g2d_worldAlpha, blendMode);
-				c.draw(
-					_caret.texture,
-					tx,
-					ty, 
-					sx,
-					sy,
-					node.transform.g2d_worldRotation, 
-					node.transform.g2d_worldRed, 
-					node.transform.g2d_worldGreen, 
-					node.transform.g2d_worldBlue, 
-					node.transform.g2d_worldAlpha, 
-					blendMode
-				);
-				
-				
-			}
-			
-			
-			
-		}
-		/*
-		public function render(p_camera:GContextCamera, p_useMatrix:Boolean):void 
-		{
-			update();
-			
-			var c:IContext = node.core.g2d_context;
-			var transform:GTransform = node.transform;
-			
-			var sx:Number = _sizeScale * transform.g2d_worldScaleX;
-			var sy:Number = _sizeScale * transform.g2d_worldScaleY;
-			
-			for (var j:int = 0; j < va.length; j++) 
-			{
-				c.drawPoly(_font.atlas, va[j][0], va[j][1], transform.g2d_worldX, transform.g2d_worldY, sx, sy, transform.g2d_worldRotation, transform.g2d_worldRed, transform.g2d_worldGreen, transform.g2d_worldBlue, transform.g2d_worldAlpha, blendMode);
-			}
-			
-			if (_showCaret)
-			{
-				if (_carretDirty)
-				{
-					updateCarret();
-					_carretDirty = false;
-				}
-				
-				if (_carretPositionDirty)
-				{
-					updateCarretPosition();
-					_carretPositionDirty = false;
-				}
-				
-				c.drawPoly(_font.atlas, _caretVR, _caretUV, transform.g2d_worldX, transform.g2d_worldY, sx, sy, transform.g2d_worldRotation, transform.g2d_worldRed, transform.g2d_worldGreen, transform.g2d_worldBlue, transform.g2d_worldAlpha, blendMode);
-			}
-			
-		}
-		*/
-		private function updateCarretPosition():void 
-		{
-			var texture:GTexture = _caret.texture;
-				
-			var cx:Number = _caretPositions[_caretIndex][0];
-			var cy:Number = _caretPositions[_caretIndex][1];
+			// Invert translations
+			var tx:Number = p_cameraX - node.transform.g2d_worldX;
+			var ty:Number = p_cameraY - node.transform.g2d_worldY;
 
-			
-			var p1x:Number = cx - texture.width * 0.5;
-			var p1y:Number = cy - texture.pivotY - texture.height * 0.5;
-			var p2x:Number = p1x + texture.width;
-			var p2y:Number = p1y + texture.height;
-			
-			_caretVR = [
-				p1x, p1y, 
-				p2x, p1y, 
-				p1x, p2y, 
-				 
-				p2x, p1y,
-				p2x, p2y,
-				p1x, p2y
-			];
+			if (node.transform.g2d_worldRotation != 0) {
+				var cos:Number = Math.cos(-node.transform.g2d_worldRotation);
+				var sin:Number = Math.sin(-node.transform.g2d_worldRotation);
+
+				var ox:Number = tx;
+				tx = (tx*cos - ty*sin);
+				ty = (ty*cos + ox*sin);
+			}
+
+			tx /= node.transform.g2d_worldScaleX*g2d_width;
+			ty /= node.transform.g2d_worldScaleY*g2d_height;
+
+			var tw:Number = 0;
+			var th:Number = 0;
+
+			if (tx >= -tw && tx <= 1 - tw && ty >= -th && ty <= 1 - th) {
+				node.dispatchNodeMouseSignal(p_contextSignal.type, node, tx*g2d_width, ty*g2d_height, p_contextSignal);
+				if (node.g2d_mouseOverNode != node) {
+					node.dispatchNodeMouseSignal(GMouseSignalType.MOUSE_OVER, node, tx*g2d_width, ty*g2d_height, p_contextSignal);
+				}
+
+				return true;
+			} else {
+				if (node.g2d_mouseOverNode == node) {
+					node.dispatchNodeMouseSignal(GMouseSignalType.MOUSE_OUT, node, tx*g2d_width, ty*g2d_height, p_contextSignal);
+				}
+			}
+
+			return false;
 		}
 		
-		private function updateCarret():void
+		/* INTERFACE com.genome2d.components.renderables.IRenderable */
+		
+		public function getBounds(p_bounds:Rectangle = null):Rectangle 
 		{
-			_caret = _font.getChar(_caretChar) as G2DFontChar;
-			
-			var texture:GTexture = _caret.texture;
-			
-			
-			return;
-			
-			/*var p1x:Number =  - texture.pivotX - int(texture.width * 0.5);
-			var p1y:Number =  - texture.pivotY - int(texture.height * 0.5);
-			var p2x:Number = p1x + texture.width;
-			var p2y:Number = p1y + texture.height;*/
-			
-			var uv1x:Number = texture.g2d_region.x / texture.g2d_gpuWidth;
-			var uv1y:Number = texture.g2d_region.y / texture.g2d_gpuHeight;
-			var uv2x:Number = (texture.g2d_region.x + texture.g2d_region.width) / texture.g2d_gpuWidth;
-			var uv2y:Number = (texture.g2d_region.y + texture.g2d_region.height) / texture.g2d_gpuHeight;
-			
-			/*_caretVR = [
-				p1x, p1y, 
-			    p2x, p1y, 
-			    p1x, p2y, 
-			     
-			    p2x, p1y,
-			    p2x, p2y,
-			    p1x, p2y
-			]*/
-			
-			_caretUV = 
-			[
-				uv1x, uv1y,
-				uv2x, uv1y,
-				uv1x, uv2y,
-				
-				uv2x, uv1y,
-				uv2x, uv2y,
-				uv1x, uv2y
-			]
+			if (p_bounds != null)
+			{
+				p_bounds.x = 0;
+				p_bounds.y = 0;
+				p_bounds.width = g2d_width;
+				p_bounds.height = g2d_height;
+			}
+			else 
+				p_bounds = new Rectangle(0, 0, g2d_width, g2d_height);
+
+			return p_bounds;
 		}
 		
-		private function updateSize():void 
+		public function get tracking():int 
 		{
-			_sizeScale = _size / _font.size;
+			return g2d_tracking;
 		}
 		
-		public function getBounds(p_target:Rectangle = null):Rectangle 
+		public function set tracking(p_tracking:int):void 
 		{
-			return null;
+			g2d_tracking = p_tracking;
+			g2d_invalidate = true;
 		}
 		
-		public function get onTextChanged():Signal 
+		public function get lineSpace():Number 
 		{
-			return _onTextChanged;
+			return g2d_lineSpace;
 		}
 		
-		public function get maxChars():int 
+		public function set lineSpace(p_value:Number):void 
 		{
-			return _maxChars;
+			g2d_lineSpace = p_value;
+			g2d_invalidate = true;
 		}
 		
-		public function set maxChars(value:int):void 
+		public function get hAlign():int 
 		{
-			if (_maxChars == value) return;
-			_maxChars = value;
-			_textDirty = true;
+			return g2d_hAlign;
+		}
+		
+		public function set hAlign(value:int):void 
+		{
+			g2d_hAlign = value;
+			g2d_invalidate = true;
+		}
+		
+		public function get vAlign():int 
+		{
+			return g2d_vAlign;
+		}
+		
+		public function set vAlign(value:int):void 
+		{
+			g2d_vAlign = value;
+			g2d_invalidate = true;
 		}
 		
 		public function get height():Number 
 		{
-			return _height;
+			return g2d_height * _scale;
+		}
+		
+		public function set height(value:Number):void 
+		{
+			g2d_height = value / _scale;
+			g2d_invalidate = true;
 		}
 		
 		public function get width():Number 
 		{
-			return _width;
+			return g2d_width * _scale;
+		}
+		
+		public function set width(value:Number):void 
+		{
+			g2d_width = value / _scale;
+			g2d_invalidate = true;
+		}
+
+		public function get text():String 
+		{
+			return g2d_text;
+		}
+		
+		public function set text(value:String):void 
+		{
+			g2d_text = value;
+			g2d_invalidate = true;
 		}
 		
 		public function get font():G2DFont 
 		{
-			return _font;
+			return g2d_font;
 		}
 		
 		public function set font(value:G2DFont):void 
 		{
-			if (_font == value) return;
-			_font = value;
-			_textDirty = true;
-			_carretDirty = true;
-			
-			if (isNaN(_size))
-			{
-				_size = _font.size;
-			}
-			
-			_sizeDirty = true;
+			g2d_font = value;
+			g2d_invalidate = true;
+			_invalidateSize = true;
+		}
+		
+		public function get autoSize():Boolean 
+		{
+			return g2d_autoSize;
+		}
+		
+		public function set autoSize(value:Boolean):void 
+		{
+			g2d_autoSize = value;
+			g2d_invalidate = true;
 		}
 		
 		public function get size():Number 
@@ -667,142 +528,13 @@ package zvr.zvrG2D.text
 		
 		public function set size(value:Number):void 
 		{
-			if (_size == value) return;
 			_size = value;
-			_sizeDirty = true;
-		}
-		
-		public function get lineSpacing():Number 
-		{
-			return _lineSpacing;
-		}
-		
-		public function set lineSpacing(value:Number):void 
-		{
-			if (_lineSpacing == value) return;
-			_lineSpacing = value;
-			_textDirty = true;
-		}
-		
-		public function get letterSpacing():Number 
-		{
-			return _letterSpacing;
-		}
-		
-		public function set letterSpacing(value:Number):void 
-		{
-			if (_letterSpacing == value) return;
-			_letterSpacing = value;
-			_textDirty = true;
-		}
-		
-		public function get align():int 
-		{
-			return _align;
-		}
-		
-		public function set align(value:int):void 
-		{
-			if (_align == value) return;
-			_align = value;
-			_textDirty = true;
-		}
-		
-		public function get maxWidth():Number 
-		{
-			return _maxWidth;
-		}
-		
-		public function set maxWidth(value:Number):void 
-		{
-			if (_maxWidth == value) return;
-			_maxWidth = value;
-			_textDirty = true;
-		}
-		
-		public function get text():String 
-		{
-			return _text;
-		}
-		
-		public function set text(value:String):void 
-		{
-			if (_text == value) return;
 			
-			_text = value;
-			
-			_textDirty = true;
+			_invalidateSize = true;
 		}
 		
-		public function get caretIndex():int 
-		{
-			return _caretIndex;
-		}
 		
-		public function set caretIndex(value:int):void 
-		{
-			if (_caretIndex == value) return;
-			
-			_caretIndex = value;
-			
-			if (_caretIndex > _text.length)
-			{
-				_caretIndex = _text.length;
-			}
-			if (_caretIndex < 0)
-			{
-				_caretIndex = 0;
-			}
-			
-			_carretPositionDirty = true;
-			
-		}
-		
-		public function get showCaret():Boolean 
-		{
-			return _showCaret;
-		}
-		
-		public function set showCaret(value:Boolean):void 
-		{
-			_showCaret = value;
-		}
-		
-		public function get caretBlinkItv():int 
-		{
-			return _caretBlinkItv;
-		}
-		
-		public function set caretBlinkItv(value:int):void 
-		{
-			_caretBlinkItv = value;
-		}
-		
-		public function getCharIndexAt(x:Number, y:Number):int
-		{
-			x /= _sizeScale;
-			y /= _sizeScale;
-			
-			for (var i:int = 0; i < _letters.length; i++) 
-			{
-				
-				var c:GTextLetter = _letters[i];
-				
-				if (c.rect.contains(x, y))
-				{
-					
-					if (x > c.rect.x + c.rect.width * 0.5)
-					{
-						return i + 1;
-					}
-					
-					return i;
-				}
-			}
-			
-			return _letters.length;
-			
-		}
 	}
 
 }
+

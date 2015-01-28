@@ -21,9 +21,9 @@ package zvr.zvrG2D
 		
 		private var _maskRect:Rectangle = new Rectangle();
 		
-		public function ZvrGSprite(p_node:GNode=null) 
+		public function ZvrGSprite() 
 		{
-			super(p_node);
+			super();
 		}
 		
 		override public function render(p_camera:GContextCamera, p_useMatrix:Boolean):void 

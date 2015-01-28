@@ -43,9 +43,9 @@ package zvr.zvrG2D
 		private var _width:Number;
 		private var _height:Number;
 		
-		public function ZvrG9Grid(p_node:GNode)
+		public function ZvrG9Grid()
 		{
-			super(p_node);
+			super();
 			g2d_vertices = [];
 			g2d_uvs = [];
 		}

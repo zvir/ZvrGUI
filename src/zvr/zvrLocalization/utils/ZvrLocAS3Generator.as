@@ -62,7 +62,7 @@ package zvr.zvrLocalization.utils
 			+"\t}\n"
 			+"}";
 			
-			trace(s);
+			//trace(s);
 			
 			var fileStream:FileStream = new FileStream();
 			fileStream.open(file, FileMode.WRITE);

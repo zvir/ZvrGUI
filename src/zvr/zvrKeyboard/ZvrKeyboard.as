@@ -183,8 +183,27 @@ package zvr.zvrKeyboard
 			
 			VERSION::air
 			{
-				_stage.nativeWindow.addEventListener(Event.DEACTIVATE, deactivated);
+				//_stage.nativeWindow.addEventListener(Event.DEACTIVATE, deactivated);
 			}
+		}
+		
+		public static function addStage(stage:Stage):void
+		{
+			
+			stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+			
+			stage.addEventListener(FocusEvent.FOCUS_IN, focusIn);
+			stage.addEventListener(FocusEvent.FOCUS_OUT, focusOut);
+			
+			stage.addEventListener(Event.DEACTIVATE, deactivated);
+			stage.addEventListener(Event.ACTIVATE, activated);
+			
+			VERSION::air
+			{
+				stage.nativeWindow.addEventListener(Event.DEACTIVATE, deactivated);
+			}
+		
 		}
 		
 		public static function setStage(stage:Stage):void
@@ -201,12 +220,12 @@ package zvr.zvrKeyboard
 				_stage.removeEventListener(Event.DEACTIVATE, deactivated);
 				_stage.removeEventListener(Event.ACTIVATE, activated);
 				
-				
+				/*
 				VERSION::air
 				{
 					_stage.nativeWindow.removeEventListener(Event.DEACTIVATE, deactivated);
 				}
-				
+				*/
 			}
 			
 			_stage = stage;
@@ -220,11 +239,11 @@ package zvr.zvrKeyboard
 			_stage.addEventListener(Event.DEACTIVATE, deactivated);
 			_stage.addEventListener(Event.ACTIVATE, activated);
 			
-			
+			/*
 			VERSION::air
 			{
 				_stage.nativeWindow.addEventListener(Event.DEACTIVATE, deactivated);
-			}
+			}*/
 		}
 		
 		

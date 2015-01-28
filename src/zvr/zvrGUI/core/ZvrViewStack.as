@@ -44,7 +44,7 @@ package zvr.zvrGUI.core
 		
 		public function removeView(child:DisplayObject):DisplayObject 
 		{
-			_views.splice(_views.indexOf(child), 1);
+			_views.splice(_views.indexOf(child as ZvrComponent), 1);
 			
 			if (child == _currentView)
 			{

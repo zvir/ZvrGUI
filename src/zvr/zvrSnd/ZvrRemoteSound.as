@@ -21,14 +21,16 @@ package zvr.zvrSnd
 			
 		}
 		
-		public static function play(file:String, vol:Number = 1):SoundChannel
+		public static function play(file:File, vol:Number = 1):SoundChannel
 		{
+			
+			if (!file || !file.exists) return null;
 			
 			if (snds[file]) snds[file].stop();
 			
-			var f:File = new File(file);
+			//var f:File = new File(file);
 			
-			var req:URLRequest = new URLRequest(f.url); 
+			var req:URLRequest = new URLRequest(file.url); 
 			
 			var s:Sound = new Sound(req); 
 			
@@ -47,7 +49,7 @@ package zvr.zvrSnd
 			
 		}
 		
-		public static function stop(file:String):void
+		public static function stop(file:File):void
 		{
 			if (!snds[file]) return;
 			SoundChannel(snds[file]).stop();

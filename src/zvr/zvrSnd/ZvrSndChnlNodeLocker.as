@@ -20,11 +20,11 @@ package zvr.zvrSnd
 		private var _volMin			:Number;
 		private var _point			:Point;
 		private var _stopIfRemoved	:Boolean;
-		private var _snd			:ZvrSnd;
+		private var _snd			:IZvrSnd;
 		
 		private var _active			:Boolean;
 		
-		public function ZvrSndChnlNodeLocker(snd:ZvrSnd, node:Node2D, point:Point = null, volMax:Number = 1, volMin:Number = 0, scaleMax:Number = 1, scaleMin:Number = 0, stopIfRemoved:Boolean = false):void
+		public function ZvrSndChnlNodeLocker(snd:IZvrSnd, node:Node2D, point:Point = null, volMax:Number = 1, volMin:Number = 0, scaleMax:Number = 1, scaleMin:Number = 0, stopIfRemoved:Boolean = false):void
 		{
 			_snd = snd;
 			_stopIfRemoved = stopIfRemoved;

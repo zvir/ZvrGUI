@@ -1,11 +1,15 @@
 package zvr.zvrGUI.components.minimalDark 
 {
+	import clv.gui.core.Component;
+	import org.osflash.signals.Signal;
 	import zvr.zvrGUI.behaviors.ZvrSelectable;
 	import zvr.zvrGUI.core.IZvrSelectable;
+	import zvr.zvrGUI.core.IZvrVBooleanComponent;
 	import zvr.zvrGUI.core.ZvrStates;
 	import zvr.zvrGUI.events.ZvrSelectedEvent;
 	import zvr.zvrGUI.events.ZvrStateChangeEvent;
 	import zvr.zvrGUI.skins.zvrMinimalDark.ToggleButtonMDSkin;
+
 	/**
 	 * ...
 	 * @author Zvir
@@ -14,8 +18,10 @@ package zvr.zvrGUI.components.minimalDark
 	[Event(name = "userInput", type = "zvr.zvrGUI.events.ZvrEvent")]
 	[Event(name = "selectedChange",    type = "zvr.zvrGUI.events.ZvrSelectedEvent")]
 	
-	public class ToggleButtonMD extends ButtonMD implements IZvrSelectable
+	public class ToggleButtonMD extends ButtonMD implements IZvrSelectable, IZvrVBooleanComponent
 	{
+		
+		private var _change:Signal = new Signal(Boolean);
 		
 		protected var _selectableBehavior:ZvrSelectable
 		
@@ -114,6 +120,23 @@ package zvr.zvrGUI.components.minimalDark
 			{
 				dispatchEvent(new ZvrSelectedEvent(ZvrSelectedEvent.SELECTED_CHANGE, this, !s));
 			}
+		}
+		
+		/* INTERFACE zvr.zvrGUI.core.IZvrVBooleanComponent */
+		
+		public function get change():Signal 
+		{
+			return _change;
+		}
+		
+		public function set value(value:Boolean):void 
+		{
+			selected = value;
+		}
+		
+		public function get value():Boolean 
+		{
+			return selected;
 		}
 		
 		/*

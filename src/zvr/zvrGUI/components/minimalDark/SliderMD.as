@@ -2,8 +2,10 @@ package zvr.zvrGUI.components.minimalDark
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import org.osflash.signals.Signal;
 	import zvr.zvrGUI.behaviors.ZvrDragable;
 	import zvr.zvrGUI.behaviors.ZvrRollOverHilight;
+	import zvr.zvrGUI.core.IZvrVNumberComponent;
 	import zvr.zvrGUI.core.ZvrAutoSize;
 	import zvr.zvrGUI.core.ZvrGroup;
 	import zvr.zvrGUI.core.ZvrSlider;
@@ -18,12 +20,14 @@ package zvr.zvrGUI.components.minimalDark
 	 * ...
 	 * @author Zvir
 	 */
-	public class SliderMD extends ZvrSlider
+	public class SliderMD extends ZvrSlider implements IZvrVNumberComponent
 	{
 		
 		private var _areaDragBehavior:ZvrDragable;
 		private var _areaRightDragBehavior:ZvrDragable;
 		private var _areaLeftDragBehavior:ZvrDragable;
+		
+		private var _change:Signal = new Signal(Number);
 		
 		public var _areaScaleLeft:ScrollerButtonMD;
 		public var _areaScaleRight:ScrollerButtonMD;
@@ -100,11 +104,39 @@ package zvr.zvrGUI.components.minimalDark
 			dynamicRangeChange(null);
 			
 			Sprite(skin.body).addEventListener(MouseEvent.MOUSE_DOWN, backgroundClick);
+			addEventListener(MouseEvent.MOUSE_WHEEL, mouseWheel, true, 999999);
 			
 			_behaviors.addBehavior(new ZvrRollOverHilight());
 			
 			_states.add(ZvrStates.NORMAL);
 			
+		}
+		
+		/* INTERFACE zvr.zvrGUI.core.IZvrVNumberComponent */
+		
+		public function get change():Signal 
+		{
+			return _change;
+		}
+		
+		public function set value(v:Number):void 
+		{
+			position = v;
+		}
+		
+		public function get value():Number 
+		{
+			return position;
+		}
+		
+		private function mouseWheel(e:MouseEvent):void 
+		{
+			position += e.delta > 0 ? step : -step;
+			change.dispatch(position);
+			
+			e.preventDefault();
+			e.stopImmediatePropagation();
+			e.stopPropagation();
 		}
 		
 		private function dynamicRangeChange(e:ZvrSliderEvent):void 
@@ -190,7 +222,7 @@ package zvr.zvrGUI.components.minimalDark
 				d = e.delta.x;
 			}
 			percentagePosition = (_areaBar.x + e.delta.x) / (bounds.width - _areaBar.minWidth);
-			
+			change.dispatch(position);
 		}
 		
 		private function limitChanged(e:ZvrSliderEvent):void 
@@ -203,6 +235,7 @@ package zvr.zvrGUI.components.minimalDark
 		{
 			percentagePosition = (mouseX - _areaBar.bounds.width / 2) / (bounds.width - _areaBar.bounds.width);
 			_areaDragBehavior.startDrag(_areaButton);
+			change.dispatch(position);
 		}
 		
 		private function positionChanged(e:ZvrSliderEvent):void 

@@ -7,6 +7,8 @@ package zvr.zvrGUI.skins.nd2d
 	import zvr.zvrGUI.core.ZvrStates;
 	import zvr.zvrGUI.skins.base.IZvrSkinLayer;
 	import zvr.zvrGUI.skins.base.ZvrSkin;
+	import zvr.zvrKeyboard.ZvrInputSignal;
+	import zvr.zvrKeyboard.ZvrInputTextField;
 	
 	/**
 	 * ...
@@ -129,13 +131,27 @@ package zvr.zvrGUI.skins.nd2d
 					break;
 				}
 			}
+			
 			fnt.carretIndex = i;
+			
+			ZvrInputTextField.begin(fnt.stage, fnt.text, i, i, true);
+			ZvrInputTextField.onChange.add(onChange);
+		}
+		
+		private function onChange(e:ZvrInputSignal):void 
+		{
+			fnt.carretIndex = e.selectionBegin;
+			fnt.text = e.text;
 		}
 		
 		private function stageClick(e:MouseEvent):void 
 		{
 			if (!fnt.mouseIn())
 			{
+				
+				ZvrInputTextField.end();
+				ZvrInputTextField.onChange.remove(onChange);
+				
 				_component.removeState(ZvrStates.FOCUSED);
 				fnt.stage.removeEventListener(MouseEvent.CLICK, stageClick);
 			}

@@ -219,7 +219,7 @@ package zvr.zvrGUI.core.relays
 			}
 		}
 		
-		override public function removeChildren(beginIndex:int = 0, endIndex:int = 2147483647):void
+		/*override public function removeChildren(beginIndex:int = 0, endIndex:int = 2147483647):void
 		{
 			if (_contents)
 			{
@@ -229,7 +229,7 @@ package zvr.zvrGUI.core.relays
 			{
 				return super.removeChildren(beginIndex, endIndex);
 			}
-		}
+		}*/
 		
 		override public function setChildIndex(child:DisplayObject, index:int):void
 		{

@@ -2,7 +2,10 @@ package zvr.zvrLocalization
 {
 	import be.boulevart.air.utils.ScreenManager;
 	import com.blackmoon.theFew.view.utils.Loc;
-	import de.nulldesign.nd2d.display.Node2D;
+	import zvr.zvrGUI.components.nd2d.ZvrND2DLabel;
+	
+	//import com.blackmoon.theFew.view.utils.Loc;
+	
 	import flash.display.NativeWindow;
 	import flash.display.NativeWindowInitOptions;
 	import flash.display.NativeWindowRenderMode;
@@ -18,6 +21,7 @@ package zvr.zvrLocalization
 	import flash.text.TextField;
 	import flash.utils.Dictionary;
 	import flash.utils.setTimeout;
+	
 	import zvr.zvrGUI.behaviors.ZvrDragable;
 	import zvr.zvrGUI.behaviors.ZvrResizable;
 	import zvr.zvrGUI.components.minimalDark.ButtonMD;
@@ -25,24 +29,24 @@ package zvr.zvrLocalization
 	import zvr.zvrGUI.components.minimalDark.TextAreaMD;
 	import zvr.zvrGUI.components.minimalDark.ToggleButtonMD;
 	import zvr.zvrGUI.components.minimalDark.WindowMD;
-	import zvr.zvrGUI.components.nd2d.ZvrND2DLabel;
-	import zvr.zvrGUI.core.relays.ZvrSwitchGroup;
 	import zvr.zvrGUI.core.ZvrApplication;
 	import zvr.zvrGUI.core.ZvrAutoSize;
 	import zvr.zvrGUI.core.ZvrGroup;
 	import zvr.zvrGUI.core.ZvrScroll;
+	import zvr.zvrGUI.core.relays.ZvrSwitchGroup;
 	import zvr.zvrGUI.events.ZvrLabelEvent;
 	import zvr.zvrGUI.events.ZvrSelectedEvent;
 	import zvr.zvrGUI.layouts.ZvrHorizontalLayout;
+	import zvr.zvrGUI.skins.ZvrStyles;
 	import zvr.zvrGUI.skins.zvrMinimalDark.LabelMDSkin;
 	import zvr.zvrGUI.skins.zvrMinimalDark.TextAreaMDSkin;
 	import zvr.zvrGUI.skins.zvrMinimalDarkFonts.MDFonts;
-	import zvr.zvrGUI.skins.ZvrStyles;
 	import zvr.zvrKeyboard.ZvrKeyboard;
+	import zvr.zvrLocalization.ZvrLocItem;
 	import zvr.zvrLocalization.editElements.ItemsList;
 	import zvr.zvrLocalization.phase.ZvrLocPhrase;
 	import zvr.zvrLocalization.phase.ZvrLocTemplate;
-	import zvr.zvrLocalization.ZvrLocItem;
+
 	/**
 	 * ...
 	 * @author Zvir
@@ -201,7 +205,7 @@ package zvr.zvrLocalization
 		static public var localization:ZvrLocalization;
 		
 		private static var _dict:Dictionary = new Dictionary();
-		static private var _currentTarget:Object;
+		static private var _currentTarget:IZvrLocEditLabel;
 		static private var nw:NativeWindow;
 		
 		static private var itemsList:WindowMD;
@@ -213,25 +217,23 @@ package zvr.zvrLocalization
 		{
 			if (e.selected) 
 			{
-				trace(ToggleButtonMD(e.component).label.text);
+				//trace(ToggleButtonMD(e.component).label.text);
 				Loc.loc.setLang(ToggleButtonMD(e.component).label.text);
 				initEdit(_currentTarget);
 			}
 		}
 		
-		public static function add(object:Object, t:ZvrLocTemplate):void
+		public static function add(label:IZvrLocEditLabel, t:ZvrLocTemplate):void
 		{
-			if (object is ZvrND2DLabel)
-			{
-				addZvrND2DLabel(object as ZvrND2DLabel, t);
-			}
+			label.onEdit.add(initEdit);
+			_dict[label] = t;
 		}
 		
-		private static function addZvrND2DLabel(zvrND2DLabel:ZvrND2DLabel, t:ZvrLocTemplate):void 
+		/*private static function addZvrND2DLabel(zvrND2DLabel:ZvrND2DLabel, t:ZvrLocTemplate):void 
 		{
 			zvrND2DLabel.node.addEventListener(MouseEvent.CLICK, nd2dClick);
 			zvrND2DLabel.node.mouseEnabled = true;
-			_dict[zvrND2DLabel.node] = t;
+			
 		}
 		
 		private static function nd2dClick(e:MouseEvent):void 
@@ -242,9 +244,9 @@ package zvr.zvrLocalization
 		public static function editND2DLabel(label:ZvrND2DLabel):void
 		{
 			initEdit(label.node);
-		}
+		}*/
 		
-		private static function initEdit(currentTarget:Object):void 
+		public static function initEdit(currentTarget:IZvrLocEditLabel):void 
 		{
 			if (!nw)
 			{

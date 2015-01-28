@@ -23,9 +23,9 @@ package zvr.zvrG2D
 		
 		public var ouside:Boolean;
 		
-		public function ZvrG2DMouseRectComponent(p_node:GNode) 
+		public function ZvrG2DMouseRectComponent() 
 		{
-			super(p_node);
+			super();
 		}
 		
 		override public function processContextMouseSignal(p_captured:Boolean, p_cameraX:Number, p_cameraY:Number, p_contextSignal:GMouseSignal):Boolean 

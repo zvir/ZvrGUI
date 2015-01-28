@@ -42,7 +42,6 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			super.setStyles();
 			
 			setStyle(ZvrStyles.LABEL_COLOR, ColorsMD.c1, ZvrStates.FOCUSED);
-			
 			setStyle(ZvrStyles.FR_COLOR, ColorsMD.c1, ZvrStates.FOCUSED);
 			setStyle(ZvrStyles.FR_COLOR, ColorsMD.c2, ZvrStates.NORMAL);
 			
@@ -62,7 +61,7 @@ package zvr.zvrGUI.skins.zvrMinimalDark
 			
 		}
 		
-		private function drawFrame():void
+		protected function drawFrame():void
 		{
 			getStyle(ZvrStyles.FR_COLOR);
 			

@@ -1,26 +1,18 @@
 package zvr.zvrGUI.components.minimalDark 
 {
 	import flash.display.DisplayObjectContainer;
-	import flash.display.InteractiveObject;
-	import flash.display.Sprite;
-	import zvr.zvrGUI.behaviors.ZvrBehaviors;
-	import zvr.zvrGUI.behaviors.ZvrDragable;
+	import zvr.zvrGUI.behaviors.ZvrKeyBehavior;
+	import zvr.zvrGUI.core.ZvrAutoSize;
 	import zvr.zvrGUI.core.ZvrBitmap;
 	import zvr.zvrGUI.core.ZvrButton;
-	import zvr.zvrGUI.core.ZvrAutoSize;
 	import zvr.zvrGUI.core.ZvrStates;
 	import zvr.zvrGUI.events.ZvrLabelEvent;
 	import zvr.zvrGUI.events.ZvrStyleChangeEvent;
 	import zvr.zvrGUI.layouts.ZvrAlignment;
 	import zvr.zvrGUI.layouts.ZvrComplexLayout;
 	import zvr.zvrGUI.layouts.ZvrHorizontalAlignment;
-	import zvr.zvrGUI.layouts.ZvrHorizontalLayout;
 	import zvr.zvrGUI.layouts.ZvrVerticalAlignment;
-	import zvr.zvrGUI.layouts.ZvrVerticalLayout;
 	import zvr.zvrGUI.skins.zvrMinimalDark.ButtonMDSkin;
-	import zvr.zvrGUI.skins.ZvrStyles;
-	import zvr.zvrGUI.skins.zvrMinimalDark.ColorsMD;
-	import zvr.zvrGUI.skins.zvrMinimalDark.TextureFillsMD;
 	import zvr.zvrGUI.skins.ZvrStyles;
 	
 	/**
@@ -36,6 +28,8 @@ package zvr.zvrGUI.components.minimalDark
 		
 		private var _label:LabelMD = new LabelMD();
 		private var _icon:ZvrBitmap = new ZvrBitmap();
+		
+		private var _key:ZvrKeyBehavior;
 		
 		public function ButtonMD(skin:Class = null) 
 		{
@@ -132,6 +126,18 @@ package zvr.zvrGUI.components.minimalDark
 		public function set data(value:Object):void 
 		{
 			_data = value;
+		}
+		
+		public function get key():ZvrKeyBehavior 
+		{
+			
+			if (!_key)
+			{
+				_key = new ZvrKeyBehavior();
+				_behaviors.addBehavior(_key);
+			}
+			
+			return _key;
 		}
 		
 	}

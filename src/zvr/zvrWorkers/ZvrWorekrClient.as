@@ -9,8 +9,8 @@ package zvr.zvrWorkers
 	 */
 	public class ZvrWorekrClient extends ZvrActionProxy
 	{
-		private var commander:MessageChannel;
-		private var orderer:MessageChannel;
+		protected var commander:MessageChannel;
+		protected var orderer:MessageChannel;
 		
 		public function ZvrWorekrClient(local:Class, remote:Class) 
 		{

@@ -7,12 +7,6 @@ package zvr.zvrBehaviors.pointer
 	public class ZvrPointerSignal 
 	{
 		
-		static public const MOVE:String = "move";
-		static public const BEGIN:String = "begin";
-		static public const END:String = "end";
-		
-		public var type:String;
-		
 		public var id:int;
 		
 		public var globalX:Number;
@@ -21,14 +15,28 @@ package zvr.zvrBehaviors.pointer
 		public var localY:Number;
 		public var localX:Number;
 		
-		public function ZvrPointerSignal(type:String, id:int, globalX:Number,globalY:Number,localY:Number,localX:Number) 
+		public var lastGlobalX:Number;
+		public var lastGlobalY:Number;
+		
+		public var down:Boolean;
+		
+		public var wheelDelta:Number = 0;
+		
+		public function ZvrPointerSignal(id:int, globalX:Number,globalY:Number,localY:Number,localX:Number, wheelDelta:Number = 0) 
 		{
-			this.type = type;
+			
+			trace(" new point ");
+			
 			this.id = id;
 			this.globalX = globalX;
 			this.globalY = globalY;
+			
+			this.lastGlobalX = globalX;
+			this.lastGlobalY = globalY;
+			
 			this.localY = localY;
 			this.localX = localX;
+			this.wheelDelta = wheelDelta;
 		}
 		
 	}

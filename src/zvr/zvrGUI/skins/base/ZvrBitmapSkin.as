@@ -37,6 +37,7 @@ package zvr.zvrGUI.skins.base
 			registerStyle(ZvrStyles.COLOR, updateColor);
 			registerStyle(ZvrStyles.COLOR_ALPHA, updateColor);
 			registerStyle(ZvrStyles.AUTO_SIZE, updateBitmapSize);
+			registerStyle(ZvrStyles.SCALE, updateBitmapSize);
 		}
 	
 		
@@ -45,6 +46,7 @@ package zvr.zvrGUI.skins.base
 			setStyle(ZvrStyles.COLOR_ALPHA, 0);
 			setStyle(ZvrStyles.COLOR, 0);
 			setStyle(ZvrStyles.AUTO_SIZE, ZvrBitmapAutoSize.AUTO_TO_NO_SCALE);
+			setStyle(ZvrStyles.SCALE, 1);
 		}
 		
 		private function updateColor():void 
@@ -84,19 +86,20 @@ package zvr.zvrGUI.skins.base
 		{
 			
 			var a:String = getStyle(ZvrStyles.AUTO_SIZE);
+			var s:Number = getStyle(ZvrStyles.SCALE);
 			
 			if (!_bitmap.bitmapData) return;
 			
 			if (a == ZvrBitmapAutoSize.AUTO_TO_NO_SCALE)
 			{
-				updateComponentSize(_bitmap.bitmapData.width, _bitmap.bitmapData.height);
-				_bitmap.width = _bitmap.bitmapData.width;
-				_bitmap.height = _bitmap.bitmapData.height;
+				updateComponentSize(_bitmap.bitmapData.width * s, _bitmap.bitmapData.height * s);
+				_bitmap.width = _bitmap.bitmapData.width * s;
+				_bitmap.height = _bitmap.bitmapData.height * s;
 			}
 			else if (a == ZvrBitmapAutoSize.NO_SCALE_TO_MAUAL)
 			{
-				_bitmap.x = componentWidth * 0.5 - _bitmap.width * 0.5;
-				_bitmap.y = componentHeight * 0.5 - _bitmap.height * 0.5;
+				_bitmap.x = componentWidth * 0.5 - (_bitmap.width  * s) * 0.5;
+				_bitmap.y = componentHeight * 0.5 - (_bitmap.height * s) * 0.5;
 			}
 			else if (a == ZvrBitmapAutoSize.FILL)
 			{

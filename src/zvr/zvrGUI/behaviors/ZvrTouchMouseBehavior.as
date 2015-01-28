@@ -63,27 +63,27 @@ package zvr.zvrGUI.behaviors
 			if (body)
 			{
 				
-				if (Multitouch.supportsTouchEvents)
-				{
+				/*if (Multitouch.supportsTouchEvents)
+				{*/
 					body.addEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
-				}
+				/*}
 				else
-				{
+				{*/
 					body.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				}
+				/*}*/
 			}
 			
 			for (var i:int = 0; i < _dragHandlers.length; i++) 
 			{
 				
-				if (Multitouch.supportsTouchEvents)
-				{
+				/*if (Multitouch.supportsTouchEvents)
+				{*/
 					_dragHandlers[i].addEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
-				}
+				/*}
 				else
-				{
+				{*/
 					_dragHandlers[i].addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				}
+				/*}*/
 				
 				
 				_dragHandlers[i].addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
@@ -96,26 +96,26 @@ package zvr.zvrGUI.behaviors
 			
 			if (body)
 			{
-				if (Multitouch.supportsTouchEvents)
-				{
+				/*if (Multitouch.supportsTouchEvents)
+				{*/
 					body.removeEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
-				}
+				/*}
 				else
-				{
+				{*/
 					body.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				}
+				/*}*/
 			}
 			
 			for (var i:int = 0; i < _dragHandlers.length; i++) 
 			{
-				if (Multitouch.supportsTouchEvents)
-				{
+				/*if (Multitouch.supportsTouchEvents)
+				{*/
 					_dragHandlers[i].removeEventListener(TouchEvent.TOUCH_BEGIN, mouseDown);
-				}
+				/*}
 				else
-				{
+				{*/
 					_dragHandlers[i].removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
-				}
+				/*}*/
 				
 				_dragHandlers[i].removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 			}
@@ -134,16 +134,16 @@ package zvr.zvrGUI.behaviors
 			
 			target.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 			
-			if (Multitouch.supportsTouchEvents)
-			{
+			/*if (Multitouch.supportsTouchEvents)
+			{*/
 				target.stage.addEventListener(TouchEvent.TOUCH_MOVE, mouseMove);
 				target.stage.addEventListener(TouchEvent.TOUCH_END, mouseUp);
-			}
+			/*}
 			else
-			{
+			{*/
 				target.stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 				target.stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
-			}
+			/*}*/
 			
 			_dragging = true;
 		}
@@ -152,7 +152,7 @@ package zvr.zvrGUI.behaviors
 		{
 			if (!validateHandler(e.currentTarget)) return;
 			
-			if (Multitouch.supportsTouchEvents )
+			/*if (Multitouch.supportsTouchEvents )
 			{
 				if (!_dragging)
 				{
@@ -181,7 +181,7 @@ package zvr.zvrGUI.behaviors
 					}
 					_mouseDownTime = getTimer();
 				}
-			}
+			}*/
 			
 			if (!Multitouch.supportsTouchEvents)
 			{
@@ -196,16 +196,16 @@ package zvr.zvrGUI.behaviors
 			_dragging = false;
 			e.target.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 			
-			if (Multitouch.supportsTouchEvents)
-			{
+			/*if (Multitouch.supportsTouchEvents)
+			{*/
 				e.target.stage.removeEventListener(TouchEvent.TOUCH_MOVE, mouseMove);
 				e.target.stage.removeEventListener(TouchEvent.TOUCH_END, mouseUp);
-			}
+			/*}
 			else
-			{
+			{*/
 				e.target.stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 				e.target.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
-			}
+			/*}*/
 			
 		}
 		

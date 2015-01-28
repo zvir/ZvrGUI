@@ -22,9 +22,9 @@ package zvr.zvrGUI.core
 		private var _snapManager:ZvrSnapManager;
 		private var _popupManager:ZvrPopupManager;
 		
-		private var _windowsLayer:ZvrContainer;
-		private var _backgraoundLayer:ZvrContainer;
-		private var _popupLauer:ZvrContainer;
+		protected var _windowsLayer:ZvrContainer;
+		protected var _backgraoundLayer:ZvrContainer;
+		protected var _popupLayer:ZvrContainer;
 		
 		private var _pixelSharp:Boolean;
 		
@@ -37,11 +37,11 @@ package zvr.zvrGUI.core
 			_snapManager 		= new ZvrSnapManager(this);
 			_windowsLayer 		= new ZvrContainer(ZvrSkin);
 			_backgraoundLayer 	= new ZvrContainer(ZvrSkin);
-			_popupLauer 		= new ZvrContainer(ZvrSkin);
+			_popupLayer 		= new ZvrContainer(ZvrSkin);
 			
 			_windowsLayer.debugEnable = false;		
 			_backgraoundLayer.debugEnable = false; 	
-			_popupLauer.debugEnable = false;
+			_popupLayer.debugEnable = false;
 			debugEnable = false;
 			
 			super.addChild(_backgraoundLayer);
@@ -50,7 +50,10 @@ package zvr.zvrGUI.core
 			_windowsLayer.percentHeight = 100;
 			_windowsLayer.percentWidth = 100;
 			
-			super.addChild(_popupLauer);
+			super.addChild(_popupLayer);
+			
+			_popupLayer.percentHeight = 100;
+			_popupLayer.percentWidth = 100;
 			
 			if (stage)
 			{
@@ -126,6 +129,22 @@ package zvr.zvrGUI.core
 		public function get popups():ZvrPopupManager 
 		{
 			return _popupManager;
+		}
+		
+		public function addPopup(v:ZvrComponent):void
+		{
+			_windowsLayer.visible = false;
+			_popupLayer.addChild(v);
+		}
+		
+		public function removePopup(v:ZvrComponent):void
+		{
+			_popupLayer.removeChild(v);
+			
+			if (_popupLayer.getNumElements() == 0)
+			{
+				_windowsLayer.visible = true;
+			}
 		}
 		
 		public function get pixelSharp():Boolean 

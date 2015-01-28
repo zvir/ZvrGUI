@@ -13,7 +13,6 @@ package zvr.zvrLocalization
 		public var currentText:String;
 		public var contentType:String;
 		
-		
 		public function ZvrLocItem() 
 		{
 			

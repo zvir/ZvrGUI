@@ -112,6 +112,8 @@ package zvr.zvrBehaviors
 			{
 				_trash.push(_points.splice(i, 1)[0]);
 			}
+			_points.length = 0;
+			pointsCountChange();
 		}
 		
 		public function updatePoint(id:int, x:Number, y:Number):void
@@ -264,7 +266,7 @@ package zvr.zvrBehaviors
 			
 			for (var i:int = 0; i < _points.length; i++) 
 			{
-				a += ZvrPntMath.angle(_points[i].smoothed, _center);
+				a += ZvrPntMath.angle2(_points[i].smoothed, _center);
 			}
 			
 			return a;

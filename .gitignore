@@ -1,8 +1,11 @@
 /.settings/*
+/.sync/*
 /html-template/*
 /bin-debug/*
 /bin-release/*
 /bin/*
+/lib/*
+/bat/*
 /docs/*
 /doc/*
 /obj/*
@@ -12,6 +15,21 @@
 /dist/*
 /target
 /lib/asunit3/*
+/src/clv - Copy/*
+
+AIR_readme.txt
+application.xml
+build.properties
+build.xml
+PackageApp.bat
+README.md
+Run.bat
+us.stackdump
+zvrGUI.as3proj
+ZvrGUI.iml
+zvrGUI.lxml
+zvrGUIAIR.as3proj
+ZvrGUIsrc.zip
 
 .actionScriptProperties
 .flexProperties
@@ -20,6 +38,11 @@
 .project
 .sourceMate
 .fxpProperties
+.SyncIgnore
+.SyncID
+.gitignore
+
+
 
 user.properties
 Icon

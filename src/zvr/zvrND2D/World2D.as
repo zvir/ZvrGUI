@@ -162,7 +162,7 @@ package zvr.zvrND2D
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseEventHandler);
 			stage.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
 			
-			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+			//Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			stage.addEventListener(TouchEvent.TOUCH_TAP, touchEventHandler);
 			stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchEventHandler);
 			stage.addEventListener(TouchEvent.TOUCH_MOVE, touchEventHandler);

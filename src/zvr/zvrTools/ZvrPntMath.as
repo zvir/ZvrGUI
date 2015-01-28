@@ -6,28 +6,27 @@ package zvr.zvrTools
 	 */
 	public class ZvrPntMath 
 	{
+		//[Inline]
+		
 		static private const RADIANS_TO_DEGREES:Number = 180 / Math.PI;
+		//[Inline]
 		static private const DEGREES_TO_RADIANS:Number = Math.PI / 180;
 		
-		public static function angle(p1:ZvrPnt, p2:ZvrPnt = null):Number
+		[Inline]
+		public static function angle(p1:ZvrPnt):Number
 		{
-			
-			var angle:Number;
-			
-			if (p2 == null)
-			{
-				angle = Math.atan2(p1.x, -p1.y) * RADIANS_TO_DEGREES;
-			}
-			else
-			{
-				angle = Math.atan2(p2.x - p1.x, -1 * (p2.y - p1.y)) * RADIANS_TO_DEGREES;
-			}
-			
+			var angle:Number = Math.atan2(p1.x, -p1.y) * RADIANS_TO_DEGREES;
 			return angle < 0 ? angle + 360 : angle;
 		}
 		
+		[Inline]
+		public static function angle2(p1:ZvrPnt, p2:ZvrPnt):Number
+		{
+			var angle:Number = Math.atan2(p2.x - p1.x, -1 * (p2.y - p1.y)) * RADIANS_TO_DEGREES;			
+			return angle < 0 ? angle + 360 : angle;
+		}
 		
-		
+		[Inline]
 		public static function angle3(p1:ZvrPnt, p2:ZvrPnt, p3:ZvrPnt):Number
 		{
 			var ang:Number;
@@ -42,11 +41,13 @@ package zvr.zvrTools
 			
 		}
 		
+		[Inline]
 		public static function distance(p1:ZvrPnt, p2:ZvrPnt):Number
 		{
 			return Math.sqrt((p2.x -p1.x) * (p2.x -p1.x) + (p2.y -p1.y) * (p2.y -p1.y));
 		}
 		
+		[Inline]
 		public function distacneToLine(p:ZvrPnt, lineZvrPnt1:ZvrPnt, lineZvrPnt2:ZvrPnt):Number
 		{
 			var a:Number = p.x - lineZvrPnt1.x;
@@ -57,6 +58,7 @@ package zvr.zvrTools
 			return Math.abs(a * d - c * b) / Math.sqrt(c * c + d * d);
 		}
 		
+		[Inline]
 		public static function setBetween(p:ZvrPnt, p1:ZvrPnt, p2:ZvrPnt, between:Number):ZvrPnt
 		{
 			p.x = p1.x + between * (p2.x - p1.x);
@@ -64,12 +66,14 @@ package zvr.zvrTools
 			return p;
 		}
 		
+		[Inline]
 		public static function length(p:ZvrPnt):Number
 		{
 			return Math.sqrt(p.x * p.x + p.y * p.y);
 		}
 		
-		public static function getClosestPointOnLine(p:ZvrPnt, lineZvrPnt1:ZvrPnt, lineZvrPnt2:ZvrPnt, segment:Boolean = false):ZvrPnt
+		[Inline]
+		public static function getClosestPointOnLine(p:ZvrPnt, lineZvrPnt1:ZvrPnt, lineZvrPnt2:ZvrPnt, segment:Boolean):ZvrPnt
 		{
 			
 			var tx:Number;
@@ -109,6 +113,7 @@ package zvr.zvrTools
 			return new ZvrPnt(tx, ty);
 		}
 		
+		[Inline]
 		public static function distacneToLine(p:ZvrPnt, lineZvrPnt1:ZvrPnt, lineZvrPnt2:ZvrPnt):Number
 		{
 			
@@ -119,12 +124,14 @@ package zvr.zvrTools
 			return ((e < 0)? -e : e) / Math.sqrt(c * c + d * d);
 		}
 		
+		[Inline]
 		public static function smoothTrans(p:ZvrPnt, toX:Number, toY:Number, smoothing:Number):void
 		{
 			p.x = interpolateValue(p.x, toX, smoothing);
 			p.y = interpolateValue(p.y, toY, smoothing);
 		}
 		
+		[Inline]
 		public static function rotate(p:ZvrPnt, a:Number):void
 		{
 			var length:Number = Math.sqrt(p.x * p.x + p.y * p.y);
@@ -134,6 +141,7 @@ package zvr.zvrTools
 			polar(p, length, a + ang);
 		}
 		
+		[Inline]
 		public static function polar(p:ZvrPnt, radius:Number, angle:Number):void
 		{
 			angle *= DEGREES_TO_RADIANS;
@@ -141,6 +149,7 @@ package zvr.zvrTools
 			p.y += radius * Math.sin(angle);
 		}
 		
+		[Inline]
 		public static function setPolar(p:ZvrPnt, radius:Number, angle:Number):void
 		{
 			angle *= DEGREES_TO_RADIANS;
@@ -148,6 +157,7 @@ package zvr.zvrTools
 			p.y = radius * Math.sin(angle);
 		}
 		
+		[Inline]
 		public static function getPolar(radius:Number, angle:Number):ZvrPnt
 		{
 			var p:ZvrPnt = new ZvrPnt();
@@ -157,33 +167,39 @@ package zvr.zvrTools
 			return p;
 		}
 		
+		[Inline]
 		private static function interpolateValue(a:Number, b:Number, c:Number):Number
 		{
 			return a - (a - b) * c;
 		}
 		
+		[Inline]
 		public static function add(p1:ZvrPnt, p2:ZvrPnt):ZvrPnt
 		{
 			return new ZvrPnt(p1.x + p2.x, p1.y + p2.y);
 		}
 		
+		[Inline]
 		public static function addTo(p1:ZvrPnt, p2:ZvrPnt):void
 		{
 			p1.x += p2.x
 			p1.y += p2.y;
 		}
 		
+		[Inline]
 		public static function subtract(p1:ZvrPnt, p2:ZvrPnt):ZvrPnt
 		{
 			return new ZvrPnt(p1.x - p2.x, p1.y - p2.y);
 		}
 		
+		[Inline]
 		public static function subtractFrom(p1:ZvrPnt, p2:ZvrPnt):void
 		{
 			p1.x -= p2.x
 			p1.y -= p2.y;
 		}
 		
+		[Inline]
 		static public function cicleCenterFrom3Points(p:ZvrPnt, p1:ZvrPnt, p2:ZvrPnt, p3:ZvrPnt):ZvrPnt
 		{
 			
@@ -200,10 +216,11 @@ package zvr.zvrTools
 			return p;
 		}
 		
-		static public function lineIntersection(line1Point1:ZvrPnt, line1Point2:ZvrPnt, line2Point1:ZvrPnt, line2Point2:ZvrPnt, secondLineIsSegment:Boolean = false):ZvrPnt
+		[Inline]
+		static public function lineIntersection(line1Point1:ZvrPnt, line1Point2:ZvrPnt, line2Point1:ZvrPnt, line2Point2:ZvrPnt, secondLineIsSegment:Boolean):ZvrPnt
 		{
 			
-			var k1:Number = (line1Point2.y-line1Point1.y) / (line1Point2.x-line1Point1.x);
+			var k1:Number = (line1Point2.y - line1Point1.y) / (line1Point2.x - line1Point1.x);
 			var k2:Number = (line2Point2.y - line2Point1.y) / (line2Point2.x - line2Point1.x);
 			
 			if ( k1 == k2 )
@@ -243,11 +260,78 @@ package zvr.zvrTools
 			return new ZvrPnt(x, y);
 		}
 		
+		static public function lineIntersectLine(A:ZvrPnt, B:ZvrPnt, E:ZvrPnt, F:ZvrPnt, as_seg:Boolean = true):ZvrPnt
+		{
+			var ip:ZvrPnt;
+			var a1:Number;
+			var a2:Number;
+			var b1:Number;
+			var b2:Number;
+			var c1:Number;
+			var c2:Number;
+		 
+			a1= B.y-A.y;
+			b1= A.x-B.x;
+			c1= B.x*A.y - A.x*B.y;
+			a2= F.y-E.y;
+			b2= E.x-F.x;
+			c2= F.x*E.y - E.x*F.y;
+		 
+			var denom:Number=a1*b2 - a2*b1;
+			if (denom == 0) {
+				return null;
+			}
+			ip=new ZvrPnt();
+			ip.x=(b1*c2 - b2*c1)/denom;
+			ip.y=(a2*c1 - a1*c2)/denom;
+		 
+			//---------------------------------------------------
+			//Do checks to see if intersection to endpoints
+			//distance is longer than actual Segments.
+			//Return null if it is with any.
+			//---------------------------------------------------
+			if(as_seg){
+				if(Math.pow(ip.x - B.x, 2) + Math.pow(ip.y - B.y, 2) > Math.pow(A.x - B.x, 2) + Math.pow(A.y - B.y, 2))
+				{
+				   return null;
+				}
+				if(Math.pow(ip.x - A.x, 2) + Math.pow(ip.y - A.y, 2) > Math.pow(A.x - B.x, 2) + Math.pow(A.y - B.y, 2))
+				{
+				   return null;
+				}
+		 
+				if(Math.pow(ip.x - F.x, 2) + Math.pow(ip.y - F.y, 2) > Math.pow(E.x - F.x, 2) + Math.pow(E.y - F.y, 2))
+				{
+				   return null;
+				}
+				if(Math.pow(ip.x - E.x, 2) + Math.pow(ip.y - E.y, 2) > Math.pow(E.x - F.x, 2) + Math.pow(E.y - F.y, 2))
+				{
+				   return null;
+				}
+			}
+			return ip;
+		}
+
+		[Inline]
 		public static function equal(p1:ZvrPnt, p2:ZvrPnt):Boolean
 		{
 			return p1.x == p2.x && p1.y == p2.y;
 		}
 		
+		[Inline]
+		public static function normalize(p:ZvrPnt):void
+		{
+			var l:Number = length(p);
+			
+			if ( l == 1.0  || l == 0.0 ) return;
+			
+			//l = 1.0 / Math.sqrt(l);
+			
+			p.x /= l;
+			p.y /= l;
+			
+		}
+		////[Inline]
 		static public function divideSegmentByLenghth(p1:ZvrPnt, p2:ZvrPnt, number:Number):Array 
 		{
 			var d:Number = distance(p1, p2);

@@ -14,9 +14,9 @@ package zvr.zvrG2D.zvrDrawer
 		
 		private var _items:Vector.<GDrawerItem> = new Vector.<GDrawerItem>();
 		
-		public function GDrawer(p_node:GNode = null)
+		public function GDrawer()
 		{
-			super(p_node);
+			super();
 		}
 		
 		public function addItem(item:GDrawerItem):void

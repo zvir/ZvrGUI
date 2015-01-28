@@ -168,8 +168,16 @@ package zvr.zvrGUI.layouts
 				for (i = 0; i < elementes.length; i++) 
 				{
 					comp = elementes[i];
-					comp.x = i * space + (i != 0 ? _gap*i : 0) + (isNaN(comp.left) ? 0 : comp.left);
-					comp.width = space - (isNaN(comp.right) ? 0 : comp.right) - (isNaN(comp.left) ? 0 : comp.left);
+					
+					x =  i * space + (i != 0 ? _gap * i : 0) + (isNaN(comp.left) ? 0 : comp.left);
+					
+					comp.x = getPos(x);
+					
+					w = space - (isNaN(comp.right) ? 0 : comp.right) - (isNaN(comp.left) ? 0 : comp.left);
+					
+					w = _pixelSharp ? int(w * 0.5) * 2 : w;
+					
+					comp.width = w
 				}
 			}
 			else if (_disrtibution == ZvrLayoutDistribution.PERCENT)

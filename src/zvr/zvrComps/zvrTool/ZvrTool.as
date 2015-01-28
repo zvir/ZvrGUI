@@ -196,7 +196,7 @@ package zvr.zvrComps.zvrTool
 			var ct:ZvrCompilationDate = new ZvrCompilationDate(documentClass);
 			tr("----------------------------------------------------------------------------");
 			tr("Version:", ct.version);
-			tr("BuildTime:", ct.compilationDate.getDate()+"-"+(ct.compilationDate.getMonth()+1)+"-"+ct.compilationDate.getFullYear()+"..."+ct.compilationDate.getHours()+":"+ct.compilationDate.getMinutes()+":"+ct.compilationDate.getSeconds()+"."+ct.compilationDate.getMilliseconds());
+			if (ct.compilationDate) tr("BuildTime:", ct.compilationDate.getDate()+"-"+(ct.compilationDate.getMonth()+1)+"-"+ct.compilationDate.getFullYear()+"..."+ct.compilationDate.getHours()+":"+ct.compilationDate.getMinutes()+":"+ct.compilationDate.getSeconds()+"."+ct.compilationDate.getMilliseconds());
 			tr("----------------------------------------------------------------------------");
 		}
 		

@@ -1,6 +1,7 @@
 package zvr.zvrGUI.core
 {
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.utils.getQualifiedClassName;
@@ -72,6 +73,16 @@ package zvr.zvrGUI.core
 			//_debug.componetnMask = _mask;
 			
 		}
+		
+		/*override public function addToContainer(container:IZvrContainer):void 
+		{
+			super.addToContainer(container);
+			
+			for (var i:int = 0; i < _elements.length; i++) 
+			{
+				_elements[i].validateBounds();
+			}
+		}*/
 		
 		override protected function setUpDebug():void
 		{

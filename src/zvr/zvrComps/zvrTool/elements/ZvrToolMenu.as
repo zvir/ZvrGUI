@@ -94,7 +94,6 @@ package zvr.zvrComps.zvrTool.elements
 			toggler.selected = true;
 			sounder.selected = true;
 			
-			
 			if (Multitouch.supportsTouchEvents)
 			{
 				closeBt.addEventListener(TouchEvent.TOUCH_TAP, closeClick);
@@ -107,8 +106,6 @@ package zvr.zvrComps.zvrTool.elements
 				hideAll.addEventListener(MouseEvent.CLICK, hideAllClick);
 				hide.addEventListener(MouseEvent.CLICK, hideClick);
 			}
-			
-			
 			
 			addEventListener(ZvrStateChangeEvent.CHANGE, stateChange);
 		}

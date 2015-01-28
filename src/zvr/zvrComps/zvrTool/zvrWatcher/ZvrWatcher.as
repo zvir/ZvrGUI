@@ -1,6 +1,7 @@
 package zvr.zvrComps.zvrTool.zvrWatcher 
 {
 	//import mx.collections.ArrayCollection;
+	import mx.collections.ArrayCollection;
 	import zvr.zvrComps.zvrTool.zvrTracer.ZvrTracerData;
 	import zvr.zvrComps.zvrTool.zvrWatcher.ZvrWatchItem;
 	import zvr.zvrGUI.components.minimalDark.DataContainerMD;
@@ -19,7 +20,7 @@ package zvr.zvrComps.zvrTool.zvrWatcher
 	{
 		
 		private var _data:DataContainerMD;
-		//private var _dataProvider:ArrayCollection;
+		private var _dataProvider:ArrayCollection;
 		private var _numStatus:LabelMD = new LabelMD();
 		
 		public function ZvrWatcher() 
@@ -29,11 +30,11 @@ package zvr.zvrComps.zvrTool.zvrWatcher
 			_data.percentWidth = 100;
 			_data.percentHeight = 100;
 			_data.setLayout(ZvrDataVerticalLayout);
-			//_dataProvider = new ArrayCollection();
+			_dataProvider = new ArrayCollection();
 			
 			addChild(_data);
 			_data.scroll = panel.scroller;
-			//_data.dataProvider = _dataProvider;
+			_data.dataProvider = _dataProvider;
 			
 			minWidth = 350;
 			
@@ -55,32 +56,32 @@ package zvr.zvrComps.zvrTool.zvrWatcher
 		
 		public function updateWatch(w:ZvrWatchItem):void 
 		{
-			//status.text = "update: " + w.sender + ", " + w.name + ":"+ String(w.value);
+			status.text = "update: " + w.sender + ", " + w.name + ":"+ String(w.value);
 		}
 		
 		public function addWatch(w:ZvrWatchItem):void 
 		{
-			//_dataProvider.addItem(w);
-			//status.text = "update: " + w.sender + ", " + w.name + ":"+ String(w.value);
+			_dataProvider.addItem(w);
+			status.text = "update: " + w.sender + ", " + w.name + ":"+ String(w.value);
 			updateStatics();
 		}
 		
 		public function deleteWatch(w:ZvrWatchItem):void
 		{
-			//var i:int = _dataProvider.getItemIndex(w);
-			//if (i != -1) _dataProvider.removeItemAt(i);
+			var i:int = _dataProvider.getItemIndex(w);
+			if (i != -1) _dataProvider.removeItemAt(i);
 			w.dispose();
 			updateStatics();
 		}
 		
 		public function addFirstWatch(watch:ZvrWatchItem):void 
 		{
-			//_dataProvider.addItem(watch);
+			_dataProvider.addItem(watch);
 		}
 		
 		private function updateStatics():void
 		{
-			//_numStatus.text = String(_dataProvider.length);
+			_numStatus.text = String(_dataProvider.length);
 		}
 		
 	}

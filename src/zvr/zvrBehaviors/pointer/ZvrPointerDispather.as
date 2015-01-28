@@ -18,6 +18,8 @@ package zvr.zvrBehaviors.pointer
 		private var _onPointDown:Signal = new Signal(ZvrPointerSignal);
 		private var _onPointMove:Signal = new Signal(ZvrPointerSignal);
 		
+		private var _onMouseWheel:Signal = new Signal(ZvrPointerSignal);
+		
 		public function ZvrPointerDispather() 
 		{
 			
@@ -25,23 +27,19 @@ package zvr.zvrBehaviors.pointer
 		
 		public function init(stage:Stage):void
 		{
-			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+			//Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
 			_stage = stage;
 			
-			if (Multitouch.supportsTouchEvents)
-			{				
-				_stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchEvent);
-				_stage.addEventListener(TouchEvent.TOUCH_END, touchEvent);
-				_stage.addEventListener(TouchEvent.TOUCH_MOVE, touchEvent);
-			}
-			else
-			{
-				_stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseEvent);
-				_stage.addEventListener(MouseEvent.MOUSE_UP, mouseEvent);
-				_stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseEvent);
-			}
+			_stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchEvent);
+			_stage.addEventListener(TouchEvent.TOUCH_END, touchEvent);
+			_stage.addEventListener(TouchEvent.TOUCH_MOVE, touchEvent);
 			
+			_stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseEvent);
+			_stage.addEventListener(MouseEvent.MOUSE_UP, mouseEvent);
+			_stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseEvent);
+			
+			_stage.addEventListener(MouseEvent.MOUSE_WHEEL, mouseEvent);
 		}
 		
 		public function dispose():void
@@ -49,13 +47,18 @@ package zvr.zvrBehaviors.pointer
 			_stage.removeEventListener(MouseEvent.MOUSE_DOWN, mouseEvent);
 			_stage.removeEventListener(MouseEvent.MOUSE_UP, mouseEvent);
 			_stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseEvent);
+			
 			_stage.removeEventListener(TouchEvent.TOUCH_BEGIN, touchEvent);
 			_stage.removeEventListener(TouchEvent.TOUCH_END, touchEvent);
 			_stage.removeEventListener(TouchEvent.TOUCH_MOVE, touchEvent);
+			
+			_stage.removeEventListener(MouseEvent.MOUSE_WHEEL, mouseEvent);
 		}
 		
 		private function touchEvent(e:TouchEvent):void 
 		{
+			if (e.isPrimaryTouchPoint) return;
+			
 			switch (e.type) 
 			{
 				case TouchEvent.TOUCH_BEGIN:	_onPointDown	.dispatch(new ZvrPointerSignal(ZvrPointerSignal.BEGIN, e.touchPointID, e.stageX, e.stageY, 0, 0)); break;
@@ -68,9 +71,10 @@ package zvr.zvrBehaviors.pointer
 		{
 			switch (e.type) 
 			{
-				case MouseEvent.MOUSE_DOWN: _onPointDown	.dispatch(new ZvrPointerSignal(ZvrPointerSignal.BEGIN, 0, e.stageX, e.stageY, 0, 0));  break;
-				case MouseEvent.MOUSE_UP: 	_onPointUp		.dispatch(new ZvrPointerSignal(ZvrPointerSignal.BEGIN, 0, e.stageX, e.stageY, 0, 0));	break;
-				case MouseEvent.MOUSE_MOVE:	_onPointMove	.dispatch(new ZvrPointerSignal(ZvrPointerSignal.BEGIN, 0, e.stageX, e.stageY, 0, 0));	break;
+				case MouseEvent.MOUSE_DOWN: _onPointDown	.dispatch(new ZvrPointerSignal(ZvrPointerSignal.BEGIN, 0, e.stageX, e.stageY, 0, 0));  			break;
+				case MouseEvent.MOUSE_UP: 	_onPointUp		.dispatch(new ZvrPointerSignal(ZvrPointerSignal.BEGIN, 0, e.stageX, e.stageY, 0, 0));			break;
+				case MouseEvent.MOUSE_MOVE:	_onPointMove	.dispatch(new ZvrPointerSignal(ZvrPointerSignal.BEGIN, 0, e.stageX, e.stageY, 0, 0));			break;
+				case MouseEvent.MOUSE_WHEEL:_onMouseWheel	.dispatch(new ZvrPointerSignal(ZvrPointerSignal.BEGIN, 0, e.stageX, e.stageY, 0, 0, e.delta));	break;
 			}
 			
 		}
@@ -88,6 +92,11 @@ package zvr.zvrBehaviors.pointer
 		public function get onPointUp():Signal 
 		{
 			return _onPointUp;
+		}
+		
+		public function get onMouseWheel():Signal 
+		{
+			return _onMouseWheel;
 		}
 	}
 

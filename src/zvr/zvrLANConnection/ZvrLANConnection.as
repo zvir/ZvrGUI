@@ -1,6 +1,7 @@
 package zvr.zvrLANConnection 
 {
 	import flash.events.EventDispatcher;
+	import flash.events.IOErrorEvent;
 	import flash.events.NetStatusEvent;
 	import flash.net.GroupSpecifier;
 	import flash.net.NetConnection;
@@ -36,13 +37,31 @@ package zvr.zvrLANConnection
 		{
 			_groupName = group;
 			_port = port;
-			netConn = new NetConnection()
-			netConn.addEventListener(NetStatusEvent.NET_STATUS, netHandler);
+			
+			if (!netConn)
+			{
+				netConn = new NetConnection()
+				netConn.addEventListener(NetStatusEvent.NET_STATUS, netHandler);
+				netConn.addEventListener(IOErrorEvent.IO_ERROR, ioError)
+			}
+			else
+			{
+				netConn.close();
+			}
+			
+			
 			netConn.connect("rtmfp:");
+		}
+		
+		private function ioError(e:IOErrorEvent):void 
+		{
+			trace("err");
 		}
 		
 		private function netHandler(e:NetStatusEvent):void 
 		{
+			trace(e.info.code);
+			
 			switch(e.info.code)
             {
                 case "NetConnection.Connect.Success":
@@ -66,6 +85,8 @@ package zvr.zvrLANConnection
 		
 		private function setupGroup():void
         {
+			
+			
             var groupspec:GroupSpecifier = new GroupSpecifier(_groupName);
 			
             groupspec.postingEnabled = true;
@@ -95,6 +116,11 @@ package zvr.zvrLANConnection
 		public function get connected():Boolean 
 		{
 			return _connected;
+		}
+		
+		public function getGroup():NetGroup 
+		{
+			return group;
 		}
 		
 		public function close():void

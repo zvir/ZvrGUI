@@ -14,6 +14,7 @@ package zvr.zvrTools
 	{
 		
 		// center of circle described by three points
+		[Inline]
 		static public function cc3p(p1:Point, p2:Point, p3:Point):ZvrPoint
 		{
 			var cc:ZvrPoint
@@ -31,29 +32,52 @@ package zvr.zvrTools
 			return cc;
 		}
 		
-		static public function smoothTrans(a:Number, b:Number, c:Number, limit:Number = 0.0001):Number
+		//[Inline]
+		static public function smoothTrans(a:Number, b:Number, c:Number):Number
+		{
+			return a - (a - b) * c;
+		}
+		
+		[Inline]
+		static public function smoothTransLim(a:Number, b:Number, c:Number, limit:Number):Number
 		{
 			if (Math.abs(a - b) < limit) return b;
 			return a - (a - b) * c;
 		}
 		
-		static public function smoothTransStep(from:Number, to:Number, smooth:Number, step:Number, limit:Number = 0.0001):Number
+		//[Inline]
+		static public function smoothTransStep(from:Number, to:Number, smooth:Number, step:Number):Number
 		{
-			if (Math.abs(from - to) < limit) return to;
-			return step == 1 ? from - (from  - to ) * smooth : from - (from  - to ) * smoothIn(smooth, step);
 			
-			//var r:Number = step == 1 ? from - (from  - to ) * smooth : from - (from  - to ) * smoothIn(smooth, step);
-			
-			//return Math.round(r * limit) / (1/limit);
+			return step == 1 ? from - (from  - to ) * smooth : from - (from  - to ) */* smoothIn(smooth, step)*/(1 - ((((1 - Math.pow(smooth, step + 1)) / (1 - smooth))) - (((1 - Math.pow(smooth, step)) / (1 - smooth)))));
 		}
 		
+		[Inline]
+		static public function smoothTransStepLim(from:Number, to:Number, smooth:Number, step:Number, limit:Number):Number
+		{
+			var r:Number
+			
+			if (Math.abs(from - to) < limit) 
+			{
+				r = to;
+			}
+			else
+			{
+				r = step == 1 ? from - (from  - to ) * smooth : from - (from  - to ) * /*smoothIn(smooth, step)*/ (1 - ((((1 - Math.pow(smooth, step + 1)) / (1 - smooth))) - (((1 - Math.pow(smooth, step)) / (1 - smooth)))));
+			}
+			
+			return r;
+		}
+		
+		//[Inline]
 		static public function smoothIn(smooth:Number, step:Number):Number
 		{
 			if (smooth == 0) return 0;
 			smooth = 1 - smooth;
-			return 1 - (((((1 - Math.pow(smooth, step + 1)) / (1 - smooth))) - (((1 - Math.pow(smooth, step)) / (1 - smooth)))));
+			return 1 - ((((1 - Math.pow(smooth, step + 1)) / (1 - smooth))) - (((1 - Math.pow(smooth, step)) / (1 - smooth))));
 		}
 		
+		[Inline]
 		static public function linearTrans(value:Number, to:Number, maxStep:Number):Number
 		{
 			to =  to - value > maxStep ? value + maxStep : to;
@@ -61,7 +85,8 @@ package zvr.zvrTools
 			return to;
 		}
 		
-		static public function lineIntersection(line1Point1:Point, line1Point2:Point, line2Point1:Point, line2Point2:Point, secondLineIsSegment:Boolean = false):Point
+		[Inline]
+		static public function lineIntersection(line1Point1:Point, line1Point2:Point, line2Point1:Point, line2Point2:Point, secondLineIsSegment:Boolean):Point
 		{
 			
 			var k1:Number = (line1Point2.y - line1Point1.y) / (line1Point2.x - line1Point1.x);
@@ -116,6 +141,7 @@ package zvr.zvrTools
 			return new Point(x, y);
 		}
 		
+		[Inline]
 		public static function lineRectangleIntersects(linePoint1:Point, linePoint2:Point, box1:Point, box2:Point):Array
 		{
 			var arr:Array = [];
@@ -140,7 +166,8 @@ package zvr.zvrTools
 			return arr;
 		}
 		
-		public static function lineIntersectLine( line1Point1:Point,  line1Point2:Point,  line2Point1:Point,  line2Point2:Point, as_seg:Boolean = true):Point
+		[Inline]
+		public static function lineIntersectLine( line1Point1:Point,  line1Point2:Point,  line2Point1:Point,  line2Point2:Point, as_seg:Boolean/*true*/):Point
 		{
 			var ip:Point;
 			var a1:Number;
@@ -220,27 +247,25 @@ package zvr.zvrTools
 			return ip;
 		}
 		
-		
+		[Inline]
 		public static function cutAngle180(a:Number):Number
 		{
-			a = a > 180 ? ((a + 180) % 360) - 180 : a < -180 ? ((a - 180) % 360) + 180 : a == -180 ? 180 : a;
-			
-			return a;
+			return a > 180 ? ((a + 180) % 360) - 180 : a < -180 ? ((a - 180) % 360) + 180 : a == -180 ? 180 : a;
 		}
 		
+		[Inline]
 		public static function cutAngle360(a:Number):Number
 		{
-			
-			a = a > 360 ? a % 360 : a < 0 ? ((a - 360) % 360) + 360 : a == 360 ? 0 : a;
-			
-			return a;
+			return a > 360 ? a % 360 : a < 0 ? ((a - 360) % 360) + 360 : a == 360 ? 0 : a;
 		}
 		
-		public static function logx(val:Number, base:Number = 10):Number
+		[Inline]
+		public static function logx(val:Number, base:Number/* = 10*/):Number
 		{
 			return Math.log(val) / Math.log(base);
 		}
 		
+		[Inline]
 		public static function gcd(a:int, b:int):int
 		{
 			// Euclidean algorithm
@@ -252,12 +277,14 @@ package zvr.zvrTools
 			}
 			return a;
 		}
-
+		
+		[Inline]
 		public static function lcm(a:int, b:int):int
 		{
 			return (a * b / gcd(a, b));
 		}
-
+		
+		 //[Inline] - not allowed due to recurection
 		public static function lcmm(args:Array):int
 		{
 			// Recursively iterate through pairs of arguments
@@ -272,6 +299,7 @@ package zvr.zvrTools
 			}
 		}
 		
+		[Inline]
 		public static function roundCommonFracrion(v1:int, v2:int):Array
 		{
 			
@@ -302,13 +330,13 @@ package zvr.zvrTools
 				a[0] = 1;
 			}
 			
-			if (isNaN(a[0]))
+			if (IsNaN(a[0]))
 			{
 				//trace("NAN ERROR 1");
 				a[0] = 0;
 			}
 			
-			if (isNaN(a[1]))
+			if (IsNaN(a[1]))
 			{
 				//trace("NAN ERROR 2");
 				a[1] = 0;
@@ -317,11 +345,74 @@ package zvr.zvrTools
 			return a;
 		}
 		
+		[Inline]
 		private static function getFracrion(v1:int, v2:int):Array
 		{
 			var v:Number = v1 / v2;
 			v = lcm(v1, v2);
 			return [v / v2, v / v1];
 		}
+		
+		/*
+			20-40 times faster
+		*/
+		[Inline]
+		public static function IsNaN(v:Number): Boolean
+		{
+			return !(v <= 0) && !(v > 0);
+		}
+		/*
+			almost as fast as Math.abs with positive
+			slight faster then Math.abs with negative
+		*/
+		/*[Inline] 
+		public static function abs(v:Number): Number
+		{
+			return v < 0 ? -v : v;
+		}*/
+		
+		
+		/*
+			not as fast as math.ceil
+		*/
+		/*[Inline]
+		public static function ceil(val:Number): Number
+		{
+			return (!(val <= 0) && !(val > 0)) ? NaN : val == int(val) ? val : val >= 0 ? int(val+1) : int(val);
+		}*/
+		/*
+			not as fast as math.floor
+		*/
+		[Inline]
+		public static function floor(val:Number): Number
+		{
+			return (!(val <= 0) && !(val > 0)) ? NaN : val == int(val) ? val : val < 0 ? int(val-1) : int(val);
+		}
+		
+		/*
+			8 times faster then math.max (2 values) 
+		*/
+		[Inline]
+		public static function max(val1:Number, val2:Number): Number
+		{
+			if ((!(val1 <= 0) && !(val1 > 0)) || (!(val2 <= 0) && !(val2 > 0)))
+			{
+				return NaN;
+			}
+			return val1 > val2 ? val1 : val2;
+		}
+		/*
+			8 times faster then math.max (2 values) 
+		*/
+		[Inline]
+		public static function min(val1:Number, val2:Number): Number
+		{
+			if ((!(val1 <= 0) && !(val1 > 0)) || (!(val2 <= 0) && !(val2 > 0)))
+			{
+				return NaN;
+			}
+			return val1 < val2 ? val1 : val2;
+		}
+		
 	}
 }

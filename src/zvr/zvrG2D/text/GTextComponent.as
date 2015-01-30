@@ -73,6 +73,7 @@ package zvr.zvrG2D.text
 		private function invalidateSize():void 
 		{
 			_invalidateSize = false;
+			if (g2d_font == null) return;
 			_scale = isNaN(_size) ? 1 : _size / g2d_font.size;
 		}
 		
